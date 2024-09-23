@@ -1,0 +1,4 @@
+# Ignore Visual Studio Code configuration files
+.vscode/
+
+README.md
