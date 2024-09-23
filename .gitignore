@@ -1,4 +1,11 @@
 # Ignore Visual Studio Code configuration files
 .vscode/
-
+vendor/
+.phpunit.result.*
 README.md
+# Vim swap files
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+
