@@ -1,0 +1,17 @@
+
+# BEGIN WordPress
+# The directives (lines) between "BEGIN WordPress" and "END WordPress" are
+# dynamically generated, and should only be modified via WordPress filters.
+# Any changes to the directives between these markers will be overwritten.
+RewriteEngine On
+RewriteRule ^index\.php$ - [L]
+# END WordPress
+# BEGIN wpss
+# The directives (lines) between "BEGIN wpss" and "END wpss" are
+# dynamically generated, and should only be modified via WordPress filters.
+# Any changes to the directives between these markers will be overwritten.
+RewriteEngine On
+RewriteRule ^index\.php$ - [L]
+RewriteEngine On
+RewriteRule ^index\.php$ - [L]
+# END wpss
