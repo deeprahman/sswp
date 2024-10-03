@@ -1,7 +1,5 @@
 <?php
 
-// Load WordPress core
-//require_once('/home/deep/Websites/woocommerce.lo/wp/wp-load.php');
 
 /**
  * Class WP_File_Permission_Checker
@@ -28,6 +26,7 @@ class WPSS_File_Permission_Manager {
      * @param array $files_to_check List of files and directories to check permissions for.
      */
     public function __construct($files_to_check = []) {
+        
         $this->files_to_check = !empty($files_to_check) ? $files_to_check : [
             'wp-config.php',
             'wp-content',
@@ -118,7 +117,7 @@ class WPSS_File_Permission_Manager {
      * @param string $path The path to get recommended permissions for.
      * @return string The recommended permission string ('755' for directories, '644' for files).
      */
-    private function get_recommended_permission($path) {
+    public function get_recommended_permission($path) {
         global $wp_filesystem;
 
         if ($wp_filesystem->is_dir($path)) {
@@ -311,10 +310,13 @@ class WPSS_File_Permission_Manager {
         return $wp_filesystem->chmod($path, $this->octal_to_decimal($permission));
     }
 }
-
+// TODO Debug Load WordPress core
+require_once('C:/xampp/htdocs/wp/wp-load.php');
+require_once('C:/xampp/htdocs/wp/wp-admin/includes/file.php');
+WP();
 // Usage
 $checker = new WPSS_File_Permission_Manager();
-$checker->display_results();
+// $checker->display_results();
 
 // Example usage of new methods:
 // $checker->change_file_permission(ABSPATH . 'wp-config.php', '644');
@@ -326,11 +328,10 @@ $checker->display_results();
 // print_r(get_home_path() . "wp-login.php");
 $test_path = get_home_path() . "wp-login.php";
 // echo $test_path . PHP_EOL;
-// $tmp = $checker->get_current_permission($test_path);
-// $tmp = $checker->get_recommended_permission($test_path);
-// $tmp = $checker->get_recommended_permission($test_path);
-$checker->set_permission($test_path, 400);
-$tmp = $checker->get_current_permission($test_path);
-print_r($tmp);
+echo "Current permission of " . basename($test_path), " " ,  $tmp = $checker->get_current_permission($test_path), PHP_EOL;
+echo " Recommended permission of  the file " , basename($test_path) ," ", $tmp = $checker->get_recommended_permission($test_path);
+echo "Setting Permission... " , $checker->set_permission($test_path, 400), PHP_EOL;
+echo "Current permission after change  ", " " , $tmp = $checker->get_current_permission($test_path),PHP_EOL;
+// print_r($tmp);
 // $checker->display_results();
-?>
+
