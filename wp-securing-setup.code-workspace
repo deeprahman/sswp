@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"name": "WP-Securing-Setup",
+			"path": "."
+		}
+		,
+		{
+			"name": "WP",
+			"path": "C:\\xampp\\htdocs\\wp\\"
+		}
+	],
+	"settings": {}
+}

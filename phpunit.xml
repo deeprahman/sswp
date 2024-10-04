@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="tests/bootstrap.php"
-    colors="false"
-    verbose="true"
-    stopOnFailure="false">
-<testsuites>
-    <testsuite name="Project Test Suite">
-        <directory>tests</directory>
-    </testsuite>
-</testsuites>
-<coverage>
-    <include>
-        <directory suffix=".php">src</directory>
-    </include>
-</coverage>
+<phpunit bootstrap="tests/bootstrap.php">
+    <testsuites>
+        <testsuite name="WP Securing Setup Test Suite">
+            <!-- Path to the directory containing test files -->
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <ini name="error_reporting" value="-1"/>
+        <ini name="display_errors" value="1"/>
+    </php>
+
+   
+ 
 </phpunit>
+
