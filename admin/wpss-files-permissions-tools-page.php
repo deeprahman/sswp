@@ -24,9 +24,19 @@ add_action( 'admin_menu', 'wpss_files_permission_page' );
  * This function is called by the `wpss_files_permission_page` function to display the page's content.
  */
 function file_permission_page_html() {
+    
+    global $wpss;
+    write_log($wpss);
+    // Start output buffering
+    ob_start();
+
     // Print the HTML content for the page
-    printf(
-        '<div class="wrap" id="wpss-files-permissions-settings">%s</div>',
-        esc_html__( 'Loading…', 'Files Permission' )
-    );
+
+    include_once(WPSS_ROOT . "/admin/templates/page.htm.php" ); 
+
+    // Get the buffered output
+    $output = ob_get_clean();
+
+    // Return the output
+    echo $output;
 }

@@ -1,0 +1,63 @@
+/* WordPress Permissions Table Styles */
+:host {
+    display: block;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+}
+
+.wp-list-table {
+    border-spacing: 0;
+    width: 100%;
+    clear: both;
+    margin: 0;
+    border-collapse: collapse;
+}
+
+.wp-list-table thead th {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e1e1e1;
+    font-weight: 600;
+    text-align: left;
+    line-height: 1.3em;
+    background: #f7f7f7;
+}
+
+.wp-list-table td {
+    padding: 8px 10px;
+    vertical-align: top;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.wp-list-table tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.status-ok { 
+    color: #46b450; 
+}
+
+.status-warning { 
+    color: #ffb900; 
+}
+
+.status-error { 
+    color: #dc3232; 
+}
+
+.button {
+    background: #2271b1;
+    border-color: #2271b1;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: none;
+    padding: 6px 12px;
+    border-radius: 3px;
+    border: 1px solid;
+    cursor: pointer;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.button:hover {
+    background: #135e96;
+    border-color: #135e96;
+}

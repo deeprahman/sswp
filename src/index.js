@@ -1,16 +1,25 @@
-import "./js/wpss-file-permissions-request.js";
+import "./components/index";
+import "./index.scss";
+jQuery(document).ready(function($) {
+    console.log("Script Loaded");
+    // Initialize tabs
+    $("#my-tabs").tabs();
 
-import domReady from '@wordpress/dom-ready';
-import { createRoot } from '@wordpress/element';
+    // Handle form submissions
+    $(".tab-form").on("submit", function(e) {
+        e.preventDefault();
+        var $form = $(this);
+        var formId = $form.attr("id");
+        var formData = $form.serialize();
 
-const ToolsPage = () => {
-    return <div>Placeholder for settings page</div>;
-};
-
-domReady( () => {
-    const root = createRoot(
-        document.getElementById( 'unadorned-announcement-bar-settings' )
-    );
-
-    root.render( <ToolsPage /> );
-} );
+        wp.apiRequest({
+            path: '/custom/v1/' + formId,
+            method: 'POST',
+            data: formData
+        }).then(function(response) {
+            alert('Form submitted successfully: ' + JSON.stringify(response));
+        }, function(error) {
+            alert('Error submitting form: ' + error.responseJSON.message);
+        });
+    });
+});

@@ -10,3 +10,5 @@ README.md
 [._]sw[a-p]
 
 node_modules
+**/[0-9]*
+build/
