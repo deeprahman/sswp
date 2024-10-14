@@ -65,6 +65,9 @@ function wpss_deactivate()
 {
     // Add your deactivation logic here
     // For example, delete options, remove database tables, etc.
+    //TODO: before deletion remove all changed make to htaccess
+    //TODO: before deletion restore previous file permisiion
+    delete_option(WPSS_SETTINGS);
 }
 
 // Include the plugin class

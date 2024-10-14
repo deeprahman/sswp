@@ -23,6 +23,8 @@ class WP_Securing_Setup
     public $css_handle;
 
     public $nonce_action;
+    
+public $wpss_settings;
 
     public function __construct()
     {
@@ -33,6 +35,7 @@ class WP_Securing_Setup
         $this->js_handle = "wpss-primary-js";
         $this->js_handle = "wpss-primary-css";
         $this->nonce_action = "wpss-rest";
+        $this->wpss_settings = WPSS_SETTINGS;
         $this->init();
         $this->admin_rest();
     }
