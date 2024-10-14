@@ -49,10 +49,11 @@ function wpss_htaccess_protect_callback($request) {
                 }
                 break;
             case 'POST':
+                require_once $wpss->root . "/includes/wpss-htaccess-form.php";
                 write_log($request); 
                 $data = $request->get_params();
                 $form = $data["from"];
-                write_log(["From data" => $form]);
+                handle_htaccess_post_req($form);
                 break;
             case 'DELETE':
                 $is_debug_unprotected = $sd->unprotect_debug_log();

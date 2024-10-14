@@ -5,7 +5,7 @@
  */
 
 
- $htaccess_from_settings["ht_from"] = array(
+ $htaccess_from_settings["ht_form"] = array(
    array(
        "name" => "protect-debug-log",
        "value" => "off"
