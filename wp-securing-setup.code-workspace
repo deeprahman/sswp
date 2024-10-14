@@ -10,5 +10,7 @@
 			"path": "C:\\xampp\\htdocs\\wp\\"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
 }
