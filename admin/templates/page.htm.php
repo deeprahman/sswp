@@ -21,7 +21,7 @@ global $wpss;
     <wp-permissions-table></wp-permissions-table>
   </div>
   <div id="tab-2">
-    <htaccess-component id="myHtaccess"></htaccess-component>
+    <?php include_once( $wpss->root . DIRECTORY_SEPARATOR . "admin/templates/protection-form.htm.php" );?>
   </div>
   <div id="tab-3">
     <form id="form-3" class="tab-form" disabled>

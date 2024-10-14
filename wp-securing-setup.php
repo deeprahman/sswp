@@ -20,12 +20,16 @@ if (!defined('ABSPATH')) {
  */
 if (!function_exists('write_log')) {
 
-    function write_log($log) {
+    function write_log($log, $function = __FUNCTION__) {
+        $message = "Debug: " . "Function: " . $function . " Data: ";
+        
         if (true === WP_DEBUG) {
             if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
+                $message .= print_r($log, true);
+                error_log($message);
             } else {
-                error_log($log);
+                $message .= $log;
+                error_log($message);
             }
         }
     }
@@ -42,6 +46,8 @@ define("WPSS_DOMAIN" , "wp-securing-setup");
 
 define("WPSS_VERSION" , "0.1.0");
 
+define ("WPSS_SETTINGS", '_wpss_settings');
+
 // Register activation and deactivation hooks
 register_activation_hook(__FILE__, 'wpss_activate');
 register_deactivation_hook(__FILE__, 'wpss_deactivate');
@@ -51,6 +57,7 @@ function wpss_activate()
 {
     // Add your activation logic here
     // For example, create options, update database tables, etc.
+    require_once WPSS_ROOT . "/includes/settings/wpss-default-settings.php";
 }
 
 // Function to handle plugin deactivation
@@ -63,12 +70,13 @@ function wpss_deactivate()
 // Include the plugin class
 require_once plugin_dir_path(__FILE__) . 'includes/class-wp-securing-setup.php';
 
+// TODO: Remove
 
 try {
 
     $wpss = new WP_Securing_Setup();
 
 } catch (\Exception $ex) {
-    error_log($ex->getMessage());
+    error_log("ERROR: " . $ex->getMessage());
 }
 

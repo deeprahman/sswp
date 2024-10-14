@@ -1,11 +1,13 @@
-
-const fp = {};
-
-fp.getFilePermissionsWP = function () {
-
+function getFilePermissionsWP() {
     return wp.apiRequest({
         path: '/wpss/v1/file-permissions',
-        method: 'GET'
+        method: 'GET',
+        data:{
+            nonce:wpApiSettings.nonce
+        },
+        headers: {
+            'X-WP-Nonce': wpApiSettings.nonce,
+        },
     })
         .then(function (response) {
             console.log('File Permissions:', response);
@@ -17,16 +19,16 @@ fp.getFilePermissionsWP = function () {
         });
 }
 
+// Using wp.apiRequest
+// getFilePermissionsWP()
+//     .then(permissions => {
+//         // Handle the permissions data
+//         console.log(permissions);
+//     })
+//     .catch(error => {
+//         // Handle any errors
+//         console.log("REST REQ Err");
+//         console.log(error.responseText);
+//     });
 
-
-
-fp.getFilePermissionsWP()
-    .then(permissions => {
-        // Handle the permissions data
-        console.log("File Permissions\n", permissions);
-    })
-    .catch(error => {
-        // Handle any errors
-        console.log(error);
-    });
 

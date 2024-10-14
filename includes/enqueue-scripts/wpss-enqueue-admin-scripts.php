@@ -4,6 +4,8 @@ if ( "tools_page_wpss-files-permission" !== $admin_page ) {
     return;
     }
 
+
+
     $asset_file = WPSS_ROOT . 'build/index.asset.php';
 
     if ( ! file_exists( $asset_file ) ) {
@@ -19,7 +21,7 @@ if ( "tools_page_wpss-files-permission" !== $admin_page ) {
     $asset = include $asset_file;
 
     wp_enqueue_script(
-        'wpss-primary-js',
+        $wpss->js_handle,
         $index_js,
         $asset['dependencies'],
         $asset['version'],
@@ -29,7 +31,7 @@ if ( "tools_page_wpss-files-permission" !== $admin_page ) {
     );
 
     wp_enqueue_style(
-        'wpss-primary-css',
+        $wpss->css_handle,
         $index_css,
         $asset['dependencies'],
         $asset['version']
@@ -55,8 +57,10 @@ if ( "tools_page_wpss-files-permission" !== $admin_page ) {
 
 
 enqueue_jquery_scripts();
-wp_localize_script('custom-tabs-script', 'wpApiSettings', array(
-    'root' => esc_url_raw(rest_url()),
-    'nonce' => wp_create_nonce('wp_rest')
-    ));
 
+    
+     wp_localize_script($wpss->js_handle, 'WpssRest', array(
+        'rest_url'     => esc_url_raw(rest_url()),
+        'nonce'        => wp_create_nonce($wpss->nonce_action), // Use 'wp_rest' as the action for REST API
+        'current_user' => wp_get_current_user()->data->user_login, // Optional: Pass current user info
+    ));

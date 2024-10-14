@@ -1,96 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/components/htacccess-tab.js":
-/*!*****************************************!*\
-  !*** ./src/components/htacccess-tab.js ***!
-  \*****************************************/
-/***/ (() => {
-
-class HtaccessComponent extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({
-      mode: 'open'
-    });
-  }
-  connectedCallback() {
-    this.render();
-  }
-  render() {
-    const style = document.createElement('style');
-    style.textContent = `
-            .checkbox-item { margin-bottom: 10px; }
-            button {
-                background-color: #4CAF50;
-                border: none;
-                color: white;
-                padding: 10px 20px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-                margin-top: 10px;
-                cursor: pointer;
-                border-radius: 5px;
-            }
-        `;
-    this.shadowRoot.innerHTML = '';
-    this.shadowRoot.appendChild(style);
-    const container = document.createElement('div');
-    this.shadowRoot.appendChild(container);
-    const saveButton = document.createElement('button');
-    saveButton.textContent = 'Save';
-    saveButton.addEventListener('click', this.handleSave.bind(this));
-    this.shadowRoot.appendChild(saveButton);
-  }
-  setCheckboxes(jsonInput) {
-    const container = this.shadowRoot.querySelector('div');
-    container.innerHTML = '';
-    jsonInput.forEach(item => {
-      const checkboxItem = document.createElement('div');
-      checkboxItem.classList.add('checkbox-item');
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.id = item.id;
-      checkbox.checked = item.checked || false;
-      const label = document.createElement('label');
-      label.htmlFor = item.id;
-      label.textContent = item.label;
-      checkboxItem.appendChild(checkbox);
-      checkboxItem.appendChild(label);
-      container.appendChild(checkboxItem);
-    });
-  }
-  handleSave() {
-    const checkboxes = this.shadowRoot.querySelectorAll('input[type="checkbox"]');
-    const result = Array.from(checkboxes).map(checkbox => ({
-      id: checkbox.id,
-      checked: checkbox.checked
-    }));
-    console.log('Saved state:', result);
-    // You can emit an event or perform any other action with the result
-  }
-}
-customElements.define('htaccess-component', HtaccessComponent);
-
-// Example usage
-const myHtaccess = document.getElementById('myHtaccess');
-const exampleJson = [{
-  id: 'checkbox1',
-  label: 'Option 1',
-  checked: true
-}, {
-  id: 'checkbox2',
-  label: 'Option 2'
-}, {
-  id: 'checkbox3',
-  label: 'Option 3'
-}];
-myHtaccess.setCheckboxes(exampleJson);
-
-/***/ }),
-
 /***/ "./src/components/index.js":
 /*!*********************************!*\
   !*** ./src/components/index.js ***!
@@ -100,14 +10,10 @@ myHtaccess.setCheckboxes(exampleJson);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   HtaccessTab: () => (/* reexport safe */ _htacccess_tab_js__WEBPACK_IMPORTED_MODULE_1__.HtaccessTab),
 /* harmony export */   SettingsPage: () => (/* reexport safe */ _settings_page__WEBPACK_IMPORTED_MODULE_0__.SettingsPage)
 /* harmony export */ });
 /* harmony import */ var _settings_page__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./settings-page */ "./src/components/settings-page.js");
 /* harmony import */ var _settings_page__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_settings_page__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _htacccess_tab_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./htacccess-tab.js */ "./src/components/htacccess-tab.js");
-/* harmony import */ var _htacccess_tab_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_htacccess_tab_js__WEBPACK_IMPORTED_MODULE_1__);
-
 
 
 /***/ }),
@@ -329,6 +235,179 @@ permissionsTable.addEventListener('permissions-updated', e => {
 
 /***/ }),
 
+/***/ "./src/wpss-files-permissions-request.js":
+/*!***********************************************!*\
+  !*** ./src/wpss-files-permissions-request.js ***!
+  \***********************************************/
+/***/ (() => {
+
+function getFilePermissionsWP() {
+  return wp.apiRequest({
+    path: '/wpss/v1/file-permissions',
+    method: 'GET',
+    data: {
+      nonce: wpApiSettings.nonce
+    },
+    headers: {
+      'X-WP-Nonce': wpApiSettings.nonce
+    }
+  }).then(function (response) {
+    console.log('File Permissions:', response);
+    return response;
+  }).catch(function (error) {
+    console.error('Error fetching file permissions:', error);
+    throw error;
+  });
+}
+
+// Using wp.apiRequest
+// getFilePermissionsWP()
+//     .then(permissions => {
+//         // Handle the permissions data
+//         console.log(permissions);
+//     })
+//     .catch(error => {
+//         // Handle any errors
+//         console.log("REST REQ Err");
+//         console.log(error.responseText);
+//     });
+
+/***/ }),
+
+/***/ "./src/wpss-htaccess-protect-from.js":
+/*!*******************************************!*\
+  !*** ./src/wpss-htaccess-protect-from.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wpss_htaccess_protect_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./wpss-htaccess-protect.js */ "./src/wpss-htaccess-protect.js");
+
+jQuery(document).ready(function ($) {
+  $('.htaccess-form').on('submit', function (e) {
+    e.preventDefault();
+
+    // Custom serialization
+    var serializedData = [];
+
+    // Process checkboxes
+    $(this).find('input[type="checkbox"]').each(function () {
+      serializedData.push({
+        name: $(this).attr('name'),
+        value: $(this).prop('checked') ? "on" : "off"
+      });
+    });
+
+    // Process multi-select
+    $(this).find('select[multiple]').each(function () {
+      serializedData.push({
+        name: $(this).attr('name'),
+        value: $(this).val() || [] // If nothing selected, use empty array
+      });
+    });
+
+    // Process other inputs (text, radio, single select, etc.)
+    $(this).find('input:not([type="checkbox"]), select:not([multiple]), textarea').each(function () {
+      if ($(this).val()) {
+        serializedData.push({
+          name: $(this).attr('name'),
+          value: $(this).val()
+        });
+      }
+    });
+
+    // Remove duplicates (keeping the last occurrence)
+    var uniqueSerializedData = [];
+    var seenKeys = {};
+    for (var i = serializedData.length - 1; i >= 0; i--) {
+      var item = serializedData[i];
+      if (!seenKeys[item.name]) {
+        seenKeys[item.name] = true;
+        uniqueSerializedData.unshift(item);
+      }
+    }
+
+    // Call the sendData function with the serialized data
+    sendData(uniqueSerializedData);
+  });
+
+  // Toggle visibility of update directory options
+  $('#protect-update-directory').on('change', function () {
+    $('#update-directory-options').toggle(this.checked);
+  });
+});
+
+// Placeholder for the sendData function
+function sendData(data) {
+  console.log('Sending data:', data);
+  // Implement your data sending logic here
+  (0,_wpss_htaccess_protect_js__WEBPACK_IMPORTED_MODULE_0__.checkHtaccessProtection)(data);
+}
+
+/***/ }),
+
+/***/ "./src/wpss-htaccess-protect.js":
+/*!**************************************!*\
+  !*** ./src/wpss-htaccess-protect.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   checkHtaccessProtection: () => (/* binding */ checkHtaccessProtection)
+/* harmony export */ });
+/**
+ * Function to get the htaccess protection status using WordPress REST API
+ * @returns {Promise} A promise that resolves with the API response
+ */
+function getHtaccessProtected(data) {
+  return wp.apiRequest({
+    path: '/wpss/v1/htaccess-protect',
+    method: 'POST',
+    data: {
+      nonce: wpApiSettings.nonce,
+      from: data
+    },
+    headers: {
+      'X-WP-Nonce': wpApiSettings.nonce
+    }
+  }).then(function (response) {
+    console.log('HTACCESS Protection Status:', response);
+    return response;
+  }).catch(function (error) {
+    console.error('Error getting HTACCESS protection status:', error);
+    throw error;
+  });
+}
+
+// Example usage
+function checkHtaccessProtection(data) {
+  getHtaccessProtected(data).then(response => {
+    if (response.success) {
+      console.log('Debug log protection status:', response.data.message.status);
+      // Update UI here, for example:
+      // document.getElementById('protectionStatus').textContent = response.data.is_debug_protected;
+    } else {
+      console.error('Failed to get protection status');
+    }
+  }).catch(error => {
+    console.error('REST API request error:', error);
+    if (error.responseText) {
+      console.error('Error details:', error.responseText);
+    }
+    // Update UI to show error here
+  });
+}
+
+// Attach to a button click event (if applicable)
+// document.getElementById('checkProtectionButton')?.addEventListener('click', checkHtaccessProtection);
+
+// Or call immediately if needed
+
+/***/ }),
+
 /***/ "./src/index.scss":
 /*!************************!*\
   !*** ./src/index.scss ***!
@@ -420,6 +499,13 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/index */ "./src/components/index.js");
 /* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.scss */ "./src/index.scss");
+/* harmony import */ var _wpss_files_permissions_request_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./wpss-files-permissions-request.js */ "./src/wpss-files-permissions-request.js");
+/* harmony import */ var _wpss_files_permissions_request_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wpss_files_permissions_request_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wpss_htaccess_protect_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./wpss-htaccess-protect.js */ "./src/wpss-htaccess-protect.js");
+/* harmony import */ var _wpss_htaccess_protect_from_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./wpss-htaccess-protect-from.js */ "./src/wpss-htaccess-protect-from.js");
+
+
+
 
 
 jQuery(document).ready(function ($) {
@@ -433,15 +519,16 @@ jQuery(document).ready(function ($) {
     var $form = $(this);
     var formId = $form.attr("id");
     var formData = $form.serialize();
-    wp.apiRequest({
-      path: '/custom/v1/' + formId,
-      method: 'POST',
-      data: formData
-    }).then(function (response) {
-      alert('Form submitted successfully: ' + JSON.stringify(response));
-    }, function (error) {
-      alert('Error submitting form: ' + error.responseJSON.message);
-    });
+
+    // wp.apiRequest({
+    //     path: '/custom/v1/' + formId,
+    //     method: 'POST',
+    //     data: formData
+    // }).then(function(response) {
+    //     alert('Form submitted successfully: ' + JSON.stringify(response));
+    // }, function(error) {
+    //     alert('Error submitting form: ' + error.responseJSON.message);
+    // });
   });
 });
 })();

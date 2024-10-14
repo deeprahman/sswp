@@ -3,8 +3,12 @@
 		{
 			"name": "WP-Securing-Setup",
 			"path": "."
-		}
-		,
+		},
+		{
+			"name": "DEBUG_LOG",
+			"path": "C:/xampp/htdocs/wp/wp-content/"
+
+		},
 		{
 			"name": "WP",
 			"path": "C:/xampp/htdocs/wp/"

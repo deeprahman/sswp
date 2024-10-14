@@ -79,10 +79,11 @@ class WPSS_Apache_Directives_Validator
     public function is_valid($input)
     {
         $validationResult = $this->validate($input);
-
+        write_log(["input data" => $input, "validation result" => $validationResult]);
         // Determine validity based on the validation message
         // Assuming that any message starting with "Valid" is considered valid
-        if (preg_match('/\s*:\s*Valid\s+/', $validationResult)) {
+        if (preg_match('/^\s*valid\s*[^:]*:\s*/i', $validationResult)) {
+            write_log(["input data" => $input, "validation result" => $validationResult, "Is Valid" => true]);
             return true;
         }
 
