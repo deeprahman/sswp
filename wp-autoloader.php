@@ -10,7 +10,7 @@ function wpss_autoloader($class_name)
 {
     $class_file = 'class-' . strtolower(str_replace('_', '-', $class_name)) . '.php';
     $directories = [
-        dirname(__FILE__) . '/src/',
+        dirname(__FILE__) . '/includes/',
         dirname(__FILE__) . '/tests/'
     ];
 

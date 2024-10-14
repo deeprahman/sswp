@@ -1,0 +1,11 @@
+/* Customize the notice appearance as needed */
+.notice-info {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 15px;
+}
+
+.notice-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}

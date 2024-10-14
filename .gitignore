@@ -8,11 +8,12 @@ README.md
 [._]*.sw[a-p]
 [._]s[a-v][a-z]
 [._]sw[a-p]
-# Ignore files containing only numbers
-*/[0-9]*
-*[0-9]*
+
 
 # Other patterns you might want to use
 node_modules/
 *.swp
 *.DS_Store
+node_modules
+**/[0-9]*
+build/

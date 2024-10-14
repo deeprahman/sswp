@@ -3,7 +3,7 @@
  * Plugin Name: WP Securing Setup (Simple and Effective User Protection)
  * Plugin URI: https://deeprahman.com/wp-securing-setup
  * Description: This plugin helps secure your WordPress website by implementing various security measures.
- * Version: 1.0.0
+ * Version: 0.1.0
  * Author: Deep
  * Author URI: https://deeprahman.com/
  * License: GPLv2 or later
@@ -11,37 +11,72 @@
  * Text Domain: wp-securing-setup  * Domain Path: /languages
  */
 // Check for plugin activation (optional)
-if ( ! defined( 'ABSPATH' ) ) {
-  exit;
+if (!defined('ABSPATH')) {
+    exit;
 }
+
+/**
+ * Logger
+ */
+if (!function_exists('write_log')) {
+
+    function write_log($log, $function = __FUNCTION__) {
+        $message = "Debug: " . "Function: " . $function . " Data: ";
+        
+        if (true === WP_DEBUG) {
+            if (is_array($log) || is_object($log)) {
+                $message .= print_r($log, true);
+                error_log($message);
+            } else {
+                $message .= $log;
+                error_log($message);
+            }
+        }
+    }
+
+}
+// Set Plugin Root
+define("WPSS_ROOT", plugin_dir_path(__FILE__));
+
+// Set Plugin URL
+define("WPSS_URL", plugin_dir_url(__FILE__));
+
+// Set Domain
+define("WPSS_DOMAIN" , "wp-securing-setup");
+
+define("WPSS_VERSION" , "0.1.0");
+
+define ("WPSS_SETTINGS", '_wpss_settings');
+
 // Register activation and deactivation hooks
-register_activation_hook( __FILE__, 'wpss_activate' );
-register_deactivation_hook( __FILE__, 'wpss_deactivate' );
+register_activation_hook(__FILE__, 'wpss_activate');
+register_deactivation_hook(__FILE__, 'wpss_deactivate');
 
 // Function to handle plugin activation
-function wpss_activate() {
-  // Add your activation logic here
-  // For example, create options, update database tables, etc.
+function wpss_activate()
+{
+    // Add your activation logic here
+    // For example, create options, update database tables, etc.
+    require_once WPSS_ROOT . "/includes/settings/wpss-default-settings.php";
 }
 
 // Function to handle plugin deactivation
-function wpss_deactivate() {
-  // Add your deactivation logic here
-  // For example, delete options, remove database tables, etc.
+function wpss_deactivate()
+{
+    // Add your deactivation logic here
+    // For example, delete options, remove database tables, etc.
 }
 
 // Include the plugin class
-require_once plugin_dir_path( __FILE__ ) . 'includes/class-wp-securing-setup.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-wp-securing-setup.php';
 
-// Hook your plugin functionalities here
-add_action( 'plugins_loaded', 'wp_securing_seup_init' );
+// TODO: Remove
 
+try {
 
+    $wpss = new WP_Securing_Setup();
 
-
-
-// Function to initialize your plugin (optional)
-function wp_securing_seup_init() {
-  // Instantiate the plugin class
-  new WP_Securing_Setup();
+} catch (\Exception $ex) {
+    error_log("ERROR: " . $ex->getMessage());
 }
+
