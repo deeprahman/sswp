@@ -48,6 +48,9 @@ define("WPSS_VERSION" , "0.1.0");
 
 define ("WPSS_SETTINGS", '_wpss_settings');
 
+
+$is_litespeed = strpos($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false;
+
 // Register activation and deactivation hooks
 register_activation_hook(__FILE__, 'wpss_activate');
 register_deactivation_hook(__FILE__, 'wpss_deactivate');
@@ -55,13 +58,18 @@ register_deactivation_hook(__FILE__, 'wpss_deactivate');
 // Function to handle plugin activation
 function wpss_activate()
 {
-    global $is_apache, $is_nginx, $is_IIS;
+    global $is_apache, $is_litespeed,$is_nginx, $is_IIS;
     // Add your activation logic here
     // For example, create options, update database tables, etc.
     require_once WPSS_ROOT . "/includes/settings/wpss-default-settings.php";
 
     // TODO: Deactivate and state requirement does not met if following returns false
-    $server_requirement = $is_apache;
+    $server_requirement = $is_litespeed || $is_apache;
+
+    if (!$server_requirement) {
+        deactivate_plugins(plugin_basename(__FILE__));
+        wp_die('This plugin requires Apache 2.4 or Lightspeed server, . Please contact your hosting provider.', 'Plugin Activation Error', array('back_link' => true));
+    }
 }
 
 // Function to handle plugin deactivation
