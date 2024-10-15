@@ -55,9 +55,13 @@ register_deactivation_hook(__FILE__, 'wpss_deactivate');
 // Function to handle plugin activation
 function wpss_activate()
 {
+    global $is_apache, $is_nginx, $is_IIS;
     // Add your activation logic here
     // For example, create options, update database tables, etc.
     require_once WPSS_ROOT . "/includes/settings/wpss-default-settings.php";
+
+    // TODO: Deactivate and state requirement does not met if following returns false
+    $server_requirement = $is_apache;
 }
 
 // Function to handle plugin deactivation
