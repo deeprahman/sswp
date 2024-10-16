@@ -20,9 +20,10 @@ if (!defined('ABSPATH')) {
  */
 if (!function_exists('write_log')) {
 
-    function write_log($log, $function = __FUNCTION__) {
+    function write_log($log, $function = __FUNCTION__)
+    {
         $message = "Debug: " . "Function: " . $function . " Data: ";
-        
+
         if (true === WP_DEBUG) {
             if (is_array($log) || is_object($log)) {
                 $message .= print_r($log, true);
@@ -42,11 +43,11 @@ define("WPSS_ROOT", plugin_dir_path(__FILE__));
 define("WPSS_URL", plugin_dir_url(__FILE__));
 
 // Set Domain
-define("WPSS_DOMAIN" , "wp-securing-setup");
+define("WPSS_DOMAIN", "wp-securing-setup");
 
-define("WPSS_VERSION" , "0.1.0");
+define("WPSS_VERSION", "0.1.0");
 
-define ("WPSS_SETTINGS", '_wpss_settings');
+define("WPSS_SETTINGS", '_wpss_settings');
 
 
 $is_litespeed = strpos($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false;
@@ -58,7 +59,7 @@ register_deactivation_hook(__FILE__, 'wpss_deactivate');
 // Function to handle plugin activation
 function wpss_activate()
 {
-    global $is_apache, $is_litespeed,$is_nginx, $is_IIS;
+    global $is_apache, $is_litespeed, $is_nginx, $is_IIS;
     // Add your activation logic here
     // For example, create options, update database tables, etc.
     require_once WPSS_ROOT . "/includes/settings/wpss-default-settings.php";
@@ -89,9 +90,15 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-wp-securing-setup.php';
 
 try {
 
-    $wpss = new WP_Securing_Setup();
+    if (!($wpss instanceof WP_Securing_Setup)) {
+        $wpss = new WP_Securing_Setup();
+    }
 
 } catch (\Exception $ex) {
-    error_log("ERROR: " . $ex->getMessage());
+    error_log("WPSS-ERROR: " . $ex->getMessage());
+    new WP_ERROR(
+        "wpss_error",
+        __("An avoidable incident han ocurred..", "wp-securing-setup")
+    );
 }
 
