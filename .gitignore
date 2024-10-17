@@ -8,7 +8,7 @@ README.md
 [._]*.sw[a-p]
 [._]s[a-v][a-z]
 [._]sw[a-p]
-
+wpss.log
 
 # Other patterns you might want to use
 node_modules/

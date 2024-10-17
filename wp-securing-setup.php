@@ -19,22 +19,21 @@ if (!defined('ABSPATH')) {
  * Logger
  */
 if (!function_exists('write_log')) {
-
-    function write_log($log, $function = __FUNCTION__)
-    {
-        $message = "Debug: " . "Function: " . $function . " Data: ";
-
+    function write_log($log) {
         if (true === WP_DEBUG) {
+            $log_file = dirname(__FILE__) . '/wpss.log';
+            
+            $formatted_log = '[' . date('Y-m-d H:i:s') . '] ';
             if (is_array($log) || is_object($log)) {
-                $message .= print_r($log, true);
-                error_log($message);
+                $formatted_log .= print_r($log, true);
             } else {
-                $message .= $log;
-                error_log($message);
+                $formatted_log .= $log;
             }
+            $formatted_log .= PHP_EOL;
+            
+            file_put_contents($log_file, $formatted_log, FILE_APPEND);
         }
     }
-
 }
 // Set Plugin Root
 define("WPSS_ROOT", plugin_dir_path(__FILE__));

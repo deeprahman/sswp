@@ -69,5 +69,9 @@ class WP_Securing_Setup
         include_once WPSS_ROOT . "/includes/REST/file-permission.php";
         include_once WPSS_ROOT . "/includes/REST/htaccess-protect.php";
     }
+
+    public function xml_rpc_config(){
+        require_once($this->root .DIRECTORY_SEPARATOR. "includes/wpss-xml-rpc.php");
+    }
 }
 
