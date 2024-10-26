@@ -1,5 +1,7 @@
 import { checkHtaccessProtection } from "./wpss-htaccess-protect.js";
 
+
+
 jQuery(document).ready(function($) {
     $('.htaccess-form').on('submit', function(e) {
         e.preventDefault();

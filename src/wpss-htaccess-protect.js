@@ -2,6 +2,10 @@
  * Function to get the htaccess protection status using WordPress REST API
  * @returns {Promise} A promise that resolves with the API response
  */
+
+
+import { handleFormData } from "./form-data-handler.js";
+
 function getHtaccessProtected(data) {
     return wp.apiRequest({
         path: '/wpss/v1/htaccess-protect',
@@ -31,7 +35,10 @@ export function checkHtaccessProtection(data) {
             if (response.success) {
                 console.log("Htform success response: ", response.data.message.data);
                 // Update UI here, for example:
-                // document.getElementById('protectionStatus').textContent = response.data.is_debug_protected;
+              let form_data =  JSON.parse(response.data.message.data);
+             
+
+                handleFormData(form_data); 
             } else {
                 console.error('Failed to get protection status');
             }
@@ -49,3 +56,4 @@ export function checkHtaccessProtection(data) {
 // document.getElementById('checkProtectionButton')?.addEventListener('click', checkHtaccessProtection);
 
 // Or call immediately if needed
+

@@ -23,11 +23,10 @@ $file_types = $wpss->get_file_types();
             <div id="update-directory-options" style="display: none;">
                 <h4>Only Execute the Following Files:</h4>
                 <select id="mySelect" name="allowed_files"  multiple>
-                    <option value="jpeg">JPEG</option>
-                    <option value="png">PNG</option>
-                    <option value="gif">GIF</option>
-                    <option value="webp">WEBP</option>
-                    <option value="mkv">MKV</option>
+                <?php foreach($file_types as $ext): ?>
+                    <option value="<?= $ext ?>"><?= strtoupper($ext) ?></option>
+                <?php endforeach; ?> 
+                    
                 </select>
             </div>
         </li>

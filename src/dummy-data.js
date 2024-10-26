@@ -1,1 +1,0 @@
-form_data = [{ "name": "protect-debug-log", "value": "on" }, { "name": "protect-update-directory", "value": "on" }, { "name": "protect-xml-rpc", "value": "on" }, { "name": "protect-rest-endpoint", "value": "off" }, { "name": "allowed_files", "value": ["jpeg", "gif"] }];
