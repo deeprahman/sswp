@@ -1,6 +1,6 @@
 <?php
 
-class ExtensionModifier
+class WPSS_File_Regex_Pattern_Creator
 {
     private $extensions;
     private $extensionMap;

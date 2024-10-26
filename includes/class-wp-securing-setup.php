@@ -44,6 +44,7 @@ class WP_Securing_Setup
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_js']);
         $this->admin_pages();
+        $this->xml_rpc_config();
     }
 
     public function enqueue_admin_js($admin_page)
@@ -72,6 +73,18 @@ class WP_Securing_Setup
 
     public function xml_rpc_config(){
         require_once($this->root .DIRECTORY_SEPARATOR. "includes/wpss-xml-rpc.php");
+    }
+
+    public function get_extension_map(){
+        return  (get_option($this->settings))["htaccess"]["extension_map"];
+    }
+
+    public function get_ht_form(){
+        return  (get_option($this->settings))["htaccess"]["ht_form"];
+    }
+
+    public function get_file_types(){
+        return  (get_option($this->settings))["htaccess"]["file_types"];
     }
 }
 

@@ -29,7 +29,7 @@ export function checkHtaccessProtection(data) {
     getHtaccessProtected(data)
         .then(response => {
             if (response.success) {
-                console.log('Debug log protection status:', response.data.message.status);
+                console.log("Htform success response: ", response.data.message.data);
                 // Update UI here, for example:
                 // document.getElementById('protectionStatus').textContent = response.data.is_debug_protected;
             } else {

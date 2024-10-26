@@ -10,15 +10,12 @@ add_action('rest_api_init', function () {
             ),
         ),
     ));
-    write_log("Route Register: wpss/v1/file-permission");
 });
 
 function wpss_file_permissions_permission_check($request) {
     global $wpss;
 
-    write_log($request);
     if (!current_user_can('manage_options')) {
-        write_log("User does not have manage_option permission");
         return false;
     }
 
@@ -33,7 +30,6 @@ function wpss_file_permissions_callback($request) {
     $checker = new WPSS_File_Permission_Manager($files);
         
     $fs_permission = $checker->check_permissions();
-    write_log($fs_permission);
     
     // Add your file permissions logic here
     $response = array(

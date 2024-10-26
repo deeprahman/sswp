@@ -2,6 +2,12 @@
 /**
  * Protection form
  */
+// Get the allowed_files option
+global $wpss;
+
+$file_types = $wpss->get_file_types();
+
+
 ?>
 
 <form class="htaccess-form">

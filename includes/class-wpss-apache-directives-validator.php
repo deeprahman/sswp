@@ -23,6 +23,7 @@ class WPSS_Apache_Directives_Validator
         'Order',
         'Allow',
         'Deny',
+        'RewriteCond'
         // Add more Apache directives as needed
     ];
 
@@ -78,16 +79,19 @@ class WPSS_Apache_Directives_Validator
      */
     public function is_valid($input)
     {
+        // Validate the input directive string
         $validationResult = $this->validate($input);
-        write_log(["input data" => $input, "validation result" => $validationResult]);
-        // Determine validity based on the validation message
-        // Assuming that any message starting with "Valid" is considered valid
-        if (preg_match('/^\s*valid\s*[^:]*:\s*/i', $validationResult)) {
-            write_log(["input data" => $input, "validation result" => $validationResult, "Is Valid" => true]);
-            return true;
+
+        // Log the input and the validation result for debugging
+
+        // Check if the validation result contains "Invalid"
+        if (preg_match('/\bInvalid\b/i', $validationResult)) {
+            // Log that the result was invalid
+            return false;
         }
 
-        return false;
+        // If no "Invalid" is found, return true for valid input
+        return true;
     }
 
     /**
@@ -408,16 +412,18 @@ class WPSS_Apache_Directives_Validator
 // Include the ApacheDirectiveValidator class (ensure the file path is correct)
 //require_once 'ApacheDirectiveValidator.php';
 
-$validator = new WPSS_Apache_Directives_Validator();
-
 // Example 1: Single Directives
 // $singleDirectives = <<<EOD
-// ServerName example.com
-// DocumentRoot /var/www/html
-// Listen 8080
-// RewriteRule "^/old" "/new"
-// EOD;
-
+//RewriteEngine On
+//
+//# Block access to the users endpoint for any version of the API
+//RewriteRule ^wp-json/wp/v[0-9]+/users.*$ - [R=404,L]
+//
+//# Redirect query strings with author to the provided page
+//RewriteCond %{QUERY_STRING} author=\d
+//RewriteRule (.*) {$page} [L,R=301,QSD]
+//EOD;
+//
 // echo "Validating Single Directives:\n";
 // if ($validator->is_valid($singleDirectives)) {
 //     echo "All single directives are valid.\n";
@@ -428,21 +434,20 @@ $validator = new WPSS_Apache_Directives_Validator();
 // echo "\n\n";
 
 // Example 2: <Files> Block Directive
-//$filesBlock = <<<EOD
-//<Files debug.log>
-//    Order allow,deny
-//    Deny from all
-//</Files>
-//EOD;
-//
-//echo "Validating <Files> Block Directive:\n";
-//if ($validator->is_valid($filesBlock)) {
-//    echo "The <Files> block directive is valid.\n";
-//} else {
-//    echo "Validation failed for <Files> block directive:\n";
-//    echo $validator->get_last_validation_message();
-//}
-//echo "\n\n";
+// $filesBlock = <<<EOD
+// <FilesMatch "\.(jpg|png)$">
+//     Require all granted
+// </FilesMatch>
+// EOD;
+//xdebug_break();
+// echo "Validating <Files> Block Directive:\n";
+// if ($validator->is_valid($filesBlock)) {
+//     echo "The <Files> block directive is valid.\n";
+// } else {
+//     echo "Validation failed for <Files> block directive:\n";
+//     echo $validator->get_last_validation_message();
+// }
+// echo "\n\n";
 
 // // Example 3: <FilesMatch> Block Directive with Invalid Directive
 // $invalidFilesMatchBlock = <<<EOD

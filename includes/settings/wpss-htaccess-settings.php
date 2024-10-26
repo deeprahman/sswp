@@ -40,7 +40,15 @@ $htaccess_from_settings["file_types"] = array(
    "png",
    "mkv",
    "txt",
-   "xls"
+   "xls",
+   "webp"
 );
+
+$htaccess_from_settings["extension_map"] = [
+    'jpg' => 'jpe?g',
+    'jpeg' => 'jpe?g',
+    'tif' => 'tiff?',
+    'tiff' => 'tiff?'
+];
 
 return $htaccess_from_settings;

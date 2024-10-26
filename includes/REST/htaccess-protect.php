@@ -16,7 +16,6 @@ add_action('rest_api_init', function () {
         ),
     ));
     if (function_exists('write_log')) {
-        write_log("Route Registered: wpss/v1/htaccess-protect");
     }
 });
 
@@ -28,7 +27,6 @@ function wpss_htaccess_protect_callback($request) {
     global $wpss,$allowed_methods;
 
     if (function_exists('write_log')) {
-        write_log($request);
     }
     
     try {
@@ -42,24 +40,19 @@ function wpss_htaccess_protect_callback($request) {
         $message ='';
         switch($request->get_method()){
             case 'GET':
-                $is_debug_protected = $sd->protect_debug_log();
-                $message = "Protected: " . ($is_debug_protected ? "Yes" : "No");
-                if (function_exists('write_log')) {
-                    write_log($message);
-                }
+                // TODO: call handle_htaccess_get_requests() 
                 break;
             case 'POST':
                 require_once $wpss->root . "/includes/wpss-htaccess-form.php";
-                write_log($request); 
                 $data = $request->get_params();
                 $form = $data["from"];
-                handle_htaccess_post_req($form);
+                $message=handle_htaccess_post_req($form);
+                write_log("Message for htaccess post: ". $message, __FILE__);
                 break;
             case 'DELETE':
                 $is_debug_unprotected = $sd->unprotect_debug_log();
                 $message = "Protection Removed: " . ($is_debug_unprotected ? "Yes" : "No");
                 if (function_exists('write_log')) {
-                    write_log($message);
                 }
                 break;
             case 'PUT':  

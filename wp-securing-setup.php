@@ -19,11 +19,11 @@ if (!defined('ABSPATH')) {
  * Logger
  */
 if (!function_exists('write_log')) {
-    function write_log($log) {
+    function write_log($log, $function =  __FUNCTION__) {
         if (true === WP_DEBUG) {
             $log_file = dirname(__FILE__) . '/wpss.log';
             
-            $formatted_log = '[' . date('Y-m-d H:i:s') . '] ';
+            $formatted_log = '[' . date('Y-m-d H:i:s') . '] ' . ' Function: ' . $function . " ";
             if (is_array($log) || is_object($log)) {
                 $formatted_log .= print_r($log, true);
             } else {
@@ -95,7 +95,7 @@ try {
 
 } catch (\Exception $ex) {
     error_log("WPSS-ERROR: " . $ex->getMessage());
-    new WP_ERROR(
+    return new WP_ERROR(
         "wpss_error",
         __("An avoidable incident han ocurred..", "wp-securing-setup")
     );
