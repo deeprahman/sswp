@@ -1,3 +1,7 @@
+/**
+ * Fills the htform according to given fromData
+ * @param {*} formData 
+ */
 export function handleFormData(formData) {
     // Reset all checkboxes first
     document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {

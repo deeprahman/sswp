@@ -246,6 +246,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   handleFormData: () => (/* binding */ handleFormData)
 /* harmony export */ });
+/**
+ * Fills the htform according to given fromData
+ * @param {*} formData 
+ */
 function handleFormData(formData) {
   // Reset all checkboxes first
   document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
@@ -592,22 +596,22 @@ jQuery(document).ready(function ($) {
   $("#my-tabs").tabs();
 
   // Handle form submissions
-  $(".tab-form").on("submit", function (e) {
-    e.preventDefault();
-    var $form = $(this);
-    var formId = $form.attr("id");
-    var formData = $form.serialize();
+  //$(".tab-form").on("submit", function(e) {
+  //    e.preventDefault();
+  //    var $form = $(this);
+  //    var formId = $form.attr("id");
+  //    var formData = $form.serialize();
 
-    // wp.apiRequest({
-    //     path: '/custom/v1/' + formId,
-    //     method: 'POST',
-    //     data: formData
-    // }).then(function(response) {
-    //     alert('Form submitted successfully: ' + JSON.stringify(response));
-    // }, function(error) {
-    //     alert('Error submitting form: ' + error.responseJSON.message);
-    // });
-  });
+  // wp.apiRequest({
+  //     path: '/custom/v1/' + formId,
+  //     method: 'POST',
+  //     data: formData
+  // }).then(function(response) {
+  //     alert('Form submitted successfully: ' + JSON.stringify(response));
+  // }, function(error) {
+  //     alert('Error submitting form: ' + error.responseJSON.message);
+  // });
+  //});
 });
 })();
 

@@ -14,11 +14,11 @@ jQuery(document).ready(function($) {
     $("#my-tabs").tabs();
 
     // Handle form submissions
-    $(".tab-form").on("submit", function(e) {
-        e.preventDefault();
-        var $form = $(this);
-        var formId = $form.attr("id");
-        var formData = $form.serialize();
+    //$(".tab-form").on("submit", function(e) {
+    //    e.preventDefault();
+    //    var $form = $(this);
+    //    var formId = $form.attr("id");
+    //    var formData = $form.serialize();
 
         // wp.apiRequest({
         //     path: '/custom/v1/' + formId,
@@ -29,5 +29,5 @@ jQuery(document).ready(function($) {
         // }, function(error) {
         //     alert('Error submitting form: ' + error.responseJSON.message);
         // });
-    });
+    //});
 });

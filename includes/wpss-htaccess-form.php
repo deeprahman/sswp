@@ -6,7 +6,7 @@ require_once($wpss->root . DIRECTORY_SEPARATOR . "includes/class-wpss-server-dir
 require_once($wpss->root . DIRECTORY_SEPARATOR . "includes/class-wpss-server-directives-factory.php");
 
 try {
-    $GLOBALS["wpss_sd"]=$sd = WPSS_Server_directives_Factory::create_server_directives();
+    $GLOBALS["wpss_sd"] = $sd = WPSS_Server_directives_Factory::create_server_directives();
 } catch (Exception $ex) {
 }
 
@@ -43,7 +43,7 @@ array(
 )
 )
 );
-* @return void
+* @return array|mixed
  */
 function handle_htaccess_post_req($data)
 {
@@ -51,7 +51,6 @@ function handle_htaccess_post_req($data)
     $sd = $GLOBALS['wpss_sd'];
 
     $GLOBALS['htaccess_settings'] = $htaccess_from_settings = wpss_save_htaccess_option($data);
-
     // Walk through the $data array
     foreach ($htaccess_from_settings["ht_form"] as $item) {
         $name = $item['name'];
@@ -65,23 +64,38 @@ function handle_htaccess_post_req($data)
             if (!empty($function_name) && function_exists($function_name)) {
                 $function_name($value, $sd, $htaccess_from_settings["ht_form"]);
             } else {
-                error_log("Function: ". __FUNCTION__ ." Message: Function {$function_name} does not exists");
-                return new WP_Error(__('client_error',$wpss->domain), __('Your custom error message here', $wpss->domain), array('status' => 400));
+                error_log("Function: " . __FUNCTION__ . " Message: Function {$function_name} does not exists");
+                return new WP_Error(__('client_error', $wpss->domain), __('Your custom error message here', $wpss->domain), array('status' => 400));
             }
-        } else {
-            // Handle the case where the name is not in allowed_functions
-            error_log("Function: ". __FUNCTION__ ." Message: Function {$name} does not exists in the allowed_function");
-            return new WP_Error(__('client_error',$wpss->domain), __('Your custom error message here', $wpss->domain), array('status' => 400));
         }
-        $ht_form = $wpss->get_ht_form();
-        $message = [
-            'message' => __("Form Saved", $wpss->domain),
-            'data' => json_encode($ht_form)
-        ];
-        return $message;
     }
+    return from_data_with_message("Form Saved");
 }
 
+/**
+ * Return HTAccess Form data with message
+ * 
+ * @param string $message   the message
+ * @return array        data-structure: [
+        'message' => __($message, $wpss->domain),
+        'data' => json_encode($ht_form)
+    ]
+ */
+function from_data_with_message($message): array
+{
+    global $wpss;
+    $ht_form = $wpss->get_ht_form();
+    $message = [
+        'message' => __($message, $wpss->domain),
+        'data' => json_encode($ht_form)
+    ];
+    return $message;
+}
+
+function handle_htaccess_get_req()
+{
+    return from_data_with_message("Form Data return");
+}
 function wpss_save_htaccess_option($new = array())
 {
     global $wpss;
@@ -105,7 +119,7 @@ function protect_debug_log($d, IWPSS_Server_Directives $sd)
 
 function protect_update_directory($d, IWPSS_Server_Directives $sd, &$ht_form = [])
 {
-    $is_uploads_checked = array_filter($ht_form, function($v){
+    $is_uploads_checked = array_filter($ht_form, function ($v) {
         return (($v["name"] === 'protect-update-directory') && ($v["value"] === 'on'));
     });
     $files = allowed_files($d);

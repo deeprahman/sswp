@@ -33,29 +33,29 @@ function wpss_htaccess_protect_callback($request) {
         // if( !array_search($request->method, $allowed_methods,  $strict = false) === true ){
         //     return new WP_Error('wpss_error', "Method Disallowed", array('status' => 400));
         // }
-       
+        require_once $wpss->root . "/includes/wpss-htaccess-form.php";
         require_once $wpss->root . "/includes/class-wpss-server-directives-apache.php";
         $sd = new WPSS_Server_Directives_Apache();
   
         $message ='';
         switch($request->get_method()){
             case 'GET':
-                // TODO: call handle_htaccess_get_requests() 
+                $message = handle_htaccess_get_req();
                 break;
             case 'POST':
-                require_once $wpss->root . "/includes/wpss-htaccess-form.php";
                 $data = $request->get_params();
                 $form = $data["from"];
                 $message=handle_htaccess_post_req($form);
                 write_log("Message for htaccess post: ". $message, __FILE__);
                 break;
             case 'DELETE':
-                $is_debug_unprotected = $sd->unprotect_debug_log();
-                $message = "Protection Removed: " . ($is_debug_unprotected ? "Yes" : "No");
-                if (function_exists('write_log')) {
-                }
+              
                 break;
             case 'PUT':  
+                $data = $request->get_params();
+                $form = $data["from"];
+                $message=handle_htaccess_post_req($form);
+                write_log("Message for htaccess post: ". $message, __FILE__);
                 break;  
         }
 
