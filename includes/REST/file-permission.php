@@ -1,7 +1,7 @@
 <?php
 add_action('rest_api_init', function () {
     register_rest_route('wpss/v1', '/file-permissions', array(
-        'methods' => 'GET',
+        'methods' => ['GET', 'PATCH', 'PUT', 'POST', 'DELETE'],
         'callback' => 'wpss_file_permissions_callback',
         'permission_callback' => 'wpss_file_permissions_permission_check',
         'args' => array(
@@ -25,7 +25,7 @@ function wpss_file_permissions_permission_check($request) {
 function wpss_file_permissions_callback($request) {
     global $wpss;
     include_once $wpss->root . DIRECTORY_SEPARATOR . "includes\class-wpss-file-permission-manager.php";
-    $files = ["wp-config.php", "wp-login.php", "wp-content", "wp-content/uploads", "wp-content/plugins", "wp-content/themes", 'wp-cat.php'];
+    $files = ["wp-config.php", "wp-login.php", "wp-content", "wp-content/uploads", "wp-content/plugins", "wp-content/themes"];
 
     $checker = new WPSS_File_Permission_Manager($files);
         

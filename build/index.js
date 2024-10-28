@@ -1,30 +1,18 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/components/index.js":
-/*!*********************************!*\
-  !*** ./src/components/index.js ***!
-  \*********************************/
+/***/ "./src/components/file-permission-component.js":
+/*!*****************************************************!*\
+  !*** ./src/components/file-permission-component.js ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   SettingsPage: () => (/* reexport safe */ _settings_page__WEBPACK_IMPORTED_MODULE_0__.SettingsPage)
+/* harmony export */   WPSSPermissionsTable: () => (/* binding */ WPSSPermissionsTable)
 /* harmony export */ });
-/* harmony import */ var _settings_page__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./settings-page */ "./src/components/settings-page.js");
-/* harmony import */ var _settings_page__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_settings_page__WEBPACK_IMPORTED_MODULE_0__);
-
-
-/***/ }),
-
-/***/ "./src/components/settings-page.js":
-/*!*****************************************!*\
-  !*** ./src/components/settings-page.js ***!
-  \*****************************************/
-/***/ (() => {
-
-class WPPermissionsTable extends HTMLElement {
+class WPSSPermissionsTable extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({
@@ -120,7 +108,8 @@ class WPPermissionsTable extends HTMLElement {
     if (current > recommended) return "status-error";
     return "status-warning";
   }
-  applyRecommendedPermissions() {
+  async applyRecommendedPermissions() {
+    // First update local data as before
     const updatedData = {
       ...this._data
     };
@@ -129,16 +118,60 @@ class WPPermissionsTable extends HTMLElement {
         updatedData[path].permission = updatedData[path].recommended;
       }
     });
-    this.data = updatedData;
+    try {
+      // Send POST request
+      const response = await fetch('/api/apply-permissions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // If using WordPress, you might need the nonce
+          'X-WP-Nonce': wpApiSettings.nonce
+        },
+        body: JSON.stringify(updatedData)
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
 
-    // Dispatch custom event
-    this.dispatchEvent(new CustomEvent('permissions-updated', {
-      detail: {
-        data: this.data
-      },
-      bubbles: true,
-      composed: true
-    }));
+      // Update the table with the response data (in case server made any modifications)
+      this.data = result.data || updatedData;
+
+      // Dispatch success event
+      this.dispatchEvent(new CustomEvent('permissions-updated', {
+        detail: {
+          data: this.data,
+          status: 'success',
+          message: 'Permissions updated successfully'
+        },
+        bubbles: true,
+        composed: true
+      }));
+    } catch (error) {
+      console.error('Error updating permissions:', error);
+
+      // Dispatch error event
+      this.dispatchEvent(new CustomEvent('permissions-updated', {
+        detail: {
+          error: error.message,
+          status: 'error',
+          data: updatedData
+        },
+        bubbles: true,
+        composed: true
+      }));
+    }
+  }
+  // Add a loading state to the button
+  setButtonLoading(loading) {
+    const button = this.shadowRoot.getElementById('recommendedBtn');
+    if (loading) {
+      button.textContent = 'Applying...';
+      button.disabled = true;
+    } else {
+      button.textContent = 'Apply Recommended Permissions';
+      button.disabled = false;
+    }
   }
   render() {
     const rows = Object.entries(this._data).map(([path, info]) => `
@@ -171,67 +204,29 @@ class WPPermissionsTable extends HTMLElement {
             <button class="button" id="recommendedBtn">Apply Recommended Permissions</button>
         `;
 
-    // Add event listener for the button
-    this.shadowRoot.getElementById('recommendedBtn').addEventListener('click', () => this.applyRecommendedPermissions());
+    // Update the button click handler
+    this.shadowRoot.getElementById('recommendedBtn').addEventListener('click', async () => {
+      this.setButtonLoading(true);
+      await this.applyRecommendedPermissions();
+      this.setButtonLoading(false);
+    });
   }
 }
 
-// Register the web component
-customElements.define('wp-permissions-table', WPPermissionsTable);
+/***/ }),
 
-// Example usage
-const permissionsTable = document.querySelector('wp-permissions-table');
-permissionsTable.data = {
-  "wp-config.php": {
-    "exists": 1,
-    "writable": 1,
-    "permission": 666,
-    "recommended": 644
-  },
-  "wp-login.php": {
-    "exists": 1,
-    "writable": null,
-    "permission": 444,
-    "recommended": 644,
-    "error": "Path is outside WordPress installation"
-  },
-  "wp-content": {
-    "exists": 1,
-    "writable": 1,
-    "permission": 777,
-    "recommended": 755
-  },
-  "wp-content/uploads": {
-    "exists": 1,
-    "writable": 1,
-    "permission": 777,
-    "recommended": 755
-  },
-  "wp-content/plugins": {
-    "exists": 1,
-    "writable": 1,
-    "permission": 777,
-    "recommended": 755
-  },
-  "wp-content/themes": {
-    "exists": 1,
-    "writable": 1,
-    "permission": 777,
-    "recommended": 755
-  },
-  "wp-cat.php": {
-    "exists": "N/A",
-    "writable": "N/A",
-    "permission": "N/A",
-    "recommended": "N/A",
-    "error": "Path is outside WordPress installation"
-  }
-};
+/***/ "./src/components/index.js":
+/*!*********************************!*\
+  !*** ./src/components/index.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-// Example of listening for permission updates
-permissionsTable.addEventListener('permissions-updated', e => {
-  console.log('Permissions updated:', e.detail.data);
-});
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   WPSSPermissionsTable: () => (/* reexport safe */ _file_permission_component__WEBPACK_IMPORTED_MODULE_0__.WPSSPermissionsTable)
+/* harmony export */ });
+/* harmony import */ var _file_permission_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./file-permission-component */ "./src/components/file-permission-component.js");
+
 
 /***/ }),
 
@@ -241,7 +236,6 @@ permissionsTable.addEventListener('permissions-updated', e => {
   \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   handleFormData: () => (/* binding */ handleFormData)
@@ -317,7 +311,10 @@ function handleFormData(formData) {
 /*!***********************************************!*\
   !*** ./src/wpss-files-permissions-request.js ***!
   \***********************************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/index */ "./src/components/index.js");
 
 function getFilePermissionsWP() {
   return wp.apiRequest({
@@ -331,24 +328,36 @@ function getFilePermissionsWP() {
     }
   }).then(function (response) {
     console.log('File Permissions:', response);
-    return response;
+    return response.data.fs_data;
   }).catch(function (error) {
     console.error('Error fetching file permissions:', error);
     throw error;
   });
 }
 
+//  =====================================
+
+// Register the web component
+customElements.define('wp-permissions-table', _components_index__WEBPACK_IMPORTED_MODULE_0__.WPSSPermissionsTable);
+
+// Example usage
+const permissionsTable = document.querySelector('wp-permissions-table');
+// Example of listening for permission updates
+permissionsTable.addEventListener('permissions-updated', e => {
+  console.log('Permissions updated:', e.detail.data);
+});
+
 // Using wp.apiRequest
-// getFilePermissionsWP()
-//     .then(permissions => {
-//         // Handle the permissions data
-//         console.log(permissions);
-//     })
-//     .catch(error => {
-//         // Handle any errors
-//         console.log("REST REQ Err");
-//         console.log(error.responseText);
-//     });
+getFilePermissionsWP().then(permissions => {
+  // Handle the permissions data
+  console.log(permissions);
+  const fa_data = JSON.parse(permissions);
+  permissionsTable.data = fa_data;
+}).catch(error => {
+  // Handle any errors
+  console.log("REST REQ Err");
+  console.log(error.responseText);
+});
 
 /***/ }),
 
@@ -358,7 +367,6 @@ function getFilePermissionsWP() {
   \*******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wpss_htaccess_protect_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./wpss-htaccess-protect.js */ "./src/wpss-htaccess-protect.js");
 
@@ -431,7 +439,6 @@ function sendData(data) {
   \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   checkHtaccessProtection: () => (/* binding */ checkHtaccessProtection)
@@ -496,7 +503,6 @@ function checkHtaccessProtection(data) {
   \************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
@@ -530,18 +536,6 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -572,20 +566,16 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-"use strict";
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/index */ "./src/components/index.js");
-/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.scss */ "./src/index.scss");
-/* harmony import */ var _wpss_files_permissions_request_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./wpss-files-permissions-request.js */ "./src/wpss-files-permissions-request.js");
-/* harmony import */ var _wpss_files_permissions_request_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wpss_files_permissions_request_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wpss_htaccess_protect_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./wpss-htaccess-protect.js */ "./src/wpss-htaccess-protect.js");
-/* harmony import */ var _wpss_htaccess_protect_from_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./wpss-htaccess-protect-from.js */ "./src/wpss-htaccess-protect-from.js");
-
+/* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.scss */ "./src/index.scss");
+/* harmony import */ var _wpss_files_permissions_request_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./wpss-files-permissions-request.js */ "./src/wpss-files-permissions-request.js");
+/* harmony import */ var _wpss_htaccess_protect_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./wpss-htaccess-protect.js */ "./src/wpss-htaccess-protect.js");
+/* harmony import */ var _wpss_htaccess_protect_from_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./wpss-htaccess-protect-from.js */ "./src/wpss-htaccess-protect-from.js");
 
 
 

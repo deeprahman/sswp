@@ -1,4 +1,4 @@
-import "./components/index";
+
 
 import "./index.scss";
 

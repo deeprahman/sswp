@@ -1,4 +1,4 @@
-class WPPermissionsTable extends HTMLElement {
+export class WPSSPermissionsTable extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -90,8 +90,8 @@ class WPPermissionsTable extends HTMLElement {
     formatStatus(value) {
         if (value === "N/A") return "N/A";
         if (value === null) return '<span class="status-warning">Unknown</span>';
-        return value ? 
-            '<span class="status-ok">Yes</span>' : 
+        return value ?
+            '<span class="status-ok">Yes</span>' :
             '<span class="status-error">No</span>';
     }
 
@@ -102,21 +102,73 @@ class WPPermissionsTable extends HTMLElement {
         return "status-warning";
     }
 
-    applyRecommendedPermissions() {
-        const updatedData = {...this._data};
+    async applyRecommendedPermissions() {
+        // First update local data as before
+        const updatedData = { ...this._data };
         Object.keys(updatedData).forEach(path => {
             if (updatedData[path].permission !== "N/A") {
                 updatedData[path].permission = updatedData[path].recommended;
             }
         });
-        this.data = updatedData;
-        
-        // Dispatch custom event
-        this.dispatchEvent(new CustomEvent('permissions-updated', {
-            detail: { data: this.data },
-            bubbles: true,
-            composed: true
-        }));
+
+        try {
+            // Send POST request
+            const response = await fetch('/api/apply-permissions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // If using WordPress, you might need the nonce
+                    'X-WP-Nonce': wpApiSettings.nonce
+                },
+                body: JSON.stringify(updatedData)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+
+            const result = await response.json();
+
+            // Update the table with the response data (in case server made any modifications)
+            this.data = result.data || updatedData;
+
+            // Dispatch success event
+            this.dispatchEvent(new CustomEvent('permissions-updated', {
+                detail: {
+                    data: this.data,
+                    status: 'success',
+                    message: 'Permissions updated successfully'
+                },
+                bubbles: true,
+                composed: true
+            }));
+
+        } catch (error) {
+            console.error('Error updating permissions:', error);
+
+            // Dispatch error event
+            this.dispatchEvent(new CustomEvent('permissions-updated', {
+                detail: {
+                    error: error.message,
+                    status: 'error',
+                    data: updatedData
+                },
+                bubbles: true,
+                composed: true
+            }));
+        }
+    }
+    // Add a loading state to the button
+    setButtonLoading(loading) {
+        const button = this.shadowRoot.getElementById('recommendedBtn');
+        if (loading) {
+            button.textContent = 'Applying...';
+            button.disabled = true;
+        } else {
+            button.textContent = 'Apply Recommended Permissions';
+            button.disabled = false;
+        }
     }
 
     render() {
@@ -151,65 +203,14 @@ class WPPermissionsTable extends HTMLElement {
             <button class="button" id="recommendedBtn">Apply Recommended Permissions</button>
         `;
 
-        // Add event listener for the button
+        // Update the button click handler
         this.shadowRoot.getElementById('recommendedBtn')
-            .addEventListener('click', () => this.applyRecommendedPermissions());
+            .addEventListener('click', async () => {
+                this.setButtonLoading(true);
+                await this.applyRecommendedPermissions();
+                this.setButtonLoading(false);
+            });
     }
 }
 
-// Register the web component
-customElements.define('wp-permissions-table', WPPermissionsTable);
 
-// Example usage
-const permissionsTable = document.querySelector('wp-permissions-table');
-permissionsTable.data = {
-    "wp-config.php": {
-        "exists": 1,
-        "writable": 1,
-        "permission": 666,
-        "recommended": 644,
-    },
-    "wp-login.php": {
-        "exists": 1,
-        "writable": null,
-        "permission": 444,
-        "recommended": 644,
-        "error": "Path is outside WordPress installation"
-    },
-    "wp-content": {
-        "exists": 1,
-        "writable": 1,
-        "permission": 777,
-        "recommended": 755,
-    },
-    "wp-content/uploads": {
-        "exists": 1,
-        "writable": 1,
-        "permission": 777,
-        "recommended": 755,
-    },
-    "wp-content/plugins": {
-        "exists": 1,
-        "writable": 1,
-        "permission": 777,
-        "recommended": 755,
-    },
-    "wp-content/themes": {
-        "exists": 1,
-        "writable": 1,
-        "permission": 777,
-        "recommended": 755,
-    },
-    "wp-cat.php": {
-        "exists": "N/A",
-        "writable": "N/A",
-        "permission": "N/A",
-        "recommended": "N/A",
-        "error": "Path is outside WordPress installation"
-    }
-};
-
-// Example of listening for permission updates
-permissionsTable.addEventListener('permissions-updated', (e) => {
-    console.log('Permissions updated:', e.detail.data);
-});

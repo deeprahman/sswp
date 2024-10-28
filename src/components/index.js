@@ -1,1 +1,1 @@
-export { SettingsPage } from './settings-page';
+export { WPSSPermissionsTable } from './file-permission-component';
