@@ -21,7 +21,8 @@ function getFilePermissionsWP() {
         });
 }
 
-//  =====================================
+
+
 
     // Register the web component
 customElements.define('wp-permissions-table', WPSSPermissionsTable);

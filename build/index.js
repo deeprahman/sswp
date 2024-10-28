@@ -120,7 +120,8 @@ class WPSSPermissionsTable extends HTMLElement {
     });
     try {
       // Send POST request
-      const response = await fetch('/api/apply-permissions', {
+      // TODO: Modify the code to Send requet using wp.ApiRequest
+      const response = await fetch('/wp-json/wpss/v1/file-permissions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -334,8 +335,6 @@ function getFilePermissionsWP() {
     throw error;
   });
 }
-
-//  =====================================
 
 // Register the web component
 customElements.define('wp-permissions-table', _components_index__WEBPACK_IMPORTED_MODULE_0__.WPSSPermissionsTable);

@@ -25,6 +25,11 @@ class WP_Securing_Setup
     public $nonce_action;
 
     public $settings;
+    /**
+     * file-paths: for file permissions to be checked
+     * @var array
+     */
+    public $file_paths;
 
     public function __construct()
     {
@@ -36,6 +41,8 @@ class WP_Securing_Setup
         $this->js_handle = "wpss-primary-css";
         $this->nonce_action = "wpss-rest";
         $this->settings = WPSS_SETTINGS;
+
+        $this->file_paths = ["wp-config.php", "wp-login.php", "wp-content", "wp-content/uploads", "wp-content/plugins", "wp-content/themes"];
         $this->init();
         $this->admin_rest();
     }
