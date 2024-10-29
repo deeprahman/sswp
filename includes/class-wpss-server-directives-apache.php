@@ -1,7 +1,7 @@
 <?php
 
 require_once $wpss->root . DIRECTORY_SEPARATOR . "includes/class-wpss-server-directives.php";
-require_once $wpss->root . DIRECTORY_SEPARATOR . "includes\interface-wpss-server-directives.php";
+require_once $wpss->root . DIRECTORY_SEPARATOR . "includes/interface-wpss-server-directives.php";
 require_once ABSPATH . "wp-admin/includes/misc.php";
 
 class WPSS_Server_Directives_Apache extends WPSS_Server_Directives implements IWPSS_Server_Directives

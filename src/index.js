@@ -1,5 +1,3 @@
-
-
 import "./index.scss";
 
 import "./wpss-files-permissions-request.js";

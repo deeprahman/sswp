@@ -29,7 +29,7 @@ function wpss_file_permissions_permission_check($request)
 function wpss_file_permissions_callback($request)
 {
     $message = '';
-
+    write_log(["Function: ".__FUNCTION__, $request]);
     switch ($request->get_method()) {
         case 'GET':
             $fs_permission = get_file_permissions();
@@ -75,7 +75,7 @@ function do_recommended_permission(): string
     include_once $wpss->root . DIRECTORY_SEPARATOR . "includes/class-wpss-file-permission-manager.php";
 
     $checker = new WPSS_File_Permission_Manager($wpss->file_paths);
-    $fitered_files = array_filter($files, function ($v) use ($checker) {
+    $fitered_files = array_filter($wpss->file_paths, function ($v) use ($checker) {
         return !($checker->change_to_recommended_permissions($v));
     });
 

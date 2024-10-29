@@ -47,55 +47,55 @@ class WPSSPermissionsTable extends HTMLElement {
   getStyles() {
     return `
             <style>
-                :host {
-                    display: block;
-                    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-                }
-                .wp-list-table {
-                    border-spacing: 0;
-                    width: 100%;
-                    clear: both;
-                    margin: 0;
-                    border-collapse: collapse;
-                }
-                .wp-list-table thead th {
-                    padding: 8px 10px;
-                    border-bottom: 1px solid #e1e1e1;
-                    font-weight: 600;
-                    text-align: left;
-                    line-height: 1.3em;
-                    background: #f7f7f7;
-                }
-                .wp-list-table td {
-                    padding: 8px 10px;
-                    vertical-align: top;
-                    border-bottom: 1px solid #f1f1f1;
-                }
-                .wp-list-table tr:nth-child(odd) {
-                    background-color: #f9f9f9;
-                }
-                .status-ok { color: #46b450; }
-                .status-warning { color: #ffb900; }
-                .status-error { color: #dc3232; }
-                .button {
-                    background: #2271b1;
-                    border-color: #2271b1;
-                    color: #fff;
-                    text-decoration: none;
-                    text-shadow: none;
-                    padding: 6px 12px;
-                    border-radius: 3px;
-                    border: 1px solid;
-                    cursor: pointer;
-                    margin-top: 10px;
-                    display: inline-block;
-                }
-                .button:hover {
-                    background: #135e96;
-                    border-color: #135e96;
-                }
+            :host {
+                display: block;
+                font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+            }
+            .wp-list-table {
+                border-spacing: 0;
+                width: 100%;
+                clear: both;
+                margin: 0;
+                border-collapse: collapse;
+            }
+            .wp-list-table thead th {
+                padding: 8px 10px;
+                border-bottom: 1px solid #e1e1e1;
+                font-weight: 600;
+                text-align: left;
+                line-height: 1.3em;
+                background: #f7f7f7;
+            }
+            .wp-list-table td {
+                padding: 8px 10px;
+                vertical-align: top;
+                border-bottom: 1px solid #f1f1f1;
+            }
+            .wp-list-table tr:nth-child(odd) {
+                background-color: #f9f9f9;
+            }
+            .status-ok { color: #46b450; }
+            .status-warning { color: #ffb900; }
+            .status-error { color: #dc3232; }
+            .button {
+                background: #2271b1;
+                border-color: #2271b1;
+                color: #fff;
+                text-decoration: none;
+                text-shadow: none;
+                padding: 6px 12px;
+                border-radius: 3px;
+                border: 1px solid;
+                cursor: pointer;
+                margin-top: 10px;
+                display: inline-block;
+            }
+            .button:hover {
+                background: #135e96;
+                border-color: #135e96;
+            }
             </style>
-        `;
+            `;
   }
   formatStatus(value) {
     if (value === "N/A") return "N/A";
@@ -109,7 +109,6 @@ class WPSSPermissionsTable extends HTMLElement {
     return "status-warning";
   }
   async applyRecommendedPermissions() {
-    // First update local data as before
     const updatedData = {
       ...this._data
     };
@@ -119,23 +118,21 @@ class WPSSPermissionsTable extends HTMLElement {
       }
     });
     try {
-      // Send POST request
-      // TODO: Modify the code to Send requet using wp.ApiRequest
-      const response = await fetch('/wp-json/wpss/v1/file-permissions', {
+      // Send POST request using wp.apiRequest
+      const result = await wp.apiRequest({
+        path: '/wpss/v1/file-permissions',
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          // If using WordPress, you might need the nonce
           'X-WP-Nonce': wpApiSettings.nonce
         },
-        body: JSON.stringify(updatedData)
+        data: {
+          nonce: wpApiSettings.nonce,
+          fsData: updatedData
+        }
       });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const result = await response.json();
+      console.log(result.data);
 
-      // Update the table with the response data (in case server made any modifications)
+      // Update the table with the response data
       this.data = result.data || updatedData;
 
       // Dispatch success event
@@ -143,7 +140,7 @@ class WPSSPermissionsTable extends HTMLElement {
         detail: {
           data: this.data,
           status: 'success',
-          message: 'Permissions updated successfully'
+          message: result.message || 'Permissions updated successfully'
         },
         bubbles: true,
         composed: true
@@ -154,7 +151,7 @@ class WPSSPermissionsTable extends HTMLElement {
       // Dispatch error event
       this.dispatchEvent(new CustomEvent('permissions-updated', {
         detail: {
-          error: error.message,
+          error: error.message || 'Failed to update permissions',
           status: 'error',
           data: updatedData
         },
@@ -163,6 +160,7 @@ class WPSSPermissionsTable extends HTMLElement {
       }));
     }
   }
+
   // Add a loading state to the button
   setButtonLoading(loading) {
     const button = this.shadowRoot.getElementById('recommendedBtn');
@@ -177,33 +175,33 @@ class WPSSPermissionsTable extends HTMLElement {
   render() {
     const rows = Object.entries(this._data).map(([path, info]) => `
             <tr>
-                <td>${path}</td>
-                <td>${this.formatStatus(info.exists)}</td>
-                <td>${this.formatStatus(info.writable)}</td>
-                <td><span class="${this.getPermissionClass(info.permission, info.recommended)}">${info.permission}</span></td>
-                <td>${info.recommended}</td>
-                <td><span class="status-error">${info.error || ''}</span></td>
+            <td>${path}</td>
+            <td>${this.formatStatus(info.exists)}</td>
+            <td>${this.formatStatus(info.writable)}</td>
+            <td><span class="${this.getPermissionClass(info.permission, info.recommended)}">${info.permission}</span></td>
+            <td>${info.recommended}</td>
+            <td><span class="status-error">${info.error || ''}</span></td>
             </tr>
-        `).join('');
+            `).join('');
     this.shadowRoot.innerHTML = `
-            ${this.getStyles()}
+        ${this.getStyles()}
             <table class="wp-list-table widefat fixed striped">
-                <thead>
-                    <tr>
-                        <th>File Path</th>
-                        <th>Exists</th>
-                        <th>Writable</th>
-                        <th>Permissions</th>
-                        <th>Recommended</th>
-                        <th>Comment/Error</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${rows}
-                </tbody>
+            <thead>
+            <tr>
+            <th>File Path</th>
+            <th>Exists</th>
+            <th>Writable</th>
+            <th>Permissions</th>
+            <th>Recommended</th>
+            <th>Comment/Error</th>
+            </tr>
+            </thead>
+            <tbody>
+            ${rows}
+            </tbody>
             </table>
             <button class="button" id="recommendedBtn">Apply Recommended Permissions</button>
-        `;
+            `;
 
     // Update the button click handler
     this.shadowRoot.getElementById('recommendedBtn').addEventListener('click', async () => {

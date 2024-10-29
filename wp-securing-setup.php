@@ -15,28 +15,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * Logger
- */
-if (!function_exists('write_log')) {
-    function write_log($log, $function =  __FUNCTION__) {
-        if (true === WP_DEBUG) {
-            $log_file = dirname(__FILE__) . '/wpss.log';
-            
-            $formatted_log = '[' . date('Y-m-d H:i:s') . '] ' . ' Function: ' . $function . " ";
-            if (is_array($log) || is_object($log)) {
-                $formatted_log .= print_r($log, true);
-            } else {
-                $formatted_log .= $log;
-            }
-            $formatted_log .= PHP_EOL;
-            
-            file_put_contents($log_file, $formatted_log, FILE_APPEND);
-        }
-    }
-}
+
 // Set Plugin Root
 define("WPSS_ROOT", plugin_dir_path(__FILE__));
+
 
 // Set Plugin URL
 define("WPSS_URL", plugin_dir_url(__FILE__));
@@ -48,6 +30,7 @@ define("WPSS_VERSION", "0.1.0");
 
 define("WPSS_SETTINGS", '_wpss_settings');
 
+include_once WPSS_ROOT . "/wpss-logger.php";
 
 $is_litespeed = strpos($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false;
 
