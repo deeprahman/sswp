@@ -17,7 +17,7 @@ $pm = new WPSS_File_Permission_Manager($paths);
 
 //$ret = $pm->apply_recommended_permissions($paths);
 
-$pm->set_permission('wp-config.php', '777');
+$pm->set_permission('wp-config.php', 777);
 
 //print_r($ret);
 $pm->display_results();
