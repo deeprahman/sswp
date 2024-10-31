@@ -46,7 +46,7 @@ interface IWPSS_File_Permission_manager
      * Validates path is within WordPress installation and exists.
      * Uses WordPress Filesystem API to modify permissions.
      *
-     * @param string $path Target file/directory path
+     * @param string $path Target file/directory absolute path
      * @param string $permission Permission string in octal format (e.g., '644', '755')
      * @return bool True if permissions were changed successfully
      */
@@ -58,7 +58,7 @@ interface IWPSS_File_Permission_manager
      * - Directories: typically '755'
      * - Files: typically '644'
      *
-     * @param string $path Directory path to process
+     * @param string $path absolute Directory path to process
      * @return bool True if all permissions were changed successfully
      */
     public function recursively_change_to_recommended_permissions($path);
@@ -67,7 +67,7 @@ interface IWPSS_File_Permission_manager
      * Gets current permission string for a path.
      * Returns null if file doesn't exist.
      *
-     * @param string $path Path to check
+     * @param string $path absolute Path to check
      * @return string|null Current permission string or null if path doesn't exist
      */
     public function get_current_permission($path);
@@ -90,7 +90,7 @@ interface IWPSS_File_Permission_manager
      * Validates path exists and is within WordPress installation.
      * Uses WordPress Filesystem API to modify permissions.
      *
-     * @param string $path Target path
+     * @param string $path Target absolute path
      * @param string $permission Permission string in octal format (e.g., '644', '755')
      * @return bool True if permission was set successfully
      */
@@ -99,7 +99,7 @@ interface IWPSS_File_Permission_manager
     /**
      * Apply recommended file permission the elements of the path array
      * 
-     * @param array $paths Array of paths to update to recommended permissions
+     * @param array $paths Array of absolute paths to update to recommended permissions
      * @return array Response array with status and data/error message
      */
     function apply_recommended_permissions($paths);
