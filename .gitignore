@@ -9,7 +9,7 @@ README.md
 [._]s[a-v][a-z]
 [._]sw[a-p]
 wpss.log
-
+**/*.log
 # Other patterns you might want to use
 node_modules/
 *.swp

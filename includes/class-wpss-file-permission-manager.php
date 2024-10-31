@@ -1,44 +1,35 @@
 <?php
-require_once $wpss->root . DIRECTORY_SEPARATOR . "includes/interface-wpss-file-permission-manager.php";
 
-class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
+
+
+
+/**
+ * Class WP_File_Permission_Checker
+ * 
+ * Checks and displays file permissions for critical WordPress files and directories.
+ *
+ * @property array $files_to_check List of files and directories to check permissions for.
+ * @property array $recommended_permissions Recommended permissions for files and directories.
+ */
+class WPSS_File_Permission_Manager
 {
     /**
-     * List of files and directories to check permissions for, relative to WordPress root.
-     * Default includes critical files like wp-config.php and upload directories.
-     * 
-     * @var array
+     * @var array $files_to_check List of files and directories to check permissions for.
      */
     private $files_to_check;
 
     /**
-     * Standard recommended permissions for files and directories.
-     * - directory: '755' (owner: rwx, group: rx, others: rx)
-     * - file: '644' (owner: rw, group: r, others: r)
-     * 
-     * @var array
+     * @var array $recommended_permissions Recommended permissions for files and directories.
      */
     private $recommended_permissions;
 
     /**
-     * Constructor initializes the file permission checker with optional custom paths.
-     * If no paths provided, uses default critical WordPress paths.
+     * Constructor to initialize the files to check and recommended permissions.
      *
-     * @param array $files_to_check Optional array of file/directory paths to check
+     * @param array $files_to_check List of files and directories to check permissions for.
      */
     public function __construct($files_to_check = [])
     {
-
-        global $wp_filesystem;
-
-        // Include WordPress filesystem functions if not already loaded
-        if (!function_exists('WP_Filesystem')) {
-            require_once(ABSPATH . 'wp-admin/includes/file.php');
-            // Initialize WordPress filesystem
-            WP_Filesystem();
-
-
-        }
 
         $this->files_to_check = !empty($files_to_check) ? $files_to_check : [
             'wp-config.php',
@@ -47,18 +38,15 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
         ];
         $this->recommended_permissions = [
             'directory' => '755',
-            'file' => '644',
-            'wp-config.php' => '444'
+            'file' => '644'
         ];
     }
 
     /**
-     * Validates if a given path is within the WordPress installation directory.
-     * Uses realpath() to resolve any symbolic links and normalize the path.
-     * Prevents unauthorized access to files outside WordPress root.
+     * Check if a given path is within the WordPress installation directory.
      *
-     * @param string $path Absolute path to check
-     * @return bool True if path is within WordPress directory, false otherwise
+     * @param string $path The path to check.
+     * @return bool True if the path is within the WordPress installation, false otherwise.
      */
     private function is_within_wordpress($path)
     {
@@ -68,15 +56,9 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
     }
 
     /**
-     * Checks permissions for all configured files and directories.
-     * For each path, collects:
-     * - Existence status
-     * - Current permissions
-     * - Writability status
-     * - Recommended permissions
-     * - Any errors encountered
+     * Check permissions for all specified files and directories.
      *
-     * @return array Associative array of permission check results for each path
+     * @return array An array of permission check results for each file/directory.
      */
     public function check_permissions()
     {
@@ -92,7 +74,7 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
                     'permission' => 'N/A',
                     'writable' => 'N/A',
                     'recommended' => 'N/A',
-                    'error' => __('Path not found inside WordPress')
+                    'error' => 'Path is outside WordPress installation'
                 ];
             }
         }
@@ -101,16 +83,10 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
     }
 
     /**
-     * Gets detailed permission information for a specific file or directory.
-     * Uses WordPress Filesystem API to safely check file properties.
-     * Initializes filesystem if not already done.
+     * Get file permissions for a specific path.
      *
-     * @param string $path Absolute path to check
-     * @return array Permission details including:
-     *               - exists: bool
-     *               - permission: string|null
-     *               - writable: bool
-     *               - recommended: string
+     * @param string $path The path to check permissions for.
+     * @return array An array containing permission details for the given path.
      */
     private function get_file_permission($path)
     {
@@ -118,9 +94,9 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
 
         if (!function_exists('WP_Filesystem')) {
             require_once(ABSPATH . 'wp-admin/includes/file.php');
-            WP_Filesystem();
         }
 
+        WP_Filesystem();
 
         if (!$wp_filesystem->exists($path)) {
             return [
@@ -131,7 +107,7 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
             ];
         }
 
-        $perms = $wp_filesystem->chmod($path);
+        $perms = $wp_filesystem->getchmod($path);
         $writable = $wp_filesystem->is_writable($path);
 
         return [
@@ -142,20 +118,15 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
         ];
     }
 
-  
+    /**
+     * Get recommended permissions for a file or directory.
+     *
+     * @param string $path The path to get recommended permissions for.
+     * @return string The recommended permission string ('755' for directories, '644' for files).
+     */
     public function get_recommended_permission($path)
     {
         global $wp_filesystem;
-        if (!function_exists('WP_Filesystem')) {
-            require_once(ABSPATH . 'wp-admin/includes/file.php');
-            WP_Filesystem();
-        }
-
-
-        // Check if the path contains wp-config.php
-        if (strpos($path, 'wp-config.php') !== false) {
-            return $this->recommended_permissions['wp-config.php'];
-        }
 
         if ($wp_filesystem->is_dir($path)) {
             return $this->recommended_permissions['directory'];
@@ -165,14 +136,7 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
     }
 
     /**
-     * Displays permission check results in a formatted table.
-     * Table columns:
-     * - File/Directory path
-     * - Existence status
-     * - Current permissions
-     * - Writability status
-     * - Recommended permissions
-     * - Any error messages
+     * Display the results of permission checks in a command-line friendly format.
      */
     public function display_results()
     {
@@ -204,16 +168,7 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
     }
 
     /**
-     * Helper function to print a formatted table row with specified column widths.
-     * Truncates values that exceed column width to maintain table formatting.
-     *
-     * @param string $file File/directory path
-     * @param string $exists Existence status
-     * @param string $permission Current permissions
-     * @param string $writable Writability status
-     * @param string $recommended Recommended permissions
-     * @param string $error Error message if any
-     * @param array $widths Column widths for formatting
+     * Print a row of the results table.
      */
     private function print_row($file, $exists, $permission, $writable, $recommended, $error, $widths)
     {
@@ -229,10 +184,7 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
     }
 
     /**
-     * Prints a separator line for the results table.
-     * Calculates total width based on column widths plus spacing.
-     *
-     * @param array $widths Column widths array
+     * Print a separator line for the results table.
      */
     private function print_separator($widths)
     {
@@ -241,13 +193,11 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
     }
 
     /**
-     * Changes permissions for a specific file or directory.
-     * Validates path is within WordPress installation and exists.
-     * Uses WordPress Filesystem API to modify permissions.
+     * Change the file permission to a given permission value.
      *
-     * @param string $path Target file/directory path
-     * @param string $permission Permission string in octal format (e.g., '644', '755')
-     * @return bool True if permissions were changed successfully
+     * @param string $path The path to the file or directory.
+     * @param string $permission The permission to set (e.g., '644', '755').
+     * @return bool True if the permission was changed successfully, false otherwise.
      */
     public function change_file_permission($path, $permission)
     {
@@ -255,10 +205,9 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
 
         if (!function_exists('WP_Filesystem')) {
             require_once(ABSPATH . 'wp-admin/includes/file.php');
-            WP_Filesystem();
         }
 
-
+        WP_Filesystem();
 
         if (!$this->is_within_wordpress($path)) {
             return false;
@@ -268,58 +217,45 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
             return false;
         }
 
-        return $wp_filesystem->chmod($path, $this->oct_to_desc($permission));
+        return $wp_filesystem->chmod($path, $this->octal_to_decimal($permission));
     }
 
-
-    public function recursively_change_to_recommended_permissions($path)
+    /**
+     * Change the directory and file permissions to recommended values.
+     *
+     * @param string $path The path to the directory.
+     * @return bool True if all permissions were changed successfully, false otherwise.
+     */
+    public function change_to_recommended_permissions($path)
     {
-        // Get access to WordPress filesystem functionality
         global $wp_filesystem;
 
-        if (strpos($path, 'wp-content') !== false) {
-            write_log("Message: wp-content dir", __FUNCTION__);
-            return true;
-        }
-
-        // Include WordPress filesystem functions if not already loaded
         if (!function_exists('WP_Filesystem')) {
             require_once(ABSPATH . 'wp-admin/includes/file.php');
-            // Initialize WordPress filesystem
-            WP_Filesystem();
-            write_log("Message: WP_Filesystem instantiated.", __FUNCTION__);
         }
 
+        WP_Filesystem();
 
-        // Check if path is within WordPress installation directory for security
         if (!$this->is_within_wordpress($path)) {
-            write_log("Message: Path is Outside of WP " . $path . ".", __FUNCTION__);
             return false;
         }
 
-        // If path is not a directory, change its permissions and return
         if (!$wp_filesystem->is_dir($path)) {
-            write_log("Message: Path is file " . $path . ".", __FUNCTION__);
             return $this->change_file_permission($path, $this->get_recommended_permission($path));
         }
 
-        // Initialize success flag
         $success = true;
 
-        // Change the directory's own permissions to 755 (recommended for directories)
+        // Change directory permission
         $success &= $this->change_file_permission($path, $this->recommended_permissions['directory']);
 
-        // Get list of all files and directories within this directory
+        // Recursively change permissions for all files and subdirectories
         $files = $wp_filesystem->dirlist($path, true);
-
-        // Loop through each item in the directory
         foreach ($files as $file => $file_info) {
             $file_path = trailingslashit($path) . $file;
             if ($file_info['type'] == 'd') {
-                // If item is a directory, recursively process it
-                $success &= $this->recursively_change_to_recommended_permissions($file_path);
+                $success &= $this->change_to_recommended_permissions($file_path);
             } else {
-                // If item is a file, change its permissions to 644 (recommended for files)
                 $success &= $this->change_file_permission($file_path, $this->recommended_permissions['file']);
             }
         }
@@ -328,25 +264,35 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
     }
 
     /**
-     * Converts octal permission string to decimal number.
-     * Required for WordPress filesystem chmod operation.
+     * Convert octal permission string to decimal.
      *
-     * @param string $octal Permission string in octal format (e.g., '0644', '0777')
-     * @return int Decimal representation of permission
+     * @param string $octal The octal permission string (e.g., '644').
+     * @return int The decimal representation of the permission.
      */
-    private function oct_to_desc($str)
+    private function octal_to_decimal($octal)
     {
-        return octdec($str);
+        return octdec($octal);
     }
 
-
+    /**
+     * Get the current permission for a given path.
+     *
+     * @param string $path The path to check permissions for.
+     * @return string|null The current permission string or null if the file doesn't exist.
+     */
     public function get_current_permission($path)
     {
         $info = $this->get_file_permission($path);
         return $info['exists'] ? $info['permission'] : null;
     }
 
-
+    /**
+     * Set the recommended permission for a given path type.
+     *
+     * @param string $type The type of path ('directory' or 'file').
+     * @param string $permission The permission to set (e.g., '644', '755').
+     * @return bool True if the recommended permission was set successfully, false otherwise.
+     */
     public function set_recommended_permission($type, $permission)
     {
         if (!in_array($type, ['directory', 'file'])) {
@@ -362,24 +308,15 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
     }
 
     /**
-     * Sets permissions for a specific path.
-     * Validates path exists and is within WordPress installation.
-     * Uses WordPress Filesystem API to modify permissions.
+     * Set the permission for a given path.
      *
-     * @param string $path Target path
-     * @param string $permission Permission string in octal format (e.g., '644', '755')
-     * @return bool True if permission was set successfully
+     * @param string $path The path to set permissions for.
+     * @param string $permission The permission to set (e.g., '644', '755').
+     * @return bool True if the permission was set successfully, false otherwise.
      */
     public function set_permission($path, $permission)
     {
         global $wp_filesystem;
-        // Include WordPress filesystem functions if not already loaded
-        if (!function_exists('WP_Filesystem')) {
-            require_once(ABSPATH . 'wp-admin/includes/file.php');
-            // Initialize WordPress filesystem
-           
-        }
-        
         if (!$this->is_within_wordpress($path)) {
             return false;
         }
@@ -387,69 +324,9 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
         if (!$wp_filesystem->exists($path)) {
             return false;
         }
-   
-        return $wp_filesystem->chmod($path, $this->oct_to_desc($permission));
-    }
 
-    /**
-     * Example usage of WPSS_File_Permission_Manager to change to recommended permissions.
-     * 
-     * @param array $paths Array of paths to update to recommended permissions
-     * @return array Response array with status and data/error message
-     */
-    function apply_recommended_permissions($paths)
-    {
-        try {
-  
-            $results = array();
-            $all_success = true;
-
-            foreach ($paths as $path) {
-                $full_path = ABSPATH . $path;
-
-                // Check if path is valid
-                if (!$this->is_within_wordpress($full_path)) {
-                    $results[$path] = array(
-                        'success' => false,
-                        'message' => 'Path is outside WordPress installation'
-                    );
-                    $all_success = false;
-                    continue;
-                }
-
-                // Apply recommended permissions
-                $success = $this->change_file_permission($full_path, $this->get_recommended_permission($full_path));
-
-                if ($success) {
-                    $results[$path] = array(
-                        'success' => true,
-                        'message' => 'Updated to recommended permissions'
-                    );
-                } else {
-                    $results[$path] = array(
-                        'success' => false,
-                        'message' => 'Failed to update permissions'
-                    );
-                    $all_success = false;
-                }
-            }
-
-            // Get final permissions status
-            $final_status = $this->check_permissions();
-
-            return array(
-                'success' => $all_success,
-                'message' => $all_success ? 'All permissions updated successfully' : 'Some permissions failed to update',
-                'results' => $results,
-                'data' => $final_status
-            );
-
-        } catch (Exception $e) {
-            return array(
-                'success' => false,
-                'message' => $e->getMessage(),
-                'data' => null
-            );
-        }
+        return $wp_filesystem->chmod($path, $this->octal_to_decimal($permission));
     }
 }
+
+
