@@ -21,8 +21,6 @@ if (!function_exists('WP_Filesystem')) {
     require_once(ABSPATH . 'wp-admin/includes/file.php');
     WP_Filesystem();
 }
-WP_Filesystem();
-xdebug_break();
 $wp_filesystem->chmod(ABSPATH . 'wp-config.php', 777);
 $perms = $wp_filesystem->chmod(ABSPATH . 'wp-config.php');
 
