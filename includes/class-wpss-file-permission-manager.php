@@ -46,9 +46,9 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
             'wp-content/uploads'
         ];
         $this->recommended_permissions = [
-            'directory' => '0755',
-            'file' => '0644',
-            'wp-config.php' => '0444'
+            'directory' => '755',
+            'file' => '644',
+            'wp-config.php' => '444'
         ];
     }
 
@@ -387,7 +387,7 @@ class WPSS_File_Permission_Manager implements IWPSS_File_Permission_manager
         if (!$wp_filesystem->exists($path)) {
             return false;
         }
-        xdebug_break();
+   
         return $wp_filesystem->chmod($path, $this->oct_to_desc($permission));
     }
 

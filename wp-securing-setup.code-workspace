@@ -6,12 +6,12 @@
 		},
 		{
 			"name": "DEBUG_LOG",
-			"path": "C:/xampp/htdocs/wp/wp-content/"
+			"path": "/home/deep/wsl.deeprahman.lo/wp-content"
 
 		},
 		{
 			"name": "WP",
-			"path": "C:/xampp/htdocs/wp/"
+			"path": "/home/deep/wsl.deeprahman.lo"
 		}
 	],
 	"settings": {

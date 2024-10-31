@@ -171,13 +171,3 @@ function wpss_handle_permission_update($request) {
     );
 }
 
-// Register REST API endpoint
-add_action('rest_api_init', function () {
-    register_rest_route('wpss/v1', '/file-permissions', array(
-        'methods' => 'POST',
-        'callback' => 'wpss_handle_permission_update',
-        'permission_callback' => function () {
-            return current_user_can('manage_options');
-        }
-    ));
-});

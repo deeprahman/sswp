@@ -12,21 +12,22 @@ require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/includes/class-wpss
 
 $paths = ["wp-config.php", "wp-login.php", "wp-content", "wp-content/uploads", "wp-content/plugins", "wp-content/themes"];
 //
-$ab = ABSPATH;
-$abspath_array = array_map(function($v) {
-    return ABSPATH . $v;
-}, $paths);
 
-print_r($abspath_array);
 
 try{
 $pm = new WPSS_File_Permission_Manager($paths);
 
-//$ret = $pm->apply_recommended_permissions($paths);
+if (!function_exists('WP_Filesystem')) {
+    require_once(ABSPATH . 'wp-admin/includes/file.php');
+    WP_Filesystem();
+}
+WP_Filesystem();
 xdebug_break();
-$pm->set_permission(ABSPATH.'wp-config.php', '0775');
+$wp_filesystem->chmod(ABSPATH . 'wp-config.php', 777);
+$perms = $wp_filesystem->chmod(ABSPATH . 'wp-config.php');
 
-//print_r($ret);
+echo "The permission of " ."wp-config.php". " is ". $perms  . "\n";
+
 $pm->display_results();
 }catch(Exception $e){
     printf($e->getMessage());
