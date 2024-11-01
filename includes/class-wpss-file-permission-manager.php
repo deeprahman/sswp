@@ -11,9 +11,9 @@ class WPSS_File_Permission_Manager
 {
     /**
      * @var WP_Filesystem
-     */ 
+     */
     protected $wp_fs;
-    
+
     /**
      * @var array $files_to_check List of files and directories to check permissions for.
      */
@@ -31,7 +31,7 @@ class WPSS_File_Permission_Manager
      */
     public function __construct($files_to_check = [])
     {
-        
+
         global $wp_filesystem;
         if (!function_exists('WP_Filesystem')) {
             require_once(ABSPATH . 'wp-admin/includes/file.php');
@@ -233,55 +233,38 @@ class WPSS_File_Permission_Manager
     /**
      * Change the directory and file permissions to recommended values.
      *
-     * @param string $path The path to the directory.
-     * @return bool True if all permissions were changed successfully, false otherwise.
+     * @param array $paths The array of paths to change permissions for
+     * @return array Contains paths for which permission could not be changed
      */
-    public function change_to_recommended_permissions($path)
+    public function change_to_recommended_permissions(array $paths)
     {
-        global $wp_filesystem;
-
-        if (!function_exists('WP_Filesystem')) {
-            require_once(ABSPATH . 'wp-admin/includes/file.php');
+        if (empty($paths)) {
+            return [];
         }
 
-        WP_Filesystem();
+        $errors = array_filter($paths, function ($path) {
+            // Get recommended permission based on whether it's a file or directory
+            $recommended_permission = $this->get_recommended_permission($path);
 
-        if (!$this->is_within_wordpress($path)) {
-            return false;
+            // Get absolute path
+            $abs_path = ABSPATH . $path;
+
+            // Attempt to change the permission
+            $result = $this->update_permission($abs_path, $recommended_permission);
+
+            // Return true if there was an error (to keep this path in the errors array)
+            return is_wp_error($result) || $result === false;
+        });
+
+        // Log any errors that occurred
+        if (!empty($errors)) {
+            array_walk($errors, function ($error) {
+                global $wpss;
+                write_log(__("Could not change file permission: " . $error, $wpss->domain), __METHOD__);
+            });
         }
 
-        if (!$wp_filesystem->is_dir($path)) {
-            return $this->change_file_permission($path, $this->get_recommended_permission($path));
-        }
-
-        $success = true;
-
-        // Change directory permission
-        $success &= $this->change_file_permission($path, $this->recommended_permissions['directory']);
-
-        // Recursively change permissions for all files and subdirectories
-        $files = $wp_filesystem->dirlist($path, true);
-        foreach ($files as $file => $file_info) {
-            $file_path = trailingslashit($path) . $file;
-            if ($file_info['type'] == 'd') {
-                $success &= $this->change_to_recommended_permissions($file_path);
-            } else {
-                $success &= $this->change_file_permission($file_path, $this->recommended_permissions['file']);
-            }
-        }
-
-        return $success;
-    }
-
-    /**
-     * Convert octal permission string to decimal.
-     *
-     * @param string $octal The octal permission string (e.g., '644').
-     * @return int The decimal representation of the permission.
-     */
-    private function octal_to_decimal($octal)
-    {
-        return octdec($octal);
+        return array_values($errors);
     }
 
     /**
@@ -345,16 +328,17 @@ class WPSS_File_Permission_Manager
      * @param string    $perms  Permission in octal format (e.g. '0744' , '0444' )
      * @param boolean   $cc     Clear the state cache after permsiion change
      * @return  boolean|WP_Error    On success return true
-     */ 
-    private function update_permission($path, $perms, bool $cc = true){
+     */
+    private function update_permission($path, $perms, bool $cc = true)
+    {
         $is_changed = $this->wp_fs->chmod($path, octdec($perms));
-        
 
-        if(! $is_changed ){
-            error_log("Function: ".__METHOD__. " Message: "."File Permission Could Not be changed");
+
+        if (!$is_changed) {
+            error_log("Function: " . __METHOD__ . " Message: " . "File Permission Could Not be changed");
             return new WP_Error("500", "File Permission Could Not be changed");
         }
-        if($cc){
+        if ($cc) {
             clearstatcache();
         }
         return $is_changed;
