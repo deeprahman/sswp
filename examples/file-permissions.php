@@ -15,21 +15,18 @@ $paths = [ "wp-config-sample.php","wp-config.php", "wp-login.php", "wp-content",
 
 
 try{
-    //$pm = new WPSS_File_Permission_Manager($paths);
+    $pm = new WPSS_File_Permission_Manager($paths);
     $file = ABSPATH . "wp-config-sample.php";
     echo "old param ". decoct(fileperms($file)) . " \n";
-    $perms = '0444';
+    $perms = '0755';
     echo "Perms to be set ".$perms."\n";
-    $c = chmod($file,octdec($perms));
-    clearstatcache(); 
-    echo "New perms" . decoct(fileperms($file)) . "\n";
 
     //echo "Permission of the file ". $file. " is ". $pm->get_current_permission($file) . "\n";
-    //$pm->change_file_permission($file, $perms);
+    $pm->change_file_permission($file, $perms);
 
-    //$r = $pm->get_current_permission($file);
+    $r = $pm->get_current_permission($file);
 
-    //echo "After Change:  Permission of the file ". $file. " is ". $r. "\n";
+    echo "After Change:  Permission of the file ". $file. " is ". $r. "\n";
 
 //    echo "After Change: Using - fileperms() -  Permission of the file ". $file. " is ". decoct(fileperms($file)). "\n";
 

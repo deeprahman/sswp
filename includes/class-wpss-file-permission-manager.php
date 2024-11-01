@@ -1,8 +1,4 @@
 <?php
-
-
-
-
 /**
  * Class WP_File_Permission_Checker
  * 
@@ -13,6 +9,11 @@
  */
 class WPSS_File_Permission_Manager
 {
+    /**
+     * @var WP_Filesystem
+     */ 
+    protected $wp_fs;
+    
     /**
      * @var array $files_to_check List of files and directories to check permissions for.
      */
@@ -30,6 +31,15 @@ class WPSS_File_Permission_Manager
      */
     public function __construct($files_to_check = [])
     {
+        
+        global $wp_filesystem;
+        if (!function_exists('WP_Filesystem')) {
+            require_once(ABSPATH . 'wp-admin/includes/file.php');
+        }
+
+        WP_Filesystem();
+
+        $this->wp_fs = $wp_filesystem;
 
         $this->files_to_check = !empty($files_to_check) ? $files_to_check : [
             'wp-config.php',
@@ -217,7 +227,7 @@ class WPSS_File_Permission_Manager
             return false;
         }
 
-        return $wp_filesystem->chmod($path, $this->octal_to_decimal($permission));
+        return $this->update_permission($path, $permission);
     }
 
     /**
@@ -325,8 +335,45 @@ class WPSS_File_Permission_Manager
             return false;
         }
 
-        return $wp_filesystem->chmod($path, $this->octal_to_decimal($permission));
+        return $this->update_permission($path, $permission);
+    }
+
+    /**
+     * Updates the file permission
+     *
+     * @param string    $path   Absolute path to a file or directory
+     * @param string    $perms  Permission in octal format (e.g. '0744' , '0444' )
+     * @param boolean   $cc     Clear the state cache after permsiion change
+     * @return  boolean|WP_Error    On success return true
+     */ 
+    private function update_permission($path, $perms, bool $cc = true){
+        $is_changed = $this->wp_fs->chmod($path, octdec($perms));
+        
+
+        if(! $is_changed ){
+            error_log("Function: ".__METHOD__. " Message: "."File Permission Could Not be changed");
+            return new WP_Error("500", "File Permission Could Not be changed");
+        }
+        if($cc){
+            clearstatcache();
+        }
+        return $is_changed;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
