@@ -1,4 +1,8 @@
 <?php
+
+// require_once $wpss->root . DIRECTORY_SEPARATOR . "includes/traits/class-wpss-ownership-permission-trait.php";
+
+require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/includes/traits/class-wpss-ownership-permission-trait.php");
 /**
  * Class WP_File_Permission_Checker
  * 
@@ -9,6 +13,7 @@
  */
 class WPSS_File_Permission_Manager
 {
+    use WPSS_Ownership_Permission_Trait;
     /**
      * @var WP_Filesystem
      */
@@ -47,8 +52,9 @@ class WPSS_File_Permission_Manager
             'wp-content/uploads'
         ];
         $this->recommended_permissions = [
-            'directory' => '755',
-            'file' => '644'
+            'directory' => '0755',
+            'file' => '0644',
+            'wp-config.php' => '0444'
         ];
     }
 
@@ -131,8 +137,8 @@ class WPSS_File_Permission_Manager
     /**
      * Get recommended permissions for a file or directory.
      *
-     * @param string $path The path to get recommended permissions for.
-     * @return string The recommended permission string ('755' for directories, '644' for files).
+     * @param string $path The absolute path to get recommended permissions for.
+     * @return string|WP_Error The recommended permission string ('755' for directories, '644' for files, '444' for wp-config.php).
      */
     public function get_recommended_permission($path)
     {
@@ -140,11 +146,18 @@ class WPSS_File_Permission_Manager
 
         if ($wp_filesystem->is_dir($path)) {
             return $this->recommended_permissions['directory'];
-        } else {
+        } else if (strpos(basename($path), 'wp-config') !== false) {
+            return $this->recommended_permissions['wp-config.php'];
+        } else if ($wp_filesystem->is_file($path)) {
             return $this->recommended_permissions['file'];
+        }else{
+            return new WP_Error(
+                'unknown_type',
+                'Unknown file type',
+                $path
+            );
         }
     }
-
     /**
      * Display the results of permission checks in a command-line friendly format.
      */
@@ -241,13 +254,26 @@ class WPSS_File_Permission_Manager
         if (empty($paths)) {
             return [];
         }
-
+      
         $errors = array_filter($paths, function ($path) {
-            // Get recommended permission based on whether it's a file or directory
-            $recommended_permission = $this->get_recommended_permission($path);
+            if("wp-content" == $path){ //TODO: remove
+                xdebug_break();
+            }
 
-            // Get absolute path
-            $abs_path = ABSPATH . $path;
+                       // Get absolute path
+                       $abs_path = ABSPATH . $path;
+
+            // Get recommended permission based on whether it's a file or directory
+            $recommended_permission = $this->get_recommended_permission($abs_path);
+
+            if(is_wp_error($recommended_permission)){
+                write_log("Code: ". $recommended_permission->get_error_code() . "Message: ". $recommended_permission->get_error_message() . "Error Data: ".$recommended_permission->get_error_data());
+                return true;
+            }
+
+            if( is_wp_error($this->is_valid_path($abs_path)) ){
+                return true;
+            }
 
             // Attempt to change the permission
             $result = $this->update_permission($abs_path, $recommended_permission);
@@ -335,7 +361,7 @@ class WPSS_File_Permission_Manager
 
 
         if (!$is_changed) {
-            error_log("Function: " . __METHOD__ . " Message: " . "File Permission Could Not be changed");
+            write_log("Function: " . __METHOD__ . " Message: " . "File Permission Could Not be changed for the path: " .$path , __METHOD__);
             return new WP_Error("500", "File Permission Could Not be changed");
         }
         if ($cc) {
@@ -343,6 +369,60 @@ class WPSS_File_Permission_Manager
         }
         return $is_changed;
     }
+
+    /**
+     * File or Directory is Owned by WordPress
+     * 
+     * @param   $path   Absolute path to the directory or file
+     * @return  boolean|WP_Error
+     */
+    public function is_wp_owner($path) {
+        $check = $this->check_ownership_permissions($path);
+
+        if (is_wp_error($check)) {  // TODO: Handle Error
+            write_log("Code" . $check->get_error_code(). " Message: ". $check->get_error_message(),__METHOD__);
+            return false;
+        }
+
+        // Access detailed information
+        if (!$check['ownership']['is_wp_owner']) {
+            // Handle incorrect ownership
+            write_log("File not owned by WordPress user, File Name: ".$path, __METHOD__);
+        }
+
+        if (!empty($check['security']['warnings'])) {
+            // Handle security warnings
+            foreach ($check['security']['warnings'] as $warning) {
+                write_log("Security warning: " . $warning, __METHOD__);
+            }
+        }
+
+        return $check;
+    }
+    
+    /**
+     * Check if the given path is valid further processing
+     *
+     * @package $path   Absolute path to the file or directory
+     * @return  boolean|WP_Error    true on success
+     */
+    private function is_valid_path(string $path)
+    {
+        global $wpss;
+        if (!$this->is_within_wordpress($path)) {
+            return new WP_Error('invalid_path',
+            __('Path is not within WordPress installation', $wpss->domain),
+            $path
+            );
+        }
+        $is_owned = $this->is_wp_owner($path);
+        if(is_wp_error($is_owned)){
+            write_log("Code: ".$is_owned->get_error_code() . " Message: ".$is_owned->get_error_message() . " Data: ".$is_owned->get_error_data(), __FUNCTION__);
+            return false;
+        }
+        return true;
+            
+    }// End of is_valid_path()
 }
 
 
