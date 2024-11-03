@@ -1,0 +1,7 @@
+# Add one pattern per line
+.git/
+node_modules/
+*.tmp
+*.log
+.DS_Store
+# Add more exclusions as needed
