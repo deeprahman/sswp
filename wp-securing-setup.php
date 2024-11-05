@@ -71,8 +71,8 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-wp-securing-setup.php';
 // TODO: Remove
 
 try {
-
-    if (!($wpss instanceof WP_Securing_Setup)) {
+    $wpss  = null;
+    if ( !($wpss instanceof WP_Securing_Setup)) {
         $wpss = new WP_Securing_Setup();
     }
 

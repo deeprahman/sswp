@@ -1,5 +1,6 @@
 <?php
-trait WPSS_Ownership_Permission_Trait {
+trait WPSS_Ownership_Permission_Trait
+{
     /**
      * WordPress Filesystem instance
      */
@@ -10,7 +11,8 @@ trait WPSS_Ownership_Permission_Trait {
      *
      * @return bool True if initialization successful
      */
-    protected function initializeFilesystem(): bool {
+    protected function initializeFilesystem(): bool
+    {
         if (!function_exists('WP_Filesystem')) {
             require_once(ABSPATH . 'wp-admin/includes/file.php');
         }
@@ -31,7 +33,8 @@ trait WPSS_Ownership_Permission_Trait {
      * @param string $path File or directory path
      * @return array|WP_Error Permission and ownership information
      */
-    protected function check_ownership_permissions(string $path) {
+    protected function check_ownership_permissions(string $path)
+    {
         if (!$this->wp_filesystem && !$this->initializeFilesystem()) {
             return new WP_Error(
                 'filesystem_error',
@@ -42,17 +45,18 @@ trait WPSS_Ownership_Permission_Trait {
         if (!$this->wp_filesystem->exists($path)) {
             return new WP_Error(
                 'file_not_found',
-                'The specified path does not exist', $path
+                'The specified path does not exist',
+                $path
             );
         }
 
         try {
             return [
                 'path' => $path,
-                'ownership' => $this->getOwnershipInfo($path),
-                'permissions' => $this->getPermissionsInfo($path),
-                'access' => $this->getAccessInfo($path),
-                'security' => $this->getSecurityAssessment($path)
+                'ownership' => $this->get_ownership_Info($path),
+                'permissions' => $this->get_permissions_info($path),
+                'access' => $this->get_access_info($path),
+                'security' => $this->get_security_assessment($path)
             ];
         } catch (Exception $e) {
             return new WP_Error(
@@ -68,19 +72,20 @@ trait WPSS_Ownership_Permission_Trait {
      * @param string $path File or directory path
      * @return array Ownership information
      */
-    protected function getOwnershipInfo(string $path): array {
+    protected function get_ownership_Info(string $path): array
+    {
         $owner_id = fileowner($path);
         $group_id = filegroup($path);
-        
-        $owner_info = function_exists('posix_getpwuid') ? 
-            posix_getpwuid($owner_id) : 
+
+        $owner_info = function_exists('posix_getpwuid') ?
+            posix_getpwuid($owner_id) :
             ['name' => $owner_id];
-            
-        $group_info = function_exists('posix_getgrgid') ? 
-            posix_getgrgid($group_id) : 
+
+        $group_info = function_exists('posix_getgrgid') ?
+            posix_getgrgid($group_id) :
             ['name' => $group_id];
 
-        $wp_user = $this->getWordPressProcessOwner();
+        $wp_user = $this->get_word_press_process_owner();
 
         return [
             'owner' => [
@@ -102,7 +107,8 @@ trait WPSS_Ownership_Permission_Trait {
      * @param string $path File or directory path
      * @return array Permissions information
      */
-    protected function getPermissionsInfo(string $path): array {
+    protected function get_permissions_info(string $path): array
+    {
         $perms = fileperms($path);
         $mode = substr(sprintf('%o', $perms), -4);
 
@@ -111,9 +117,9 @@ trait WPSS_Ownership_Permission_Trait {
             'mode_human' => $this->getHumanReadablePermissions($perms),
             'is_directory' => is_dir($path),
             'special_bits' => [
-                'setuid' => (bool)($perms & 0x800),
-                'setgid' => (bool)($perms & 0x400),
-                'sticky' => (bool)($perms & 0x200)
+                'setuid' => (bool) ($perms & 0x800),
+                'setgid' => (bool) ($perms & 0x400),
+                'sticky' => (bool) ($perms & 0x200)
             ]
         ];
     }
@@ -124,7 +130,8 @@ trait WPSS_Ownership_Permission_Trait {
      * @param string $path File or directory path
      * @return array Access information
      */
-    protected function getAccessInfo(string $path): array {
+    protected function get_access_info(string $path): array
+    {
         return [
             'readable' => [
                 'php' => is_readable($path),
@@ -144,11 +151,12 @@ trait WPSS_Ownership_Permission_Trait {
      * @param string $path File or directory path
      * @return array Security assessment
      */
-    protected function getSecurityAssessment(string $path): array {
+    protected function get_security_assessment(string $path): array
+    {
         $perms = fileperms($path);
         $is_public = $perms & 0x0004;
         $world_writable = $perms & 0x0002;
-        
+
         return [
             'is_secure' => !$world_writable,
             'warnings' => $this->getSecurityWarnings($path, $perms),
@@ -163,15 +171,18 @@ trait WPSS_Ownership_Permission_Trait {
      * @param int $perms File permissions
      * @return array Security warnings
      */
-    protected function getSecurityWarnings(string $path, int $perms): array {
+    protected function getSecurityWarnings(string $path, int $perms): array
+    {
         $warnings = [];
 
         if ($perms & 0x0002) {
             $warnings[] = 'File is world-writable';
         }
 
-        if (($perms & 0x0004) && !is_dir($path) && 
-            preg_match('/\.(php|inc|config)$/i', $path)) {
+        if (
+            ($perms & 0x0004) && !is_dir($path) &&
+            preg_match('/\.(php|inc|config)$/i', $path)
+        ) {
             $warnings[] = 'Potentially sensitive file is world-readable';
         }
 
@@ -193,7 +204,8 @@ trait WPSS_Ownership_Permission_Trait {
      * @param int $perms File permissions
      * @return array Security recommendations
      */
-    protected function getSecurityRecommendations(string $path, int $perms): array {
+    protected function getSecurityRecommendations(string $path, int $perms): array
+    {
         $recommendations = [];
         $is_dir = is_dir($path);
 
@@ -205,8 +217,8 @@ trait WPSS_Ownership_Permission_Trait {
             );
         }
 
-        if (!$this->getOwnershipInfo($path)['is_wp_owner']) {
-            $wp_user = $this->getWordPressProcessOwner();
+        if (!$this->get_ownership_Info($path)['is_wp_owner']) {
+            $wp_user = $this->get_word_press_process_owner();
             $recommendations[] = sprintf(
                 'Change ownership to WordPress user: chown %s:%s %s',
                 $wp_user,
@@ -223,12 +235,13 @@ trait WPSS_Ownership_Permission_Trait {
      *
      * @return string WordPress process owner
      */
-    protected function getWordPressProcessOwner(): string {
+    protected function get_word_press_process_owner(): string
+    {
         if (function_exists('posix_getpwuid')) {
             $owner = posix_getpwuid(posix_geteuid());
             return $owner['name'];
         }
-        
+
         return get_current_user();
     }
 
@@ -238,40 +251,57 @@ trait WPSS_Ownership_Permission_Trait {
      * @param int $perms Permissions value
      * @return string Human-readable permissions
      */
-    protected function getHumanReadablePermissions(int $perms): string {
+    protected function getHumanReadablePermissions(int $perms): string
+    {
         $info = '';
 
         // File type
         switch ($perms & 0xF000) {
-            case 0xC000: $info = 's'; break; // Socket
-            case 0xA000: $info = 'l'; break; // Symbolic Link
-            case 0x8000: $info = '-'; break; // Regular
-            case 0x6000: $info = 'b'; break; // Block special
-            case 0x4000: $info = 'd'; break; // Directory
-            case 0x2000: $info = 'c'; break; // Character special
-            case 0x1000: $info = 'p'; break; // FIFO pipe
-            default: $info = 'u'; break; // Unknown
+            case 0xC000:
+                $info = 's';
+                break; // Socket
+            case 0xA000:
+                $info = 'l';
+                break; // Symbolic Link
+            case 0x8000:
+                $info = '-';
+                break; // Regular
+            case 0x6000:
+                $info = 'b';
+                break; // Block special
+            case 0x4000:
+                $info = 'd';
+                break; // Directory
+            case 0x2000:
+                $info = 'c';
+                break; // Character special
+            case 0x1000:
+                $info = 'p';
+                break; // FIFO pipe
+            default:
+                $info = 'u';
+                break; // Unknown
         }
 
         // Owner permissions
         $info .= (($perms & 0x0100) ? 'r' : '-');
         $info .= (($perms & 0x0080) ? 'w' : '-');
         $info .= (($perms & 0x0040) ?
-            (($perms & 0x0800) ? 's' : 'x' ) :
+            (($perms & 0x0800) ? 's' : 'x') :
             (($perms & 0x0800) ? 'S' : '-'));
 
         // Group permissions
         $info .= (($perms & 0x0020) ? 'r' : '-');
         $info .= (($perms & 0x0010) ? 'w' : '-');
         $info .= (($perms & 0x0008) ?
-            (($perms & 0x0400) ? 's' : 'x' ) :
+            (($perms & 0x0400) ? 's' : 'x') :
             (($perms & 0x0400) ? 'S' : '-'));
 
         // World permissions
         $info .= (($perms & 0x0004) ? 'r' : '-');
         $info .= (($perms & 0x0002) ? 'w' : '-');
         $info .= (($perms & 0x0001) ?
-            (($perms & 0x0200) ? 't' : 'x' ) :
+            (($perms & 0x0200) ? 't' : 'x') :
             (($perms & 0x0200) ? 'T' : '-'));
 
         return $info;

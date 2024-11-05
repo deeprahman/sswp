@@ -32,13 +32,15 @@ const permissionsTable = document.querySelector('wp-permissions-table');
 // Example of listening for permission updates
 permissionsTable.addEventListener('permissions-updated', (e) => {
     console.log('Permissions updated:', e.detail.data);
+
 });
 
 // Using wp.apiRequest
 getFilePermissionsWP()
     .then(permissions => {
         // Handle the permissions data
-        console.log(permissions);
+        console.log("Permission Data",permissions);
+
         const fa_data = JSON.parse(permissions);
         permissionsTable.data = fa_data; 
     })

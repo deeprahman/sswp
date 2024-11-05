@@ -125,10 +125,10 @@ export class WPSSPermissionsTable extends HTMLElement {
 
             });
 
-            console.log(result.data);
+            console.log("Component data",result.data);
 
             // Update the table with the response data
-            this.data = result.data || updatedData;
+            this.data = result.fs_data || updatedData;
 
             // Dispatch success event
             this.dispatchEvent(new CustomEvent('permissions-updated', {

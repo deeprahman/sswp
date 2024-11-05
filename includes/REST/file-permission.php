@@ -74,18 +74,16 @@ function do_recommended_permission(): string
     global $wpss;
     include_once $wpss->root . DIRECTORY_SEPARATOR . "includes/class-wpss-file-permission-manager.php";
 
-    $checker = new WPSS_File_Permission_Manager($wpss->file_paths);
-    $fitered_files = array_filter($wpss->file_paths, function ($v) use ($checker) {
-        return !($checker->change_to_recommended_permissions($v));
-    });
+    $checker = new WPSS_File_Permission_Manager($wpss->file_paths); // TODO: Make it singleton
+    $error = $checker->change_to_recommended_permissions($wpss->file_paths);
 
     $message = '';
 
-    if (!empty($fitered_files)) {
-        $e_files = implode(',', $fitered_files);
+    if (!empty($errorss)) {
+        $e_files = implode(',', $errors);
         $message = __("Could not change permissoin for the given files: ", $wpss->domain) . $e_files;
-        $err_msg = "Function: " . __FUNCTION__ . "Message: " . $message;
-        error_log($err_msg);
+       
+        
     }
 
     return $message;

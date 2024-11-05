@@ -130,10 +130,10 @@ class WPSSPermissionsTable extends HTMLElement {
           fsData: updatedData
         }
       });
-      console.log(result.data);
+      console.log("Component data", result.data);
 
       // Update the table with the response data
-      this.data = result.data || updatedData;
+      this.data = result.fs_data || updatedData;
 
       // Dispatch success event
       this.dispatchEvent(new CustomEvent('permissions-updated', {
@@ -347,7 +347,7 @@ permissionsTable.addEventListener('permissions-updated', e => {
 // Using wp.apiRequest
 getFilePermissionsWP().then(permissions => {
   // Handle the permissions data
-  console.log(permissions);
+  console.log("Permission Data", permissions);
   const fa_data = JSON.parse(permissions);
   permissionsTable.data = fa_data;
 }).catch(error => {

@@ -150,7 +150,7 @@ class WPSS_File_Permission_Manager
             return $this->recommended_permissions['wp-config.php'];
         } else if ($wp_filesystem->is_file($path)) {
             return $this->recommended_permissions['file'];
-        }else{
+        } else {
             return new WP_Error(
                 'unknown_type',
                 'Unknown file type',
@@ -254,24 +254,22 @@ class WPSS_File_Permission_Manager
         if (empty($paths)) {
             return [];
         }
-      
-        $errors = array_filter($paths, function ($path) {
-            if("wp-content" == $path){ //TODO: remove
-                xdebug_break();
-            }
 
-                       // Get absolute path
-                       $abs_path = ABSPATH . $path;
+        $errors = array_filter($paths, function ($path) {
+
+
+            // Get absolute path
+            $abs_path = ABSPATH . $path;
 
             // Get recommended permission based on whether it's a file or directory
             $recommended_permission = $this->get_recommended_permission($abs_path);
 
-            if(is_wp_error($recommended_permission)){
-                write_log("Code: ". $recommended_permission->get_error_code() . "Message: ". $recommended_permission->get_error_message() . "Error Data: ".$recommended_permission->get_error_data());
+            if (is_wp_error($recommended_permission)) {
+                write_log("Code: " . $recommended_permission->get_error_code() . "Message: " . $recommended_permission->get_error_message() . "Error Data: " . $recommended_permission->get_error_data());
                 return true;
             }
 
-            if( is_wp_error($this->is_valid_path($abs_path)) ){
+            if (is_wp_error($this->is_valid_path($abs_path))) {
                 return true;
             }
 
@@ -361,7 +359,7 @@ class WPSS_File_Permission_Manager
 
 
         if (!$is_changed) {
-            write_log("Function: " . __METHOD__ . " Message: " . "File Permission Could Not be changed for the path: " .$path , __METHOD__);
+            write_log("Function: " . __METHOD__ . " Message: " . "File Permission Could Not be changed for the path: " . $path, __METHOD__);
             return new WP_Error("500", "File Permission Could Not be changed");
         }
         if ($cc) {
@@ -376,18 +374,19 @@ class WPSS_File_Permission_Manager
      * @param   $path   Absolute path to the directory or file
      * @return  boolean|WP_Error
      */
-    public function is_wp_owner($path) {
+    public function is_wp_owner($path)
+    {
         $check = $this->check_ownership_permissions($path);
 
         if (is_wp_error($check)) {  // TODO: Handle Error
-            write_log("Code" . $check->get_error_code(). " Message: ". $check->get_error_message(),__METHOD__);
+            write_log("Code" . $check->get_error_code() . " Message: " . $check->get_error_message(), __METHOD__);
             return false;
         }
 
         // Access detailed information
         if (!$check['ownership']['is_wp_owner']) {
             // Handle incorrect ownership
-            write_log("File not owned by WordPress user, File Name: ".$path, __METHOD__);
+            write_log("File not owned by WordPress user, File Name: " . $path, __METHOD__);
         }
 
         if (!empty($check['security']['warnings'])) {
@@ -399,7 +398,7 @@ class WPSS_File_Permission_Manager
 
         return $check;
     }
-    
+
     /**
      * Check if the given path is valid further processing
      *
@@ -410,18 +409,19 @@ class WPSS_File_Permission_Manager
     {
         global $wpss;
         if (!$this->is_within_wordpress($path)) {
-            return new WP_Error('invalid_path',
-            __('Path is not within WordPress installation', $wpss->domain),
-            $path
+            return new WP_Error(
+                'invalid_path',
+                __('Path is not within WordPress installation', $wpss->domain),
+                $path
             );
         }
         $is_owned = $this->is_wp_owner($path);
-        if(is_wp_error($is_owned)){
-            write_log("Code: ".$is_owned->get_error_code() . " Message: ".$is_owned->get_error_message() . " Data: ".$is_owned->get_error_data(), __FUNCTION__);
+        if (is_wp_error($is_owned)) {
+            write_log("Code: " . $is_owned->get_error_code() . " Message: " . $is_owned->get_error_message() . " Data: " . $is_owned->get_error_data(), __FUNCTION__);
             return false;
         }
         return true;
-            
+
     }// End of is_valid_path()
 }
 
