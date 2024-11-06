@@ -1,5 +1,11 @@
 {
     "require-dev": {
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "phpstan/phpstan": "^1.10",
+        "szepeviktor/phpstan-wordpress": "^1.1",
+        "php-stubs/wordpress-stubs": "^6.2"
+    },
+    "scripts": {
+        "analyze": "phpstan analyze"
     }
 }
