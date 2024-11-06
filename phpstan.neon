@@ -1,0 +1,15 @@
+parameters:
+    level: 5
+    paths:
+        - .
+    excludePaths:
+        - vendor/*
+        - tests/*
+    bootstrapFiles:
+        - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+    ignoreErrors:
+        - '#Function [a-zA-Z0-9\_]+ not found\.#'
+        - '#Class [a-zA-Z0-9\_]+ not found\.#'
+    checkMissingIterableValueType: false
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
