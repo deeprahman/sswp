@@ -68,17 +68,14 @@ function wpss_deactivate()
 // Include the plugin class
 require_once plugin_dir_path(__FILE__) . 'includes/class-wp-securing-setup.php';
 
-// TODO: Remove
 
 try {
-    $wpss  = null;
-    if ( !($wpss instanceof WP_Securing_Setup)) {
+// TODO: Check if WP_Securing_Setup class is available and then make instance
         $wpss = new WP_Securing_Setup();
-    }
 
 } catch (\Exception $ex) {
     error_log("WPSS-ERROR: " . $ex->getMessage());
-    return new WP_ERROR(
+    return new WP_Error(
         "wpss_error",
         __("An avoidable incident han ocurred..", "wp-securing-setup")
     );
