@@ -200,6 +200,7 @@ export class WPSSPermissionsTable extends HTMLElement {
             </tbody>
             </table>
             <button class="button" id="recommendedBtn">Apply Recommended Permissions</button>
+            <button class="button" id="revertBtn">Revert to Original</button>
             `;
 
         // Update the button click handler
