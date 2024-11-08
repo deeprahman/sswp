@@ -157,10 +157,65 @@ export class WPSSPermissionsTable extends HTMLElement {
         }
     }
 
+    async revertToOrignal() {
+        const updatedData = { ...this._data };
+        Object.keys(updatedData).forEach(path => {
+            if (updatedData[path].permission !== "N/A") {
+                updatedData[path].permission = updatedData[path].recommended;
+            }
+        });
+        console.log(updatedData);
+        try {
+            // Send POST request using wp.apiRequest
+            const result = await wp.apiRequest({
+                path: '/wpss/v1/file-permissions',
+                method: 'PUT',
+                headers: {
+                    'X-WP-Nonce': wpApiSettings.nonce,
+                },
+                data: {
+                    nonce: wpApiSettings.nonce,
+                    fsData:updatedData, 
+                    action: 'revert'
+                },
+
+            });
+
+            console.log("Component data",result.data);
+
+            // Update the table with the response data
+            this.data = result.fs_data || updatedData;
+
+            // Dispatch success event
+            this.dispatchEvent(new CustomEvent('permissions-updated', {
+                detail: {
+                    data: this.data,
+                    status: 'success',
+                    message: result.message || 'Permissions updated successfully'
+                },
+                bubbles: true,
+                composed: true
+            }));
+
+        } catch (error) {
+            console.error('Error updating permissions:', error);
+
+            // Dispatch error event
+            this.dispatchEvent(new CustomEvent('permissions-updated', {
+                detail: {
+                    error: error.message || 'Failed to update permissions',
+                    status: 'error',
+                    data: updatedData
+                },
+                bubbles: true,
+                composed: true
+            }));
+        }
+    }
 
     // Add a loading state to the button
-    setButtonLoading(loading) {
-        const button = this.shadowRoot.getElementById('recommendedBtn');
+    setButtonLoading(loading, buttonId = 'recommendedBtn') {
+        const button = this.shadowRoot.getElementById(buttonId);
         if (loading) {
             button.textContent = 'Applying...';
             button.disabled = true;
@@ -203,12 +258,20 @@ export class WPSSPermissionsTable extends HTMLElement {
             <button class="button" id="revertBtn">Revert to Original</button>
             `;
 
-        // Update the button click handler
+        // Update the Recommended button click handler
         this.shadowRoot.getElementById('recommendedBtn')
             .addEventListener('click', async () => {
                 this.setButtonLoading(true);
                 await this.applyRecommendedPermissions();
                 this.setButtonLoading(false);
+            });
+
+        // Update the Recommended button click handler
+        this.shadowRoot.getElementById('revertBtn')
+            .addEventListener('click', async () => {
+                this.setButtonLoading(true, 'revertBtn'); 
+                await this.revertToOrignal();
+                this.setButtonLoading(false, 'revertBtn');
             });
     }
 }
