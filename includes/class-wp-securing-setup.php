@@ -31,6 +31,11 @@ class WP_Securing_Setup
      */
     public $file_paths;
 
+    /**
+     * @var WPSS_File_Permission_Manager
+     */
+    public $fpm;
+
     public function __construct()
     {
         $this->name = __("WP Securing Setup", $this->domain);
@@ -43,8 +48,8 @@ class WP_Securing_Setup
         $this->settings = WPSS_SETTINGS;
 
         $this->file_paths = ["wp-config.php", "wp-login.php", "wp-content", "wp-content/uploads", "wp-content/plugins", "wp-content/themes"];
+        $this->set_fpm();
         $this->init();
-        $this->admin_rest();
     }
 
     public function init()
@@ -52,6 +57,7 @@ class WP_Securing_Setup
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_js']);
         $this->admin_pages();
         $this->xml_rpc_config();
+        $this->admin_rest();
     }
 
     public function enqueue_admin_js($admin_page)
@@ -82,6 +88,20 @@ class WP_Securing_Setup
         require_once($this->root .DIRECTORY_SEPARATOR. "includes/wpss-xml-rpc.php");
     }
 
+    /**
+     * Set file permission manager
+     *
+     * @return $this
+     */
+    public function set_fpm(){
+        require_once $this->root . "includes/class-wpss-file-permission-manager.php";
+        $this->fpm = new WPSS_File_Permission_Manager();
+        return $this;
+    }
+    public function get_fpm(): WPSS_File_Permission_Manager{
+        return empty($this->fpm) ? $this->set_fpm()->fpm : $this->fpm;
+    }
+
     public function get_extension_map(){
         return  (get_option($this->settings))["htaccess"]["extension_map"];
     }
@@ -92,6 +112,16 @@ class WP_Securing_Setup
 
     public function get_file_types(){
         return  (get_option($this->settings))["htaccess"]["file_types"];
+    }
+
+    public function get_original_permission(){
+
+        return  (get_option($this->settings))["file_permission"]["chk_results"];
+    }
+
+    public function get_file_paths(){
+
+        return  (get_option($this->settings))["file_permission"]["paths"];
     }
 }
 

@@ -27,12 +27,15 @@ const ROOT = __DIR__;
 
 const WP_ROOT =   ROOT . "/../../.." ;
 
+require_once ROOT . "/vendor/autoload.php";
 require_once(WP_ROOT . "/wp-load.php");
 require_once(WP_ROOT . "/wp-admin/includes/misc.php");
+
+require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/wpss-misc.php");
+require_once ROOT . "/wpss-logger.php";
 wp(); // For query
 
 
-require_once ROOT . "/vendor/autoload.php";
 
 
 
@@ -41,11 +44,12 @@ require_once ROOT . "/vendor/autoload.php";
  * WordPress-style autoloader for PHPUnit.
  *
  * @param string $class_name The name of the class to be loaded.
- * @return void
+ * @return void|null;
  */
 function wpss_autoloader($class_name)
 {
-    
+    if (false !==strpos($class_name, '-wpss-')) {return;}
+
     $class_file = 'class-' . strtolower(str_replace('_', '-', $class_name)) . '.php';
     $directories = [
         ABSPATH . 'wp-content/plugins/wp-securing-setup/includes/',

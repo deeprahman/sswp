@@ -214,13 +214,13 @@ export class WPSSPermissionsTable extends HTMLElement {
     }
 
     // Add a loading state to the button
-    setButtonLoading(loading, buttonId = 'recommendedBtn') {
+    setButtonLoading(loading, buttonId = 'recommendedBtn', buttonTxt = 'Apply Recommended Permissions') {
         const button = this.shadowRoot.getElementById(buttonId);
         if (loading) {
             button.textContent = 'Applying...';
             button.disabled = true;
         } else {
-            button.textContent = 'Apply Recommended Permissions';
+            button.textContent = buttonTxt;
             button.disabled = false;
         }
     }
@@ -271,7 +271,7 @@ export class WPSSPermissionsTable extends HTMLElement {
             .addEventListener('click', async () => {
                 this.setButtonLoading(true, 'revertBtn'); 
                 await this.revertToOrignal();
-                this.setButtonLoading(false, 'revertBtn');
+                this.setButtonLoading(false, 'revertBtn', "Revert To Original");
             });
     }
 }

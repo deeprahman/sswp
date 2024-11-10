@@ -78,6 +78,7 @@ class WPSS_File_Permission_Manager
      */
     public function check_permissions()
     {
+
         $results = [];
 
         foreach ($this->files_to_check as $file) {
@@ -219,7 +220,7 @@ class WPSS_File_Permission_Manager
      * Change the file permission to a given permission value.
      *
      * @param string $path The path to the file or directory.
-     * @param string $permission The permission to set (e.g., '644', '755').
+     * @param string $permission The permission to set (e.g., '0644', '0755').
      * @return bool True if the permission was changed successfully, false otherwise.
      */
     public function change_file_permission($path, $permission)
@@ -265,7 +266,7 @@ class WPSS_File_Permission_Manager
             $recommended_permission = $this->get_recommended_permission($abs_path);
 
             if (is_wp_error($recommended_permission)) {
-                write_log("Code: " . $recommended_permission->get_error_code() . "Message: " . $recommended_permission->get_error_message() . "Error Data: " . $recommended_permission->get_error_data());
+                error_log("Code: " . $recommended_permission->get_error_code() . "Message: " . $recommended_permission->get_error_message() . "Error Data: " . $recommended_permission->get_error_data());
                 return true;
             }
 
@@ -284,7 +285,7 @@ class WPSS_File_Permission_Manager
         if (!empty($errors)) {
             array_walk($errors, function ($error) {
                 global $wpss;
-                write_log(__("Could not change file permission: " . $error, $wpss->domain), __METHOD__);
+                error_log(__("Could not change file permission: " . $error, $wpss->domain) );
             });
         }
 

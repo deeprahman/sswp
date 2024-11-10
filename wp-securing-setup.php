@@ -10,21 +10,21 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wp-securing-setup  * Domain Path: /languages
  */
-// Check for plugin activation (optional)
+
 if (!defined('ABSPATH')) {
     exit;
 }
 
 
 // Set Plugin Root
-define("WPSS_ROOT", plugin_dir_path(__FILE__));
+define('WPSS_ROOT', plugin_dir_path(__FILE__));
 
 
 // Set Plugin URL
-define("WPSS_URL", plugin_dir_url(__FILE__));
+define('WPSS_URL', plugin_dir_url(__FILE__));
 
 // Set Domain
-define("WPSS_DOMAIN", "wp-securing-setup");
+define('WPSS_DOMAIN', "wp-securing-setup");
 
 define("WPSS_VERSION", "0.1.0");
 
@@ -71,7 +71,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-wp-securing-setup.php';
 
 try {
 // TODO: Check if WP_Securing_Setup class is available and then make instance
-        $wpss = new WP_Securing_Setup();
+    $GLOBAL['wpss'] = $wpss = new WP_Securing_Setup();
 
 } catch (\Exception $ex) {
     error_log("WPSS-ERROR: " . $ex->getMessage());

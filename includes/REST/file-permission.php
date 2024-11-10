@@ -1,6 +1,6 @@
 <?php
 
-
+require_once(WP_Securing_Setup::ROOT . "includes/wpss-file-permission.php");
 
 add_action('rest_api_init', function () {
     register_rest_route('wpss/v1', '/file-permissions', array(
@@ -28,6 +28,7 @@ function wpss_file_permissions_permission_check($request)
 
 function wpss_file_permissions_callback($request)
 {
+    global $wpss;
     $message = '';
     write_log(["Function: ".__FUNCTION__, $request]);
     switch ($request->get_method()) {
@@ -35,11 +36,17 @@ function wpss_file_permissions_callback($request)
             $fs_permission = get_file_permissions();
             break;
         case 'POST':
-            $data = $request->get_params(); // The data sent from the frontend
             $message .= do_recommended_permission();
             $fs_permission = get_file_permissions();
             break;
         case 'PUT':
+            if('revert' ==   ($request->get_params())['action']){
+                $message .= is_wp_error($res = revert_to_original()) ? $res->get_error_message() : $res;
+            }else{
+                $message = __('Action not found', $wpss->domain);
+                error_log("Function: ". __FUNCTION__ . " Message: " . $message);
+            }
+            $fs_permission = get_file_permissions(); // FIXME: Revert needs to requests sent for getiing true permsiion
             break;
         case 'PATCH':
             break;
@@ -56,35 +63,3 @@ function wpss_file_permissions_callback($request)
     return rest_ensure_response($response);
 }
 
-
-function get_file_permissions()
-{
-    global $wpss;
-    include_once $wpss->root . DIRECTORY_SEPARATOR . "includes/class-wpss-file-permission-manager.php";
-
-    $checker = new WPSS_File_Permission_Manager($wpss->file_paths);
-
-    return $checker->check_permissions();
-
-}
-
-function do_recommended_permission(): string
-{
-
-    global $wpss;
-    include_once $wpss->root . DIRECTORY_SEPARATOR . "includes/class-wpss-file-permission-manager.php";
-
-    $checker = new WPSS_File_Permission_Manager($wpss->file_paths); // TODO: Make it singleton
-    $error = $checker->change_to_recommended_permissions($wpss->file_paths);
-
-    $message = '';
-
-    if (!empty($errorss)) {
-        $e_files = implode(',', $errors);
-        $message = __("Could not change permissoin for the given files: ", $wpss->domain) . $e_files;
-       
-        
-    }
-
-    return $message;
-}

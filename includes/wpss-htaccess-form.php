@@ -2,11 +2,12 @@
 /**
  * Do .htaccess form related stuff
  */
+global $wpss;
 require_once($wpss->root . DIRECTORY_SEPARATOR . "includes/class-wpss-server-directives-apache.php");
 require_once($wpss->root . DIRECTORY_SEPARATOR . "includes/class-wpss-server-directives-factory.php");
 
 try {
-    $GLOBALS["wpss_sd"] = $sd = WPSS_Server_directives_Factory::create_server_directives();
+    $GLOBALS["wpss_sd"] = $sd = WPSS_Server_Directives_Factory::create_server_directives();
 } catch (Exception $ex) {
 }
 
