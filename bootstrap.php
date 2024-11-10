@@ -45,6 +45,7 @@ require_once ROOT . "/vendor/autoload.php";
  */
 function wpss_autoloader($class_name)
 {
+    
     $class_file = 'class-' . strtolower(str_replace('_', '-', $class_name)) . '.php';
     $directories = [
         ABSPATH . 'wp-content/plugins/wp-securing-setup/includes/',
