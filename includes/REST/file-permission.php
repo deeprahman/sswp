@@ -30,7 +30,6 @@ function wpss_file_permissions_callback($request)
 {
     global $wpss;
     $message = '';
-    write_log(["Function: ".__FUNCTION__, $request]);
     switch ($request->get_method()) {
         case 'GET':
             $fs_permission = get_file_permissions();
