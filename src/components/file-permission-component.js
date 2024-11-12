@@ -103,7 +103,7 @@ export class WPSSPermissionsTable extends HTMLElement {
     }
 
     async applyRecommendedPermissions() {
-    let fsData = this.getUpdatedData(); 
+        let fsData = this.getUpdatedData(); 
         const path = '/wpss/v1/file-permissions';
         const httpMethod = 'POST';
         const action = null;
@@ -204,9 +204,6 @@ export class WPSSPermissionsTable extends HTMLElement {
 
             this.attributeChangedCallback('data', data, result.data.fs_data);
 
-            // Update the table with the response data
-            // this.data = result.data || updatedData; // FIXME: set permsiion data:w
-            // Dispatch success event
             this.dispatchEvent(new CustomEvent('permissions-updated', {
                 detail: {
                     data: this.data,
