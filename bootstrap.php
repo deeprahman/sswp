@@ -33,10 +33,8 @@ require_once(WP_ROOT . "/wp-admin/includes/misc.php");
 
 require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/wpss-misc.php");
 require_once ROOT . "/wpss-logger.php";
-wp(); // For query
 
-
-
+require_once ROOT . "/wp-securing-setup.php";
 
 
 
@@ -48,14 +46,16 @@ wp(); // For query
  */
 function wpss_autoloader($class_name)
 {
-    if (false !==strpos($class_name, '-wpss-')) {return;}
+    // Check for 'wpss' in class name case-insensitively
+    if (!preg_match('/wpss/i', $class_name)) {
+        return;
+    }
 
     $class_file = 'class-' . strtolower(str_replace('_', '-', $class_name)) . '.php';
     $directories = [
         ABSPATH . 'wp-content/plugins/wp-securing-setup/includes/',
         ABSPATH . 'wp-content/plugins/wp-securing-setup/tests/'
     ];
-    // TOD debug
 
     foreach ($directories as $directory) {
         $file_path = $directory . $class_file;
@@ -67,11 +67,3 @@ function wpss_autoloader($class_name)
 }
 
 spl_autoload_register('wpss_autoloader');
-
-
-
-
-
-
-
-

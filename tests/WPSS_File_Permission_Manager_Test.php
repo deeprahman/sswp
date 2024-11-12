@@ -8,6 +8,7 @@ class WPSS_File_Permission_Manager_Test extends TestCase {
     private $test_files;
 
     public function setUp(): void {
+        WP();
         parent::setUp();
         
         // Create test directory and files

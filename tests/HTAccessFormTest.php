@@ -9,16 +9,8 @@ class HTAccessFormTest extends TestCase
 
     protected function setUp(): void
     {
-        global $wpss, $sd;
+        $this->sd = WPSS_Server_Directives_Factory::create_server_directives();
 
-        // Mock the global $wpss object
-        $this->wpss = $this->createMock(stdClass::class);
-        $this->wpss->settings = '_wpss_settings';
-        $wpss = $this->wpss;
-
-        // Mock the server directives object
-        $this->sd = $this->createMock(IWPSS_Server_Directives::class);
-        $sd = $this->sd;
     }
 
     public function testHandleHtaccessPostReq()
@@ -46,15 +38,10 @@ class HTAccessFormTest extends TestCase
         global $allowed_functions;
         $allowed_functions = [
             "protect-debug-log" => "protect_debug_log",
-            "allowed_files" => "protect_update_directory",
-            "protect-xml-rpc" => "protect_xml_rpc",
+            "allowed_files" => "protect_update_directory", // NOTE: make the file name consistent
             "protect-rest-endpoint" => "protect_rest_endpoint",
         ];
 
-        // Expectations
-        $this->sd->expects($this->once())->method('protect_debug_log');
-        $this->sd->expects($this->once())->method('allow_file_access');
-        $this->sd->expects($this->once())->method('protect_user_rest_apt');
 
         // Run the function
         handle_htaccess_post_req($testData);
@@ -71,15 +58,15 @@ class HTAccessFormTest extends TestCase
         $wpss = $this->wpss;
 
         $this->getFunctionMock(__NAMESPACE__, 'get_options')
-            ->expects($this->exactly(2))
-            ->willReturnOnConsecutiveCalls(
-                ['_wpss_settings' => ['htaccess' => []]],
-                ['_wpss_settings' => ['htaccess' => ['ht_form' => $testData]]]
-            );
+             ->expects($this->exactly(2))
+             ->willReturnOnConsecutiveCalls(
+                 ['_wpss_settings' => ['htaccess' => []]],
+                 ['_wpss_settings' => ['htaccess' => ['ht_form' => $testData]]]
+             );
 
         $this->getFunctionMock(__NAMESPACE__, 'update_option')
-            ->expects($this->once())
-            ->with('_wpss_settings', ['htaccess' => ['ht_form' => $testData]]);
+             ->expects($this->once())
+             ->with('_wpss_settings', ['htaccess' => ['ht_form' => $testData]]);
 
         $result = wpss_save_htaccess_option($testData);
 
@@ -101,16 +88,16 @@ class HTAccessFormTest extends TestCase
 
         // Mock the allowed_files function
         $this->getFunctionMock(__NAMESPACE__, 'allowed_files')
-            ->expects($this->once())
-            ->willReturn($testFiles);
+             ->expects($this->once())
+             ->willReturn($testFiles);
 
         $this->sd->expects($this->once())->method('allow_file_access')->with($testFiles);
         protect_update_directory($testFiles, $this->sd);
 
         // Test with empty files
         $this->getFunctionMock(__NAMESPACE__, 'allowed_files')
-            ->expects($this->once())
-            ->willReturn([]);
+             ->expects($this->once())
+             ->willReturn([]);
 
         $this->sd->expects($this->once())->method('disallow_file_access');
         protect_update_directory([], $this->sd);

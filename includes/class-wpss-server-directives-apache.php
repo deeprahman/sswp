@@ -1,15 +1,19 @@
 <?php
 
-require_once $wpss->root . DIRECTORY_SEPARATOR . "includes/class-wpss-server-directives.php";
-require_once $wpss->root . DIRECTORY_SEPARATOR . "includes/interface-wpss-server-directives.php";
+require_once WP_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . "includes/class-wpss-server-directives.php";
+require_once WP_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . "includes/interface-wpss-server-directives.php";
 require_once ABSPATH . "wp-admin/includes/misc.php";
 
 class WPSS_Server_Directives_Apache extends WPSS_Server_Directives implements IWPSS_Server_Directives
 {
 
-    public function __construct()
+    public function __construct($cli_args = [])
     {
         parent::__construct();
+
+        if(!empty($cli_args)){
+                $this->is_apache = isset($cli_args['apache']) ? $cli_args['apache']: true;
+        }
     }
 
     public function add_rule($rules, $htaccess_path = '', $marker = 'wpss'): bool
