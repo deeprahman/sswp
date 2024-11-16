@@ -121,10 +121,12 @@ function protect_debug_log($d, IWPSS_Server_Directives $sd)
 function protect_update_directory($d, IWPSS_Server_Directives $sd, &$ht_form = [])
 {
     $is_uploads_checked = array_filter($ht_form, function ($v) {
-        return (($v["name"] === 'protect-update-directory') && ($v["value"] === 'on'));
+        $is_checked = (($v["name"] === 'protect-update-directory') && ($v["value"] === 'on'));
+        var_dump(["Inside array_filter",["name" =>$v["name"], 'Value' =>$v["value"]]]);
+        return $is_checked;
     });
     $files = allowed_files($d);
-    if (empty($files) || empty($is_uploads_checked)) {
+    if ( empty($is_uploads_checked) || empty($files)) {
         $sd->disallow_file_access();
     } else {
         $sd->disallow_file_access();
