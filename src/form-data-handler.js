@@ -10,11 +10,8 @@ export function handleFormData(formData) {
 
     // Reset multiple select
     const multiSelect = document.getElementById('mySelect');
-    if (multiSelect) {
-        Array.from(multiSelect.options).forEach(option => {
-            option.selected = false;
-        });
-    }
+    resetMultiSelect(multiSelect);
+    
 
     formData.forEach(item => {
         // Skip processing for protect-update-directory checkbox directly
@@ -60,8 +57,22 @@ export function handleFormData(formData) {
     // Add event listener for protect-update-directory checkbox
     const updateDirCheckbox = document.getElementById('protect-update-directory');
     const updateDirOptions = document.getElementById('update-directory-options');
-    
+
     updateDirCheckbox.addEventListener('change', function() {
-        updateDirOptions.style.display = this.checked ? 'block' : 'none';
+        if (this.checked) {
+            updateDirOptions.style.display = 'block';
+        } else {
+            updateDirOptions.style.display = 'none';
+            resetMultiSelect(multiSelect);
+        }
     });
+}
+
+function resetMultiSelect(multiSelect){
+    // Reset multiple select
+    if (multiSelect) {
+        Array.from(multiSelect.options).forEach(option => {
+            option.selected = false;
+        });
+    }
 }

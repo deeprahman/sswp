@@ -122,7 +122,6 @@ function protect_update_directory($d, IWPSS_Server_Directives $sd, &$ht_form = [
 {
     $is_uploads_checked = array_filter($ht_form, function ($v) {
         $is_checked = (($v["name"] === 'protect-update-directory') && ($v["value"] === 'on'));
-        var_dump(["Inside array_filter",["name" =>$v["name"], 'Value' =>$v["value"]]]);
         return $is_checked;
     });
     $files = allowed_files($d);
