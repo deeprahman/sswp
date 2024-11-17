@@ -1,0 +1,30 @@
+.htaccess-form {
+  ul {
+    list-style-type: none;
+    padding: 0; // Remove default padding of the <ul>
+    margin: 0; // Remove default margin of the <ul>
+
+    li {
+      margin: 2rem 0; // Add vertical margin (up and down) to each <li> element
+    }
+  }
+
+  .button {
+    margin-top: 20px; // Optional: add margin to the button if needed
+  }
+
+}
+
+/* Select2 dropdown style */
+.select2-results__option[aria-selected="true"] {
+    background-color: green !important; /* Set background color */
+    color: white !important; /* Set font color */
+}
+
+/* Styling selected options inside the input box */
+.select2-selection__choice {
+    background-color: green !important; /* Set background color for selected options in the input */
+    color: white !important; /* Set text color for selected options */
+}
+
+

@@ -43,7 +43,7 @@ class WP_Securing_Setup
         $this->domain = WPSS_DOMAIN;
         $this->root_url = WPSS_URL;
         $this->js_handle = "wpss-primary-js";
-        $this->js_handle = "wpss-primary-css";
+        $this->css_handle = "wpss-primary-css";
         $this->nonce_action = "wpss-rest";
         $this->settings = WPSS_SETTINGS;
 

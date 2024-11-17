@@ -22,7 +22,7 @@ $file_types = $wpss->get_file_types();
             <label for="protect-update-directory">Protect Update Directory</label>
             <div id="update-directory-options" style="display: none;">
                 <h4>Only Execute the Following Files:</h4>
-                <select id="mySelect" name="allowed_files"  multiple>
+                <select id="mySelect" name="allowed_files"  multiple="multiple">
                 <?php foreach($file_types as $ext): ?>
                     <option value="<?= $ext ?>"><?= strtoupper($ext) ?></option>
                 <?php endforeach; ?> 

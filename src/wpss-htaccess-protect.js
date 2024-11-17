@@ -28,7 +28,6 @@ function setHtaccessProtected(data) {
     });
 }
 
-// Example usage
 export function checkHtaccessProtection(data) {
     setHtaccessProtected(data)
         .then(response => {

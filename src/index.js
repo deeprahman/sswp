@@ -1,7 +1,7 @@
 import "./index.scss";
 
 import "./wpss-files-permissions-request.js";
-
+import "./wpss-htaccess-form-multiselect.js";
 import "./wpss-htaccess-protect.js";
 
 import "./wpss-htaccess-protect-from.js";
