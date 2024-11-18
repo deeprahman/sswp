@@ -6,6 +6,8 @@ class WP_Securing_Setup
 
     const DOMAIN = 'wp-securing-setup';
 
+    const URL = WPSS_URL;
+
     const VERSION = "0.1.0";
 
     public $domain;
@@ -29,7 +31,13 @@ class WP_Securing_Setup
      * file-paths: for file permissions to be checked
      * @var array
      */
-    public $file_paths;
+    public $file_paths = [];
+
+    /**
+     * Recommended  permsiions for files
+     * @var array
+     */
+    public $rcmnd_perms = [];
 
     /**
      * @var WPSS_File_Permission_Manager
@@ -39,15 +47,17 @@ class WP_Securing_Setup
     public function __construct()
     {
         $this->name = __("WP Securing Setup", $this->domain);
-        $this->root = WPSS_ROOT;
-        $this->domain = WPSS_DOMAIN;
+        $this->root = SELF::ROOT;
+        $this->domain = SELF::DOMAIN;
         $this->root_url = WPSS_URL;
         $this->js_handle = "wpss-primary-js";
         $this->css_handle = "wpss-primary-css";
         $this->nonce_action = "wpss-rest";
         $this->settings = WPSS_SETTINGS;
 
-        $this->file_paths = ["wp-config.php", "wp-login.php", "wp-content", "wp-content/uploads", "wp-content/plugins", "wp-content/themes"];
+        //        $this->file_paths = ["wp-config.php", "wp-login.php", "wp-content", "wp-content/uploads", "wp-content/plugins", "wp-content/themes"];
+        $this->file_paths = $this->get_file_paths();
+        $this->rcmnd_perms = $this->get_rcmnd_perms();
         $this->set_fpm();
         $this->init();
     }
@@ -64,7 +74,7 @@ class WP_Securing_Setup
     {
         global $wpss;
         wp_enqueue_script('wp-api-request');
-        include_once WPSS_ROOT . "/includes/enqueue-scripts/wpss-enqueue-admin-scripts.php";
+        include_once $this->root . "/includes/enqueue-scripts/wpss-enqueue-admin-scripts.php";
     }
 
     public function enqueue_admin_css()
@@ -75,13 +85,13 @@ class WP_Securing_Setup
     public function admin_pages()
     {
         global $wpss;
-        include_once WPSS_ROOT . "/admin/wpss-files-permissions-tools-page.php";
+        include_once $this->root . "/admin/wpss-files-permissions-tools-page.php";
     }
 
     public function admin_rest()
     {
-        include_once WPSS_ROOT . "/includes/REST/file-permission.php";
-        include_once WPSS_ROOT . "/includes/REST/htaccess-protect.php";
+        include_once $this->root . "/includes/REST/file-permission.php";
+        include_once $this->root . "/includes/REST/htaccess-protect.php";
     }
 
     public function xml_rpc_config(){
@@ -95,11 +105,11 @@ class WP_Securing_Setup
      */
     public function set_fpm(){
         require_once $this->root . "includes/class-wpss-file-permission-manager.php";
-        $this->fpm = new WPSS_File_Permission_Manager();
+        $this->fpm = new WPSS_File_Permission_Manager($this->file_paths, $this->rcmnd_perms);
         return $this;
     }
     public function get_fpm(): WPSS_File_Permission_Manager{
-        return empty($this->fpm) ? $this->set_fpm()->fpm : $this->fpm;
+        return (!isset($this->fpm) || empty($this->fpm)) ? $this->set_fpm()->fpm : $this->fpm;
     }
 
     public function get_extension_map(){
@@ -122,6 +132,9 @@ class WP_Securing_Setup
     public function get_file_paths(){
 
         return  (get_option($this->settings))["file_permission"]["paths"];
+    }
+    public function get_rcmnd_perms(){
+        return  (get_option($this->settings))["file_permission"]["rcmnd_perms"];
     }
 }
 

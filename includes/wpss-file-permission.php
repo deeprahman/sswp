@@ -2,11 +2,9 @@
 function get_file_permissions()
 {
     global $wpss;
-    include_once $wpss->root . DIRECTORY_SEPARATOR . "includes/class-wpss-file-permission-manager.php";
 
-    $checker = new WPSS_File_Permission_Manager($wpss->file_paths);
 
-    return $checker->check_permissions();
+    return $wpss->get_fpm()->check_permissions();
 
 }
 
@@ -14,10 +12,7 @@ function do_recommended_permission(): string
 {
 
     global $wpss;
-    include_once $wpss->root . DIRECTORY_SEPARATOR . "includes/class-wpss-file-permission-manager.php";
-
-    $checker = new WPSS_File_Permission_Manager($wpss->file_paths); // TODO: Make it singleton
-    $errors = $checker->change_to_recommended_permissions($wpss->file_paths);
+    $errors = $wpss->get_fpm()->change_to_recommended_permissions($wpss->file_paths);
 
     $message = '';
 
@@ -36,7 +31,7 @@ function revert_to_original(){
 
     require_once $wpss->root . "wpss-misc.php";
     // Get the initial permission
-    $initial_perms = $wpss->get_original_permission(); // FIXME: investigate
+    $initial_perms = $wpss->get_original_permission(); 
 
     $errors = array_filter($initial_perms, function($status, $path) use($wpss){
 

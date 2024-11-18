@@ -34,7 +34,7 @@ class WPSS_File_Permission_Manager
      *
      * @param array $files_to_check List of files and directories to check permissions for.
      */
-    public function __construct($files_to_check = [])
+    public function __construct($files_to_check = [], $recommended_permissions = [])
     {
 
         global $wp_filesystem;
@@ -51,7 +51,7 @@ class WPSS_File_Permission_Manager
             'wp-content',
             'wp-content/uploads'
         ];
-        $this->recommended_permissions = [
+        $this->recommended_permissions = !empty($recommended_permissions) ? $recommended_permissions : [
             'directory' => '0755',
             'file' => '0644',
             'wp-config.php' => '0444'
