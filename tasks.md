@@ -1,5 +1,9 @@
-# 28 sep,2024
-## GET request for htaccess form
-First time the tab gets constructed:
-    - The File permission tab gets filled with data
-    - The htaccess form gets filled with data
+# TODOs:
+
+Pending:
+1. wp-config.php permission
+2. WP and Apache process owner check: Before installing check if the process owners of Web Server and PHP are the same.
+3. Think about the Plugin page.
+
+Done:
+
