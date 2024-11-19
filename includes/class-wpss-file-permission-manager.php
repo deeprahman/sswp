@@ -232,6 +232,10 @@ class WPSS_File_Permission_Manager
             return false;
         }
 
+        if( ($this->get_ownership_Info($path)['is_wp_owner'] !== true ) ){
+            return false;
+        }
+
         return $this->update_permission($path, $permission);
     }
 
