@@ -1,8 +1,7 @@
 <?php
 
-// require_once $wpss->root . DIRECTORY_SEPARATOR . "includes/traits/class-wpss-ownership-permission-trait.php";
+ require_once WP_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . "includes/traits/class-wpss-ownership-permission-trait.php";
 
-require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/includes/traits/class-wpss-ownership-permission-trait.php");
 /**
  * Class WP_File_Permission_Checker
  * 
@@ -14,10 +13,6 @@ require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/includes/traits/cla
 class WPSS_File_Permission_Manager
 {
     use WPSS_Ownership_Permission_Trait;
-    /**
-     * @var WP_Filesystem
-     */
-    protected $wp_fs;
 
     /**
      * @var array $files_to_check List of files and directories to check permissions for.
@@ -37,14 +32,10 @@ class WPSS_File_Permission_Manager
     public function __construct($files_to_check = [], $recommended_permissions = [])
     {
 
-        global $wp_filesystem;
-        if (!function_exists('WP_Filesystem')) {
-            require_once(ABSPATH . 'wp-admin/includes/file.php');
-        }
-
-        WP_Filesystem();
-
-        $this->wp_fs = $wp_filesystem;
+	    if(!$this->initializeFilesystem()){
+		    write_log("Message: " . __("Filesystem initializaion failed", WP_Securing_Setup::DOMAIN), __METHOD__);
+		    return;
+	    } 
 
         $this->files_to_check = !empty($files_to_check) ? $files_to_check : [
             'wp-config.php',
@@ -356,7 +347,7 @@ class WPSS_File_Permission_Manager
      */
     private function update_permission($path, $perms, bool $cc = true)
     {
-        $is_changed = $this->wp_fs->chmod($path, octdec($perms));
+        $is_changed = $this->wp_filesystem->chmod($path, octdec($perms));
 
 
         if (!$is_changed) {
