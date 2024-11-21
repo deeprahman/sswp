@@ -107,7 +107,7 @@ export class WPSSPermissionsTable extends HTMLElement {
         return `
             <div class="wpss-fps-legend">
                 <p>
-                    File permission is expressed using three <strong>digits</strong>: 
+                    File permission is expressed using three <strong>Octal digits</strong> abide by Linux convension: 
                     the leftmost digit represents the <strong>file-owner permissions</strong>, 
                     the middle digit represents the <strong>group permissions</strong>, 
                     and the rightmost digit represents <strong>others' permissions</strong>.
