@@ -83,8 +83,37 @@ export class WPSSPermissionsTable extends HTMLElement {
                 background: #135e96;
                 border-color: #135e96;
             }
+            .wpss-fps-legend {
+                background-color: #f9f9f9;
+                border: 1px solid #e1e1e1;
+                border-radius: 4px;
+                padding: 15px;
+                margin: 15px 0;
+                font-size: 0.9em;
+                line-height: 1.6;
+            }
+            .wpss-fps-legend p {
+                margin: 0;
+                color: #333;
+            }
+            .wpss-fps-legend strong {
+                color: #2271b1;
+            }
             </style>
             `;
+    }
+
+	getLegend(){
+        return `
+            <div class="wpss-fps-legend">
+                <p>
+                    File permission is expressed using three <strong>digits</strong>: 
+                    the leftmost digit represents the <strong>file-owner permissions</strong>, 
+                    the middle digit represents the <strong>group permissions</strong>, 
+                    and the rightmost digit represents <strong>others' permissions</strong>.
+                </p>
+            </div>
+        `;
     }
 
     formatStatus(value) {
@@ -143,26 +172,27 @@ export class WPSSPermissionsTable extends HTMLElement {
             </tr>
             `).join('');
 
-        this.shadowRoot.innerHTML = `
-        ${this.getStyles()}
-            <table class="wp-list-table widefat fixed striped">
-            <thead>
-            <tr>
-            <th>File Path</th>
-            <th>Exists</th>
-            <th>Writable</th>
-            <th>Permissions</th>
-            <th>Recommended</th>
-            <th>Comment/Error</th>
-            </tr>
-            </thead>
-            <tbody>
-            ${rows}
-            </tbody>
-            </table>
-            <button class="button" id="recommendedBtn">Apply Recommended Permissions</button>
-            <button class="button" id="revertBtn">Revert to Original</button>
-            `;
+            this.shadowRoot.innerHTML = `
+            ${this.getStyles()}
+                <table class="wp-list-table widefat fixed striped">
+                <thead>
+                <tr>
+                <th>File Path</th>
+                <th>Exists</th>
+                <th>Writable</th>
+                <th>Permissions</th>
+                <th>Recommended</th>
+                <th>Comment/Error</th>
+                </tr>
+                </thead>
+                <tbody>
+                ${rows}
+                </tbody>
+                </table>
+                ${this.getLegend()}
+                <button class="button" id="recommendedBtn">Apply Recommended Permissions</button>
+                <button class="button" id="revertBtn">Revert to Original</button>
+                `;
 
         // Update the Recommended button click handler
         this.shadowRoot.getElementById('recommendedBtn')
@@ -241,5 +271,3 @@ export class WPSSPermissionsTable extends HTMLElement {
     }
 
 }
-
-
