@@ -103,7 +103,7 @@ export class WPSSPermissionsTable extends HTMLElement {
             `;
     }
 
-	getLegend(){
+    getLegend(){
         return `
             <div class="wpss-fps-legend">
                 <p>
@@ -172,7 +172,7 @@ export class WPSSPermissionsTable extends HTMLElement {
             </tr>
             `).join('');
 
-            this.shadowRoot.innerHTML = `
+        this.shadowRoot.innerHTML = `
             ${this.getStyles()}
                 <table class="wp-list-table widefat fixed striped">
                 <thead>
