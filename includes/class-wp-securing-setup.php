@@ -28,7 +28,7 @@ class WP_Securing_Setup {
 
 	public $settings;
 	/**
-	 * file-paths: for file permissions to be checked
+	 * File-paths: for file permissions to be checked
 	 *
 	 * @var array
 	 */
