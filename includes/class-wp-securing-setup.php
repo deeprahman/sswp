@@ -107,7 +107,7 @@ class WP_Securing_Setup {
                 return $this;
         }
         public function get_fpm(): WPSS_File_Permission_Manager {
-                return ( ! isset( $this->fpm ) || empty( $this->fpm ) ) ? $this->set_fpm()->fpm : $this->fpm;
+                return empty( $this->fpm )   ? $this->set_fpm()->fpm : $this->fpm;
         }
 
         public function get_extension_map() {
