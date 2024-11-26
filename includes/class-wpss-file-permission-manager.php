@@ -32,7 +32,7 @@ class WPSS_File_Permission_Manager {
 	public function __construct( $files_to_check = array(), $recommended_permissions = array() ) {
 
 		if ( ! $this->initializeFilesystem() ) {
-			write_log( 'Message: ' . __( 'Filesystem initializaion failed', WP_Securing_Setup::DOMAIN ), __METHOD__ );
+                        wpss_logger("Info" , "File System initialization failed." , __METHOD__);
 			return;
 		}
 
@@ -378,20 +378,20 @@ class WPSS_File_Permission_Manager {
             $check = $this->check_ownership_permissions( $path );
 
             if ( is_wp_error( $check ) ) {  // TODO: Handle Error
-                write_log( 'Code' . $check->get_error_code() . ' Message: ' . $check->get_error_message(), __METHOD__ );
+                wpss_logger( 'Info'  , ' Message: ' . $check->get_error_message(), __METHOD__ );
                 return false;
             }
 
             // Access detailed information
             if ( ! $check['ownership']['is_wp_owner'] ) {
                 // Handle incorrect ownership
-                write_log( 'File not owned by WordPress user, File Name: ' . $path, __METHOD__ );
+                wpss_logger( 'Info','File not owned by WordPress user, File Name: ' . $path, __METHOD__ );
             }
 
             if ( ! empty( $check['security']['warnings'] ) ) {
                 // Handle security warnings
                 foreach ( $check['security']['warnings'] as $warning ) {
-                    write_log( 'Security warning: ' . $warning, __METHOD__ );
+                    wpss_logger( 'Info','Security warning: ' . $warning, __METHOD__ );
                 }
             }
 

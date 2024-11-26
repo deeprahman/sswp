@@ -1,6 +1,5 @@
 <?php
 
-
 add_action(
 	'rest_api_init',
 	function () {
@@ -20,8 +19,6 @@ add_action(
 				),
 			)
 		);
-		if ( function_exists( 'write_log' ) ) {
-		}
 	}
 );
 
@@ -31,9 +28,6 @@ function wpss_htaccess_protect_permission_check( $request ) {
 
 function wpss_htaccess_protect_callback( $request ) {
 	global $wpss, $allowed_methods;
-
-	if ( function_exists( 'write_log' ) ) {
-	}
 
 	try {
 		// if( !array_search($request->method, $allowed_methods,  $strict = false) === true ){
@@ -52,7 +46,7 @@ function wpss_htaccess_protect_callback( $request ) {
 				$data    = $request->get_params();
 				$form    = $data['from'];
 				$message = handle_htaccess_post_req( $form );
-				write_log( 'Message for htaccess post: ' . $message, __FILE__ );
+				wpss_logger( 'Info', 'Message for htaccess post: ' . $message, __FILE__ );
 				break;
 			case 'DELETE':
 				break;
@@ -60,7 +54,7 @@ function wpss_htaccess_protect_callback( $request ) {
 				$data    = $request->get_params();
 				$form    = $data['from'];
 				$message = handle_htaccess_post_req( $form );
-				write_log( 'Message for htaccess post: ' . $message, __FILE__ );
+				wpss_logger( 'Info', 'Message for htaccess post: ' . $message, __FILE__ );
 				break;
 		}
 

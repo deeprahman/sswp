@@ -4,7 +4,6 @@ $file_permission = include WPSS_ROOT . '/includes/settings/wpss-file-permission-
 $htaccess_form   = include WPSS_ROOT . '/includes/settings/wpss-htaccess-settings.php';
 $defaults        = array();
 
-// write_log(['_wpss_settings', $file_permission]);
 $defaults['file_permission'] = $file_permission;
 $defaults['htaccess']        = $htaccess_form;
 

@@ -1,4 +1,5 @@
 <?php
+
 global $wpss;
 // $admin_page passed from included page
 if ( 'tools_page_wpss-files-permission' !== $admin_page ) {
@@ -16,13 +17,13 @@ $index_css = WPSS_URL . 'build/index.css';
 
 if ( ! file_exists( $index_js ) ) {
 	new WP_Error( 'JS File does not exists' );
-	write_log( 'JS File does not exists' );
+	wpss_logger( 'Info', 'JS File does not exists', __FILE__ );
 }
 
 if ( ! file_exists( $index_css ) ) {
 	new WP_Error( 'CSS File does not exists' );
 
-	write_log( 'CSS File does not exists' );
+	wpss_logger( 'Info', 'CSS File does not exists', __FILE__ );
 }
 
 $asset = include $asset_file;
