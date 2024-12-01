@@ -9,7 +9,7 @@ function wpss_files_permission_page()
     // Add the page to the Tools menu
     add_management_page(
         __('Files Permission', WP_Securing_Setup::DOMAIN), // Page title
-        __('Files Permission', 'wpss'), // Menu title
+        __('Files Permission', WP_Securing_Setup::DOMAIN), // Menu title
         'manage_options', // Required capability
         'wpss-files-permission', // Page slug
         'file_permission_page_html' // Callback function
