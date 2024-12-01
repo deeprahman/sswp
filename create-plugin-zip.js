@@ -45,7 +45,8 @@ const filesToInclude = [
     'wpss-logger.php',
     'wp-securing-setup.php',
     'wpss-misc.php',
-	'readme.txt'
+	'readme.txt',
+	'languages'
 ];
 
 // Add files and directories to the archive
