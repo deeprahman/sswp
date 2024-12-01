@@ -1,17 +1,19 @@
 <?php
+
 /**
- * Plugin Name: Secure Setup (Simple and Effective User Protection)
+ * Plugin Name: Secure Setup
  * Plugin URI: https://deeprahman.com/wp-securing-setup
  * Description: This plugin helps secure your WordPress website by implementing various security measures.
- * Version: 0.1.0
+ * Version: 1.0.0
  * Author: Deep
  * Author URI: https://deeprahman.com/
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: wp-securing-setup  * Domain Path: /languages
+ * Text Domain: wp-secure-setup
+ * Domain Path: /languages
  */
 
-if (! defined('ABSPATH') ) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
@@ -48,7 +50,7 @@ function wpss_activate()
 
     $server_requirement = $is_litespeed || $is_apache;
 
-    if (! $server_requirement ) {
+    if (! $server_requirement) {
         deactivate_plugins(plugin_basename(__FILE__));
         wp_die('This plugin requires Apache 2.4 or Lightspeed server, . Please contact your hosting provider.', 'Plugin Activation Error', array( 'back_link' => true ));
     }
@@ -68,8 +70,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-wp-securing-setup.php';
 
 try {
     $GLOBAL['wpss'] = $wpss = new WP_Securing_Setup();
-
-} catch ( \Exception $ex ) {
+} catch (\Exception $ex) {
     error_log('WPSS-ERROR: ' . $ex->getMessage());
     return new WP_Error(
         'wpss_error',
