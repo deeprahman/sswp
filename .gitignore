@@ -18,4 +18,5 @@ node_modules
 **/[0-9]*
 build/
 .idea/
+dist/
 src/dummy-data.js
