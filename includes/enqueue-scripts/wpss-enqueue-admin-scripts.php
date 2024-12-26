@@ -60,9 +60,8 @@ function enqueue_jquery_scripts()
     // Enqueue jQuery UI Tabs
     wp_enqueue_script('jquery-ui-tabs');
 
-    // Optionally, enqueue the jQuery UI CSS if necessary
-    wp_enqueue_style('jquery-ui-theme', 'https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css', [], "1.13.3");
 }
+
 
 
 enqueue_jquery_scripts();

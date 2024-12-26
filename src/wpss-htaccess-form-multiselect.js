@@ -1,9 +1,8 @@
 import $ from 'jquery';
 import "select2/dist/js/select2.min";
-import 'jquery-ui/ui/widgets/checkboxradio';  // Explicitly import checkboxradio
-import 'jquery-ui/ui/widgets/button';         // For buttons
-import 'jquery-ui/ui/widgets/selectmenu';     // For select menus
-import 'jquery-ui/themes/base/all.css'; 
+//import 'jquery-ui/ui/widgets/checkboxradio';  // Explicitly import checkboxradio
+//import 'jquery-ui/ui/widgets/button';         // For buttons
+//import 'jquery-ui/ui/widgets/selectmenu';     // For select menus
 
 $(document).ready(function () {
     // Style checkboxes as buttons
