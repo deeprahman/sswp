@@ -1,5 +1,5 @@
 === Secure Setup ===
-Contributors: Deep Rahman, Shamim Akhter
+Contributors: deeprahman, Shamim Akhter
 Tags: security, file permissions, .htaccess, WordPress security, REST API
 Requires at least: 5.2
 Tested up to: 6.7
@@ -21,6 +21,9 @@ Enhance WordPress security by setting recommended file permissions, securing .ht
    - The `users` endpoint in the REST API.
 
 The plugin is user-friendly and includes an easy-to-access settings page.
+
+You can view or contribute to the plugin's source code on GitHub:  
+[GitHub Repository]https://github.com/deeprahman/wpss)
 
 == Features ==
 - Set directory and subdirectory permissions for enhanced security.
