@@ -1,384 +1,442 @@
 <?php
 
-class WPSS_Apache_Directives_Validator {
+class WPSS_Apache_Directives_Validator
+{
 
-	// Define a list of known directives for basic validation
-	private $directives = array(
-		'ServerName',
-		'DocumentRoot',
-		'DirectoryIndex',
-		'AllowOverride',
-		'Require',
-		'Options',
-		'ErrorLog',
-		'CustomLog',
-		'Listen',
-		'VirtualHost',
-		'RewriteEngine',
-		'RewriteRule',
-		'SSLEngine',
-		'SSLProtocol',
-		'SSLCertificateFile',
-		'SSLCertificateKeyFile',
-		'Order',
-		'Allow',
-		'Deny',
-		'RewriteCond',
-		// Add more Apache directives as needed
-	);
+    // Define a list of known directives for basic validation
+    private $directives = array(
+    'ServerName',
+    'DocumentRoot',
+    'DirectoryIndex',
+    'AllowOverride',
+    'Require',
+    'Options',
+    'ErrorLog',
+    'CustomLog',
+    'Listen',
+    'VirtualHost',
+    'RewriteEngine',
+    'RewriteRule',
+    'SSLEngine',
+    'SSLProtocol',
+    'SSLCertificateFile',
+    'SSLCertificateKeyFile',
+    'Order',
+    'Allow',
+    'Deny',
+    'RewriteCond',
+    'SetEnvIfNoCase'
+    // Add more Apache directives as needed
+    );
 
-	// Define a list of known block directives
-	private $blockDirectives = array(
-		'Files',
-		'FilesMatch',
-		'Directory',
-		'DirectoryMatch',
-		'Location',
-		'LocationMatch',
-		// Add more block directives as needed
-	);
+    // Define a list of known block directives
+    private $blockDirectives = array(
+    'Files',
+    'FilesMatch',
+    'Directory',
+    'DirectoryMatch',
+    'Location',
+    'LocationMatch',
+    // Add more block directives as needed
+    );
 
-	// Property to store the last validation message
-	private $lastValidationMessage = '';
+    // Property to store the last validation message
+    private $lastValidationMessage = '';
 
-	/**
-	 * Main validation method.
-	 * Determines if the input is a block or single directive and validates accordingly.
-	 *
-	 * @param string $input The directive string to validate.
-	 * @return string Validation result message.
-	 */
-	public function validate( $input ) {
-		// Normalize line endings and trim whitespace
-		$input = trim( preg_replace( '/\r\n|\r|\n/', "\n", $input ) );
+    /**
+     * Main validation method.
+     * Determines if the input is a block or single directive and validates accordingly.
+     *
+     * @param  string $input The directive string to validate.
+     * @return string Validation result message.
+     */
+    public function validate( $input )
+    {
+        // Normalize line endings and trim whitespace
+        $input = trim(preg_replace('/\r\n|\r|\n/', "\n", $input));
 
-		// Check if it's a block directive using regex
-		if ( preg_match( '/^\s*<(\w+)\s+(.*?)>\s*(.*?)\s*<\/\1>\s*$/s', $input, $matches ) ) {
-			$blockName    = $matches[1];
-			$blockArg     = $matches[2];
-			$innerContent = $matches[3];
+        // Check if it's a block directive using regex
+        if (preg_match('/^\s*<(\w+)\s+(.*?)>\s*(.*?)\s*<\/\1>\s*$/s', $input, $matches) ) {
+            $blockName    = $matches[1];
+            $blockArg     = $matches[2];
+            $innerContent = $matches[3];
 
-			$result = $this->validateBlockDirective( $blockName, $blockArg, $innerContent );
-		} else {
-			// Assume it's single or multiple directives
-			$result = $this->validateMultipleDirectives( $input );
-		}
+            $result = $this->validateBlockDirective($blockName, $blockArg, $innerContent);
+        } else {
+            // Assume it's single or multiple directives
+            $result = $this->validateMultipleDirectives($input);
+        }
 
-		// Store the last validation message
-		$this->lastValidationMessage = $result;
+        // Store the last validation message
+        $this->lastValidationMessage = $result;
 
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * Public method to check if the given directive is valid.
-	 *
-	 * @param string $input The directive string to validate.
-	 * @return bool True if valid, False otherwise.
-	 */
-	public function is_valid( $input ) {
-		// Validate the input directive string
-		$validationResult = $this->validate( $input );
+    /**
+     * Public method to check if the given directive is valid.
+     *
+     * @param  string $input The directive string to validate.
+     * @return bool True if valid, False otherwise.
+     */
+    public function is_valid( $input )
+    {
+        // Validate the input directive string
+        $validationResult = $this->validate($input);
 
-		// Log the input and the validation result for debugging
+        // Log the input and the validation result for debugging
 
-		// Check if the validation result contains "Invalid"
-		if ( preg_match( '/\bInvalid\b/i', $validationResult ) ) {
-			// Log that the result was invalid
-			return false;
-		}
+        // Check if the validation result contains "Invalid"
+        if (preg_match('/\bInvalid\b/i', $validationResult) ) {
+            // Log that the result was invalid
+            return false;
+        }
 
-		// If no "Invalid" is found, return true for valid input
-		return true;
-	}
+        // If no "Invalid" is found, return true for valid input
+        return true;
+    }
 
-	/**
-	 * Get the last validation message.
-	 *
-	 * @return string The last validation message.
-	 */
-	public function get_last_validation_message() {
-		return $this->lastValidationMessage;
-	}
+    /**
+     * Get the last validation message.
+     *
+     * @return string The last validation message.
+     */
+    public function get_last_validation_message()
+    {
+        return $this->lastValidationMessage;
+    }
 
-	/**
-	 * Validate multiple single-line directives.
-	 *
-	 * @param string $input The multi-line directive string.
-	 * @return string Concatenated validation messages.
-	 */
-	private function validateMultipleDirectives( $input ) {
-		$lines    = explode( "\n", $input );
-		$messages = array();
+    /**
+     * Validate multiple single-line directives.
+     *
+     * @param  string $input The multi-line directive string.
+     * @return string Concatenated validation messages.
+     */
+    private function validateMultipleDirectives( $input )
+    {
+        $lines    = explode("\n", $input);
+        $messages = array();
 
-		foreach ( $lines as $lineNumber => $line ) {
-			$line = trim( $line );
-			if ( $line === '' || strpos( $line, '#' ) === 0 ) {
-				continue; // Skip empty lines and comments
-			}
+        foreach ( $lines as $lineNumber => $line ) {
+            $line = trim($line);
+            if ($line === '' || strpos($line, '#') === 0 ) {
+                continue; // Skip empty lines and comments
+            }
 
-			// Validate single directive
-			$result     = $this->validateDirectiveSyntax( $line );
-			$messages[] = 'Line ' . ( $lineNumber + 1 ) . ': ' . $result;
-		}
+            // Validate single directive
+            $result     = $this->validateDirectiveSyntax($line);
+            $messages[] = 'Line ' . ( $lineNumber + 1 ) . ': ' . $result;
+        }
 
-		return implode( "\n", $messages );
-	}
+        return implode("\n", $messages);
+    }
 
-	/**
-	 * Validate a single directive syntax.
-	 *
-	 * @param string $directive The directive line to validate.
-	 * @return string Validation result message.
-	 */
-	public function validateDirectiveSyntax( $directive ) {
-		// Regex to capture directive name and value
-		if ( preg_match( '/^\s*([A-Za-z]+)\s+(.*)$/', $directive, $matches ) ) {
-			$directiveName  = $matches[1];
-			$directiveValue = trim( $matches[2] );
+    /**
+     * Validate a single directive syntax.
+     *
+     * @param  string $directive The directive line to validate.
+     * @return string Validation result message.
+     */
+    public function validateDirectiveSyntax( $directive )
+    {
+        // Regex to capture directive name and value
+        if (preg_match('/^\s*([A-Za-z]+)\s+(.*)$/', $directive, $matches) ) {
+            $directiveName  = $matches[1];
+            $directiveValue = trim($matches[2]);
 
-			if ( in_array( $directiveName, $this->directives ) ) {
-				// Validate the directive value based on its type
-				return $this->validateDirectiveValue( $directiveName, $directiveValue );
-			} else {
-				return "Unknown directive: '$directiveName'.";
-			}
-		} else {
-			return "Invalid syntax. Expected format: 'DirectiveName DirectiveValue'.";
-		}
-	}
+            if (in_array($directiveName, $this->directives) ) {
+                // Validate the directive value based on its type
+                return $this->validateDirectiveValue($directiveName, $directiveValue);
+            } else {
+                return "Unknown directive: '$directiveName'.";
+            }
+        } else {
+            return "Invalid syntax. Expected format: 'DirectiveName DirectiveValue'.";
+        }
+    }
 
-	/**
-	 * Validate the value of a specific directive.
-	 *
-	 * @param string $name  The name of the directive.
-	 * @param string $value The value of the directive.
-	 * @return string Validation result message.
-	 */
-	private function validateDirectiveValue( $name, $value ) {
-		switch ( strtolower( $name ) ) {
-			case 'servername':
-				return $this->validateDomainName( $value );
-			case 'documentroot':
-				return $this->validatePath( $value );
-			case 'require':
-				return $this->validateRequireDirective( $value );
-			case 'listen':
-				return $this->validatePort( $value );
-			case 'rewriterule':
-				return $this->validateRewriteRule( $value );
-			case 'order':
-				return $this->validateOrderDirective( $value );
-			case 'allow':
-				return $this->validateAllowDirective( $value );
-			case 'deny':
-				return $this->validateDenyDirective( $value );
-			// Add more directive cases as needed
-			default:
-				return "Valid syntax for directive '$name'.";
-		}
-	}
+    /**
+     * Validate the value of a specific directive.
+     *
+     * @param  string $name  The name of the directive.
+     * @param  string $value The value of the directive.
+     * @return string Validation result message.
+     */
+    private function validateDirectiveValue( $name, $value )
+    {
+        switch ( strtolower($name) ) {
+        case 'servername':
+            return $this->validateDomainName($value);
+        case 'documentroot':
+            return $this->validatePath($value);
+        case 'require':
+            return $this->validateRequireDirective($value);
+        case 'listen':
+            return $this->validatePort($value);
+        case 'rewriterule':
+            return $this->validateRewriteRule($value);
+        case 'order':
+            return $this->validateOrderDirective($value);
+        case 'allow':
+            return $this->validateAllowDirective($value);
+        case 'deny':
+            return $this->validateDenyDirective($value);
+            // Add more directive cases as needed
+        default:
+            return "Valid syntax for directive '$name'.";
+        }
+    }
 
-	/**
-	 * Validate block directives like <Files> or <FilesMatch>.
-	 *
-	 * @param string $blockName    The name of the block directive.
-	 * @param string $blockArg     The argument of the block directive.
-	 * @param string $innerContent The inner content of the block.
-	 * @return string Validation result message.
-	 */
-	private function validateBlockDirective( $blockName, $blockArg, $innerContent ) {
-		// Check if blockName is recognized
-		if ( ! in_array( $blockName, $this->blockDirectives ) ) {
-			return "Unknown block directive: <$blockName>.";
-		}
+    /**
+     * Validate block directives like <Files> or <FilesMatch>.
+     *
+     * @param  string $blockName    The name of the block directive.
+     * @param  string $blockArg     The argument of the block directive.
+     * @param  string $innerContent The inner content of the block.
+     * @return string Validation result message.
+     */
+    private function validateBlockDirective( $blockName, $blockArg, $innerContent )
+    {
+        // Check if blockName is recognized
+        if (! in_array($blockName, $this->blockDirectives) ) {
+            return "Unknown block directive: <$blockName>.";
+        }
 
-		// Validate block argument based on block type
-		if ( $blockName === 'Files' ) {
-			if ( ! $this->validateFilename( $blockArg ) ) {
-				return "Invalid argument for <$blockName>: '$blockArg'.";
-			}
-		} elseif ( $blockName === 'FilesMatch' ) {
-			if ( ! $this->validateRegex( $blockArg ) ) {
-				return "Invalid regex pattern for <$blockName>: '$blockArg'.";
-			}
-		}
-		// Add additional block directive argument validations as needed
+        // Validate block argument based on block type
+        if ($blockName === 'Files' ) {
+            if (! $this->validateFilename($blockArg) ) {
+                return "Invalid argument for <$blockName>: '$blockArg'.";
+            }
+        } elseif ($blockName === 'FilesMatch' ) {
+            if (! $this->validateRegex($blockArg) ) {
+                return "Invalid regex pattern for <$blockName>: '$blockArg'.";
+            }
+        }
+        // Add additional block directive argument validations as needed
 
-		// Split inner content into lines and validate each directive
-		$lines = explode( "\n", $innerContent );
-		foreach ( $lines as $lineNumber => $line ) {
-			$line = trim( $line );
-			if ( $line === '' || strpos( $line, '#' ) === 0 ) {
-				continue; // Skip empty lines and comments
-			}
+        // Split inner content into lines and validate each directive
+        $lines = explode("\n", $innerContent);
+        foreach ( $lines as $lineNumber => $line ) {
+            $line = trim($line);
+            if ($line === '' || strpos($line, '#') === 0 ) {
+                continue; // Skip empty lines and comments
+            }
 
-			// Validate inner directive
-			$result = $this->validateDirectiveSyntax( $line );
-			if ( strpos( $result, 'Valid' ) !== 0 ) { // If not starting with 'Valid'
-				return "Invalid directive inside <$blockName> at inner line " . ( $lineNumber + 1 ) . ": $result";
-			}
-		}
+            // Validate inner directive
+            $result = $this->validateDirectiveSyntax($line);
+            if (strpos($result, 'Valid') !== 0 ) { // If not starting with 'Valid'
+                return "Invalid directive inside <$blockName> at inner line " . ( $lineNumber + 1 ) . ": $result";
+            }
+        }
 
-		return "Valid block directive: <$blockName>.";
-	}
+        return "Valid block directive: <$blockName>.";
+    }
 
-	/**
-	 * Validate a filename pattern for the <Files> directive.
-	 *
-	 * @param string $filename The filename pattern to validate.
-	 * @return bool True if valid, false otherwise.
-	 */
-	private function validateFilename( $filename ) {
-		// Allow wildcard characters *, ?, etc.
-		return preg_match( '/^[\w.\-*?]+$/', $filename ) === 1;
-	}
+    /**
+     * Validate a filename pattern for the <Files> directive.
+     *
+     * @param  string $filename The filename pattern to validate.
+     * @return bool True if valid, false otherwise.
+     */
+    private function validateFilename( $filename )
+    {
+        // Allow wildcard characters *, ?, etc.
+        return preg_match('/^[\w.\-*?]+$/', $filename) === 1;
+    }
 
-	/**
-	 * Validate a regular expression pattern.
-	 *
-	 * @param string $pattern The regex pattern to validate.
-	 * @return bool True if valid, false otherwise.
-	 */
-	private function validateRegex( $pattern ) {
-		// Attempt to compile the regex
-		return @preg_match( '/' . $pattern . '/', '' ) !== false;
-	}
+    /**
+     * Validate a regular expression pattern.
+     *
+     * @param  string $pattern The regex pattern to validate.
+     * @return bool True if valid, false otherwise.
+     */
+    private function validateRegex( $pattern )
+    {
+        // Attempt to compile the regex
+        return @preg_match('/' . $pattern . '/', '') !== false;
+    }
 
-	/**
-	 * Validate a domain name for the ServerName directive.
-	 *
-	 * @param string $domain The domain name to validate.
-	 * @return string Validation result message.
-	 */
-	private function validateDomainName( $domain ) {
-		if ( filter_var( $domain, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME ) ) {
-			return "Valid ServerName: '$domain'.";
-		} else {
-			return "Invalid ServerName: '$domain'.";
-		}
-	}
+    /**
+     * Validate a domain name for the ServerName directive.
+     *
+     * @param  string $domain The domain name to validate.
+     * @return string Validation result message.
+     */
+    private function validateDomainName( $domain )
+    {
+        if (filter_var($domain, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) ) {
+            return "Valid ServerName: '$domain'.";
+        } else {
+            return "Invalid ServerName: '$domain'.";
+        }
+    }
 
-	/**
-	 * Validate a filesystem path for the DocumentRoot directive.
-	 *
-	 * @param string $path The path to validate.
-	 * @return string Validation result message.
-	 */
-	private function validatePath( $path ) {
-		// Check if the path exists or follows a valid pattern
-		if ( is_dir( $path ) || preg_match( '/^\/[a-zA-Z0-9_\/.\-]+$/', $path ) ) {
-			return "Valid DocumentRoot: '$path'.";
-		} else {
-			return "Invalid DocumentRoot: '$path'.";
-		}
-	}
+    /**
+     * Validate a filesystem path for the DocumentRoot directive.
+     *
+     * @param  string $path The path to validate.
+     * @return string Validation result message.
+     */
+    private function validatePath( $path )
+    {
+        // Check if the path exists or follows a valid pattern
+        if (is_dir($path) || preg_match('/^\/[a-zA-Z0-9_\/.\-]+$/', $path) ) {
+            return "Valid DocumentRoot: '$path'.";
+        } else {
+            return "Invalid DocumentRoot: '$path'.";
+        }
+    }
 
-	/**
-	 * Validate the Require directive.
-	 *
-	 * @param string $value The value of the Require directive.
-	 * @return string Validation result message.
-	 */
-	private function validateRequireDirective( $value ) {
-		$allowedValues = array( 'all granted', 'all denied', 'valid-user', 'user', 'group', 'expr' );
-		foreach ( $allowedValues as $allowed ) {
-			if ( stripos( $value, $allowed ) !== false ) {
-				return 'Valid Require directive.';
-			}
-		}
-		return "Invalid Require directive value: '$value'.";
-	}
+    /**
+     * Validate the Require directive.
+     *
+     * @param  string $value The value of the Require directive.
+     * @return string Validation result message.
+     */
+    private function validateRequireDirective( $value )
+    {
+        $allowedValues = array( 'all granted', 'all denied', 'valid-user', 'user', 'group', 'expr' );
+        foreach ( $allowedValues as $allowed ) {
+            if (stripos($value, $allowed) !== false ) {
+                return 'Valid Require directive.';
+            }
+        }
+        return "Invalid Require directive value: '$value'.";
+    }
 
-	/**
-	 * Validate port numbers for the Listen directive.
-	 *
-	 * @param string $value The port number to validate.
-	 * @return string Validation result message.
-	 */
-	private function validatePort( $value ) {
-		if ( is_numeric( $value ) && $value > 0 && $value <= 65535 ) {
-			return "Valid Listen port: '$value'.";
-		} else {
-			return "Invalid Listen port: '$value'.";
-		}
-	}
+    /**
+     * Validate port numbers for the Listen directive.
+     *
+     * @param  string $value The port number to validate.
+     * @return string Validation result message.
+     */
+    private function validatePort( $value )
+    {
+        if (is_numeric($value) && $value > 0 && $value <= 65535 ) {
+            return "Valid Listen port: '$value'.";
+        } else {
+            return "Invalid Listen port: '$value'.";
+        }
+    }
 
-	/**
-	 * Validate the RewriteRule directive.
-	 *
-	 * @param string $value The value of the RewriteRule directive.
-	 * @return string Validation result message.
-	 */
-	private function validateRewriteRule( $value ) {
-		// Basic validation: Ensure it has two quoted parts
-		if ( preg_match(
-			'/^([^\s]+)\s+([^\s]+)(\s+\[([A-Za-z,=0-9]+)\])?$/
-',
-			$value
-		) ) {
-			return 'Valid RewriteRule.';
-		} else {
-			return 'Invalid RewriteRule syntax.';
-		}
-	}
+    /**
+     * Validate the RewriteRule directive with enhanced pattern support.
+     *
+     * @param  string $value The value of the RewriteRule directive.
+     * @return string Validation result message.
+     */
+    private function validateRewriteRule($value)
+    {
+        // Trim any extra whitespace
+        $value = trim($value);
+    
+        // Pattern for environment variable settings and flags
+        $flagsPattern = '\\[(?:[A-Za-z,=0-9]+|E=[a-zA-Z_]+:[^,\\]]+|E=[a-zA-Z_]+:%\\{[A-Z_]+\\}(?:\\+[0-9]+)?|R=[0-9]+|NS|L)+\\]';
+    
+        // Pattern for basic path components
+        $pathPattern = '(?:[\\^_0-9a-zA-Z-]+/?)?';
+    
+        // Combined patterns for different types of RewriteRules
+        $patterns = [
+        // Simple dash with flags: ^ - [flags]
+        '#^\\^\\s+-\\s+' . $flagsPattern . '$#',
+        
+        // Basic path with optional subdirectory: ^([_0-9a-zA-Z-]+/)?(pattern) target [flags]
+        '#^\\^?' . $pathPattern . '\\((.*?)\\)\\s+\\$[0-9]+\\s+(?:' . $flagsPattern . ')?$#',
+        
+        // Direct path to file: ^pattern$ target [flags]
+        '#^\\^?' . $pathPattern . '.*?\\s+(?:[-\\w.\\/]+|\\$[0-9]+)\\s+(?:' . $flagsPattern . ')?$#',
+        
+        // Simple redirect: . target [flags]
+        '#^\\.\\s+[-\\w.\\/]+\\s+(?:' . $flagsPattern . ')?$#',
+        
+        // Original basic pattern
+        '#^([^\\s]+)\\s+([^\\s]+)(?:\\s+\\[([A-Za-z,=0-9]+)\\])?$#'
+        ];
+    
+        // Test against all patterns
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $value)) {
+                // Additional validation for environment variables
+                if (strpos($value, 'E=') !== false) {
+                    // Validate environment variable syntax
+                    if (!preg_match('#E=[a-zA-Z_]+:(?:%\\{[A-Z_]+\\}(?:\\+[0-9]+)?|[^,\\]]+)#', $value)) {
+                        return 'Invalid environment variable syntax in RewriteRule.';
+                    }
+                }
+            
+                // Additional validation for status codes
+                if (strpos($value, 'R=') !== false) {
+                    if (!preg_match('#R=(?:301|302|303|404|410|429|500|503)#', $value)) {
+                        return 'Invalid redirect status code in RewriteRule.';
+                    }
+                }
+            
+                return 'Valid RewriteRule.';
+            }
+        }
+    
+        return 'Invalid RewriteRule syntax.';
+    }
 
-	/**
-	 * Validate the Order directive.
-	 *
-	 * @param string $value The value of the Order directive.
-	 * @return string Validation result message.
-	 */
-	private function validateOrderDirective( $value ) {
-		$allowedOrders = array( 'allow,deny', 'deny,allow' );
-		if ( in_array( strtolower( $value ), $allowedOrders ) ) {
-			return 'Valid Order directive.';
-		} else {
-			return "Invalid Order directive value: '$value'.";
-		}
-	}
 
-	/**
-	 * Validate the Allow directive.
-	 *
-	 * @param string $value The value of the Allow directive.
-	 * @return string Validation result message.
-	 */
-	private function validateAllowDirective( $value ) {
-		// Example formats: 'from all', 'from 192.168.1.0/24'
-		if ( preg_match( '/^from\s+(.+)$/i', $value, $matches ) ) {
-			$fromValue = trim( $matches[1] );
-			if (
-				strcasecmp( $fromValue, 'all' ) === 0 ||
-				filter_var( $fromValue, FILTER_VALIDATE_IP ) ||
-				preg_match( '/^\d{1,3}(\.\d{1,3}){3}\/\d+$/', $fromValue )
-			) {
-				return 'Valid Allow directive.';
-			}
-		}
-		return "Invalid Allow directive value: '$value'.";
-	}
+    /**
+     * Validate the Order directive.
+     *
+     * @param  string $value The value of the Order directive.
+     * @return string Validation result message.
+     */
+    private function validateOrderDirective( $value )
+    {
+        $allowedOrders = array( 'allow,deny', 'deny,allow' );
+        if (in_array(strtolower($value), $allowedOrders) ) {
+            return 'Valid Order directive.';
+        } else {
+            return "Invalid Order directive value: '$value'.";
+        }
+    }
 
-	/**
-	 * Validate the Deny directive.
-	 *
-	 * @param string $value The value of the Deny directive.
-	 * @return string Validation result message.
-	 */
-	private function validateDenyDirective( $value ) {
-		// Example formats: 'from all', 'from 192.168.1.0/24'
-		if ( preg_match( '/^from\s+(.+)$/i', $value, $matches ) ) {
-			$fromValue = trim( $matches[1] );
-			if (
-				strcasecmp( $fromValue, 'all' ) === 0 ||
-				filter_var( $fromValue, FILTER_VALIDATE_IP ) ||
-				preg_match( '/^\d{1,3}(\.\d{1,3}){3}\/\d+$/', $fromValue )
-			) {
-				return 'Valid Deny directive.';
-			}
-		}
-		return "Invalid Deny directive value: '$value'.";
-	}
+    /**
+     * Validate the Allow directive.
+     *
+     * @param  string $value The value of the Allow directive.
+     * @return string Validation result message.
+     */
+    private function validateAllowDirective( $value )
+    {
+        // Example formats: 'from all', 'from 192.168.1.0/24'
+        if (preg_match('/^from\s+(.+)$/i', $value, $matches) ) {
+            $fromValue = trim($matches[1]);
+            if (strcasecmp($fromValue, 'all') === 0 
+                || filter_var($fromValue, FILTER_VALIDATE_IP) 
+                || preg_match('/^\d{1,3}(\.\d{1,3}){3}\/\d+$/', $fromValue)
+            ) {
+                return 'Valid Allow directive.';
+            }
+        }
+        return "Invalid Allow directive value: '$value'.";
+    }
+
+    /**
+     * Validate the Deny directive.
+     *
+     * @param  string $value The value of the Deny directive.
+     * @return string Validation result message.
+     */
+    private function validateDenyDirective( $value )
+    {
+        // Example formats: 'from all', 'from 192.168.1.0/24'
+        if (preg_match('/^from\s+(.+)$/i', $value, $matches) ) {
+            $fromValue = trim($matches[1]);
+            if (strcasecmp($fromValue, 'all') === 0 
+                || filter_var($fromValue, FILTER_VALIDATE_IP) 
+                || preg_match('/^\d{1,3}(\.\d{1,3}){3}\/\d+$/', $fromValue)
+            ) {
+                return 'Valid Deny directive.';
+            }
+        }
+        return "Invalid Deny directive value: '$value'.";
+    }
 }
 
 
@@ -387,10 +445,10 @@ class WPSS_Apache_Directives_Validator {
  * Example Usage
  *
 if ($validator->is_valid($input)) {
-	// Directive is valid
+    // Directive is valid
 } else {
-	// Directive is invalid
-	echo $validator->get_last_validation_message();
+    // Directive is invalid
+    echo $validator->get_last_validation_message();
 }
  */
 
@@ -481,7 +539,13 @@ if ($validator->is_valid($input)) {
 // echo $validator->get_last_validation_message();
 // }
 // echo "\n\n";
-/*************************** Response Above **********************
+
+
+
+
+
+/***************************
+ * Response Above **********************
 Validating Single Directives:
 All single directives are valid.
 
@@ -495,4 +559,5 @@ Invalid directive inside <FilesMatch> at inner line 2: Unknown directive: 'Inval
 Validating <FilesMatch> Block Directive with Valid Directives:
 The <FilesMatch> block directive is valid.
 
-===================================*/
+===================================
+*/
