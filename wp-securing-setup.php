@@ -2,14 +2,14 @@
 
 /**
  * Plugin Name: Secure Setup
- * Plugin URI: https://deeprahman.com/wp-securing-setup
+ * Plugin URI: https://deeprahman.com/wp-secure-setup
  * Description: This plugin helps secure your WordPress website by implementing various security measures.
  * Version: 1.0.0
  * Author: Deep
  * Author URI: https://deeprahman.com/
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: wp-secure-setup
+ * Text Domain: secure-setup
  * Domain Path: /languages
  */
 
@@ -26,13 +26,14 @@ define('WPSS_ROOT', plugin_dir_path(__FILE__));
 define('WPSS_URL', plugin_dir_url(__FILE__));
 
 // Set Domain
-define('WPSS_DOMAIN', 'wp-securing-setup');
+define('WPSS_DOMAIN', 'secure-setup');
 
 define('WPSS_VERSION', '0.1.0');
 
 define('WPSS_SETTINGS', '_wpss_settings');
 
 require_once WPSS_ROOT . '/wpss-logger.php';
+require_once WPSS_ROOT . '/wpss-misc.php';
 
 $is_litespeed = strpos($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false;
 

@@ -14,7 +14,6 @@ try {
 $GLOBALS['allowed_functions'] = $allowed_functions = array(
     'protect-debug-log'     => 'protect_debug_log',
     'allowed_files'         => 'protect_update_directory', // NOTE: make the file name consistent
-    'protect-rest-endpoint' => 'protect_rest_endpoint',
 );
 
 /**
@@ -31,9 +30,7 @@ $GLOBALS['allowed_functions'] = $allowed_functions = array(
  */
 function handle_htaccess_post_req( $data )
 {
-    global $wpss;
     $sd = $GLOBALS['wpss_sd'];
-
     $GLOBALS['htaccess_settings'] = $htaccess_from_settings = wpss_save_htaccess_option($data);
     // Walk through the $data array
     foreach ( $htaccess_from_settings['ht_form'] as $item ) {
@@ -122,6 +119,7 @@ function protect_update_directory( $d, IWPSS_Server_Directives $sd, &$ht_form = 
 
 function protect_rest_endpoint( $d, IWPSS_Server_Directives $sd )
 {
+    // NOTE: function Not in use
     if ($d !== 'on' ) {
         $sd->unprotect_user_rest_apt();
     } else {

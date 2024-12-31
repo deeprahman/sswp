@@ -156,6 +156,7 @@ EOD;
 
     public function protect_user_rest_apt( $page = 'home' )
     {
+        // NOTE: Configuration not suitable for all setup
         $htaccess_path = ABSPATH . '.htaccess';
         /*
         $rules         = <<<EOD
@@ -170,26 +171,13 @@ EOD;
         EOD;
         */
         $rules = <<<EOD
-# Set a 60-second time window for rate limiting when accessing the WordPress users API endpoint
-SetEnvIfNoCase Request_URI "^/wp-json/wp/v2/users" api_rate_limit_time_window=60
-
-# Check if this is the first request (no last request time stored)
-# OR if the time window has expired since the last request
-RewriteCond %{ENV:api_rate_limit_last_request} ^$ [OR]
-RewriteCond %{TIME_EPOCH} > expr=%{ENV:api_rate_limit_last_request} + %{ENV:api_rate_limit_time_window}
-
-# If either condition above is true, reset the counter and store the current timestamp
-# NS flag prevents this rule from being internally skipped
-RewriteRule ^ - [E=api_rate_limit_count:0,E=api_rate_limit_last_request:%{TIME_EPOCH},NS]
-
-# Increment the request counter for each request within the time window
-RewriteRule ^ - [E=api_rate_limit_count:%{ENV:api_rate_limit_count}+1,NS]
-
-# If more than 10 requests occur within the time window...
-RewriteCond %{ENV:api_rate_limit_count} > 2
-
-# Return HTTP 429 "Too Many Requests" status code and stop processing rules
-RewriteRule ^ - [R=429,L]
+# Custom Rate Limiting for /wp-json/wp/v2/users
+<IfModule mod_ratelimit.c>
+    <Location /wp-json/wp/v2/users>
+        SetOutputFilter RATE_LIMIT
+        SetEnv rate-limit 10
+    </Location>
+</IfModule>
 EOD;
         return $this->add_rule($rules, $htaccess_path, 'protect-rest-api');
     }

@@ -1,7 +1,7 @@
 <?php
 
 $wpss_rest_endpoints_to_rate_limit['rate_limit_endpoints'] = [
-"/wp-json/wp/v2/users"
+"/wp/v2/users"
 ];
 
 $wpss_rest_endpoints_to_rate_limit['max_calls'] = 5;
