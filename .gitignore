@@ -19,3 +19,4 @@ node_modules
 build/
 .idea/
 src/dummy-data.js
+wp-securing-setup.code-workspace
