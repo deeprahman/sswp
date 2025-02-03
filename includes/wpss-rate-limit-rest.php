@@ -9,6 +9,7 @@
  */
 function wpss_limit_rest_api_rate($result, $server, $request)
 {
+
     // Get the endpoints to apply rate limiting
     $endpoints = isset($GLOBALS['wpss']) && method_exists($GLOBALS['wpss'], 'get_rest_endpoints_for_limiting') 
         ? $GLOBALS['wpss']->get_rest_endpoints_for_limiting() 
@@ -31,6 +32,7 @@ function wpss_limit_rest_api_rate($result, $server, $request)
     $time_window = $GLOBALS['wpss']->get_time_window_for_limiting(); // Time window in seconds
 
     if ($call_data) {
+    
         // Check if the client exceeded the limit
         if ($call_data['count'] >= $max_calls) {
             wpss_logger('INFO', "API call limit exceeded for IP : ". $client_ip, __FUNCTION__);
@@ -54,7 +56,7 @@ function wpss_handle_rate_limiting( $result, $server, $request )
 {
     global $wpss;
     $ht_form_settings = ( get_options(array( $wpss->settings )) )['_wpss_settings']['htaccess']['ht_form'];
-    $output = true;
+    $output = false;
         array_walk(
             $ht_form_settings,
             function ( $v ) use ($result, $server, $request,&$output) {
@@ -64,8 +66,10 @@ function wpss_handle_rate_limiting( $result, $server, $request )
                 if ($v['value'] == 'on' ) {
                     $output =  wpss_limit_rest_api_rate($result, $server, $request);    
                 }
+               
             }
         );
+       
     if($output === true) {
         return new WP_Error(
             'rate_limit_exceeded',
