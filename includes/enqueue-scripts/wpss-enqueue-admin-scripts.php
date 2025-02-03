@@ -15,12 +15,12 @@ if (! file_exists($asset_file) ) {
 $index_js  = WPSS_URL . 'build/index.js';
 $index_css = WPSS_URL . 'build/index.css';
 
-if (! file_exists($index_js) ) {
+if (! file_exists(WPSS_ROOT . 'build/index.js') ) {
     new WP_Error('JS File does not exists');
     wpss_logger('Info', 'JS File does not exists', __FILE__);
 }
 
-if (! file_exists($index_css) ) {
+if (! file_exists(WPSS_ROOT . 'build/index.css') ) {
     new WP_Error('CSS File does not exists');
 
     wpss_logger('Info', 'CSS File does not exists', __FILE__);
