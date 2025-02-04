@@ -102,7 +102,7 @@ class WPSS_File_Permission_Manager
         global $wp_filesystem;
 
         if (! function_exists('WP_Filesystem') ) {
-            include_once ABSPATH . 'wp-admin/includes/file.php';
+            include_once ABSPATH . 'wp-admin/includes/file.php'; // TODO: Remove Direct inclusion of WP Core Files
         }
 
         WP_Filesystem();
@@ -214,7 +214,7 @@ class WPSS_File_Permission_Manager
         global $wp_filesystem;
 
         if (! function_exists('WP_Filesystem') ) {
-            include_once ABSPATH . 'wp-admin/includes/file.php';
+            include_once ABSPATH . 'wp-admin/includes/file.php'; // TODO: Remove it ; Unsafe use hook
         }
 
         WP_Filesystem();
