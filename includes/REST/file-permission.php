@@ -37,6 +37,20 @@ function wpss_file_permissions_callback( $request )
 {
     global $wpss;
     $message = '';
+
+    if ( ! function_exists( 'WP_Filesystem' ) ) {
+        $message = __( 'WP_Filesystem() function is not defined', 'your-text-domain' );
+        
+        // Log the error
+        wpss_logger( 'DEBUG', 'Filesystem Function Not Found', __FUNCTION__ );
+        
+        // Create a WP_Error object
+        $error = new WP_Error( 'dependency_error', $message );
+        
+
+        return $error;
+    }
+
     switch ( $request->get_method() ) {
     case 'GET':
         $fs_permission = get_file_permissions();
