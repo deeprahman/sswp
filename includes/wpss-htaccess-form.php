@@ -119,7 +119,7 @@ function protect_update_directory( $d, IWPSS_Server_Directives $sd, &$ht_form = 
 
 function protect_rest_endpoint( $d, IWPSS_Server_Directives $sd )
 {
-    // NOTE: function Not in use
+    // NOTE: function Not in use, remove in future
     if ($d !== 'on' ) {
         $sd->unprotect_user_rest_apt();
     } else {
