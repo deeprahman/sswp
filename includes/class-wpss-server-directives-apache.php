@@ -187,8 +187,11 @@ class WPSS_Server_Directives_Apache extends WPSS_Server_Directives implements IW
 
     public function allow_file_access($file_pattern)
     {
+        $upload_dir = wp_upload_dir();
+        $base_dir = $upload_dir['basedir'];
         $file_pattern_regex = $this->file_ext_regex_creator($file_pattern);
-        $htaccess_path = WP_CONTENT_DIR . '/uploads/.htaccess';
+        // $htaccess_path = WP_CONTENT_DIR . '/uploads/.htaccess';
+        $htaccess_path = $base_dir . '/.htaccess';
     
         $rules  = "<FilesMatch \"{$file_pattern_regex}\">\n";
         $rules .= "    Require all granted\n";
@@ -213,7 +216,11 @@ class WPSS_Server_Directives_Apache extends WPSS_Server_Directives implements IW
     
     public function disallow_file_access()
     {
-        $htaccess_path = WP_CONTENT_DIR . '/uploads/.htaccess';
+        $upload_dir = wp_upload_dir();
+        $base_dir = $upload_dir['basedir'];
+   
+        // $htaccess_path = WP_CONTENT_DIR . '/uploads/.htaccess';
+        $htaccess_path = $base_dir . '/.htaccess';
 
         return $this->remove_rule($htaccess_path, 'protect-uploads');
     }
