@@ -54,3 +54,146 @@ function wpss_get_client_ip()
 
     return '0.0.0.0'; // Fallback if no valid IP found.
 }
+
+
+
+
+
+function sswp_sanitize_rest_api($rest_api) {
+    if (!is_array($rest_api)) {
+        return array();
+    }
+
+    if (isset($rest_api['rate_limit_endpoints'])) {
+        $rest_api['rate_limit_endpoints'] = array_map('sanitize_text_field', $rest_api['rate_limit_endpoints']);
+    }
+
+    if (isset($rest_api['max_calls'])) {
+        $rest_api['max_calls'] = absint($rest_api['max_calls']);
+    }
+
+    if (isset($rest_api['time_window_in_sec'])) {
+        $rest_api['time_window_in_sec'] = absint($rest_api['time_window_in_sec']);
+    }
+
+    return $rest_api;
+}
+
+function sswp_sanitize_htaccess($htaccess) {
+    if (!is_array($htaccess)) {
+        return array();
+    }
+
+    if (isset($htaccess['ht_form'])) {
+        $htaccess['ht_form'] = sswp_sanitize_ht_form($htaccess['ht_form']);
+    }
+
+    if (isset($htaccess['file_types'])) {
+        $htaccess['file_types'] = array_map('sanitize_text_field', $htaccess['file_types']);
+    }
+
+    if (isset($htaccess['extension_map'])) {
+        $htaccess['extension_map'] = sswp_sanitize_extension_map($htaccess['extension_map']);
+    }
+
+    return $htaccess;
+}
+
+function sswp_sanitize_ht_form($ht_form) {
+    if (!is_array($ht_form)) {
+        return array();
+    }
+
+    $sanitized_form = array();
+    foreach ($ht_form as $item) {
+        if (is_array($item)) {
+            $sanitized_form[] = array(
+                'name'  => isset($item['name']) ? sanitize_text_field($item['name']) : '',
+                'value' => isset($item['value']) ? sanitize_text_field($item['value']) : '',
+            );
+        }
+    }
+
+    return $sanitized_form;
+}
+
+function sswp_sanitize_extension_map($extension_map) {
+    if (!is_array($extension_map)) {
+        return array();
+    }
+
+    $sanitized_map = array();
+    foreach ($extension_map as $key => $value) {
+        $sanitized_map[sanitize_text_field($key)] = sanitize_text_field($value);
+    }
+
+    return $sanitized_map;
+}
+
+function sswp_sanitize_file_permission($file_permission) {
+    if (!is_array($file_permission)) {
+        return array();
+    }
+
+    if (isset($file_permission['rcmnd_perms'])) {
+        $file_permission['rcmnd_perms'] = sswp_sanitize_rcmnd_perms($file_permission['rcmnd_perms']);
+    }
+
+    if (isset($file_permission['paths'])) {
+        $file_permission['paths'] = array_map('sanitize_text_field', $file_permission['paths']);
+    }
+
+    if (isset($file_permission['chk_results'])) {
+        $file_permission['chk_results'] = sswp_sanitize_chk_results($file_permission['chk_results']);
+    }
+
+    return $file_permission;
+}
+
+function sswp_sanitize_rcmnd_perms($rcmnd_perms) {
+    if (!is_array($rcmnd_perms)) {
+        return array();
+    }
+
+    return array_map('sanitize_text_field', $rcmnd_perms);
+}
+
+function sswp_sanitize_chk_results($chk_results) {
+    if (!is_array($chk_results)) {
+        return array();
+    }
+
+    $sanitized_results = array();
+    foreach ($chk_results as $path => $data) {
+        if (is_array($data)) {
+            $sanitized_results[$path] = array(
+                'exists'      => isset($data['exists']) ? (bool) $data['exists'] : false,
+                'permission'  => isset($data['permission']) ? sanitize_text_field($data['permission']) : '',
+                'writable'    => isset($data['writable']) ? (bool) $data['writable'] : false,
+                'recommended' => isset($data['recommended']) ? sanitize_text_field($data['recommended']) : '',
+            );
+        }
+    }
+
+    return $sanitized_results;
+}
+
+function sswp_sanitize_secure_setup_settings($value) {
+    if (!is_array($value)) {
+        return array();
+    }
+
+    if (isset($value['file_permission'])) {
+        $value['file_permission'] = sswp_sanitize_file_permission($value['file_permission']);
+    }
+
+    if (isset($value['htaccess'])) {
+        $value['htaccess'] = sswp_sanitize_htaccess($value['htaccess']);
+    }
+
+    if (isset($value['rest_api'])) {
+        $value['rest_api'] = sswp_sanitize_rest_api($value['rest_api']);
+    }
+
+    return $value;
+}
