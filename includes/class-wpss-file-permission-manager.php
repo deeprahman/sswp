@@ -34,7 +34,7 @@ class WPSS_File_Permission_Manager
     {
 
         if (! $this->initializeFilesystem() ) {
-                        wpss_logger("Info", "File System initialization failed.", __METHOD__);
+                        sswp_logger("Info", "File System initialization failed.", __METHOD__);
             return;
         }
 
@@ -219,18 +219,18 @@ class WPSS_File_Permission_Manager
 
         WP_Filesystem();
         if (! $this->is_within_wordpress($path) ) {
-            wpss_logger('Info ', 'The path is not within WordPress installation. '. $path, __METHOD__);
+            sswp_logger('Info ', 'The path is not within WordPress installation. '. $path, __METHOD__);
             return false;
         }
 
         if (! $wp_filesystem->exists($path) ) {
-            wpss_logger('Info ', 'File/Dir does not exists. '. $path, __METHOD__);
+            sswp_logger('Info ', 'File/Dir does not exists. '. $path, __METHOD__);
             return false;
         }
 
         if (( $this->get_ownership_Info($path)['is_wp_owner'] !== true ) ) {
 
-            wpss_logger('Info ', 'Path is not Owned by WordPress Process '. $path, __METHOD__);
+            sswp_logger('Info ', 'Path is not Owned by WordPress Process '. $path, __METHOD__);
             if($enforec_ownership_check) {
                 return false;
             }
@@ -298,7 +298,7 @@ class WPSS_File_Permission_Manager
             array_walk(
                 $errors,
                 function ( $error ) {
-                    //   wpss_logger('Info', 'Could not change file permission ' . $error, __METHOD__);
+                    //   sswp_logger('Info', 'Could not change file permission ' . $error, __METHOD__);
                 }
             );
         }
@@ -373,12 +373,12 @@ class WPSS_File_Permission_Manager
         $is_changed = $this->wp_filesystem->chmod($path, octdec($perms));
 
         if (! $is_changed ) {
-            wpss_logger('Info', 'Permission changed for path: ' . $path . ' to ' . $perms, __FUNCTION__);
+            sswp_logger('Info', 'Permission changed for path: ' . $path . ' to ' . $perms, __FUNCTION__);
             return new WP_Error('500', 'File Permission Could Not be changed');
         }
         if ($cc ) {
             clearstatcache();
-            wpss_logger('Info', 'Cache cleared after permission changed for the path ' . $path, __METHOD__);
+            sswp_logger('Info', 'Cache cleared after permission changed for the path ' . $path, __METHOD__);
         }
         return $is_changed;
     }
@@ -394,20 +394,20 @@ class WPSS_File_Permission_Manager
         $check = $this->check_ownership_permissions($path);
 
         if (is_wp_error($check) ) {  // TODO: Handle Error
-            wpss_logger('Info', ' Message: ' . $check->get_error_message(), __METHOD__);
+            sswp_logger('Info', ' Message: ' . $check->get_error_message(), __METHOD__);
             return false;
         }
 
         // Access detailed information
         if (! $check['ownership']['is_wp_owner'] ) {
             // Handle incorrect ownership
-            wpss_logger('Info', 'File not owned by WordPress user, File Name: ' . $path, __METHOD__);
+            sswp_logger('Info', 'File not owned by WordPress user, File Name: ' . $path, __METHOD__);
         }
 
         if (! empty($check['security']['warnings']) ) {
             // Handle security warnings
             foreach ( $check['security']['warnings'] as $warning ) {
-                wpss_logger('Info', 'Security warning: ' . $warning, __METHOD__);
+                sswp_logger('Info', 'Security warning: ' . $warning, __METHOD__);
             }
         }
 
@@ -423,7 +423,7 @@ class WPSS_File_Permission_Manager
     private function is_valid_path( string $path , $enforec_ownership_check = false)
     {
         if (! $this->is_within_wordpress($path) ) {
-            wpss_logger('Info ', 'Path is not within WordPress installation, ' . $path, __METHOD__);
+            sswp_logger('Info ', 'Path is not within WordPress installation, ' . $path, __METHOD__);
             return new WP_Error(
                 'invalid_path',
                 __('Path is not within WordPress installation', 'secure-setup'),
@@ -432,7 +432,7 @@ class WPSS_File_Permission_Manager
         }
         $is_owned = $this->is_wp_owner($path);
         if (is_wp_error($is_owned) ) {
-            wpss_logger('Info: ', 'Path is not ownerd by WordPress' . $path, __METHOD__);
+            sswp_logger('Info: ', 'Path is not ownerd by WordPress' . $path, __METHOD__);
             if($enforec_ownership_check) {
                 return new WP_Error(
                     'ownership_failed',

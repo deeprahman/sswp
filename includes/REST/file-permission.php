@@ -42,7 +42,7 @@ function wpss_file_permissions_callback( $request )
         $message = __( 'WP_Filesystem() function is not defined', 'your-text-domain' );
         
         // Log the error
-        wpss_logger( 'DEBUG', 'Filesystem Function Not Found', __FUNCTION__ );
+        sswp_logger( 'DEBUG', 'Filesystem Function Not Found', __FUNCTION__ );
         
         // Create a WP_Error object
         $error = new WP_Error( 'dependency_error', $message );

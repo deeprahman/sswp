@@ -31,7 +31,7 @@ function file_permission_page_html() {
 
 	// Print the HTML content for the page
 
-	include_once WPSS_ROOT . '/admin/templates/page-htm.php';
+	include_once SSWP_ROOT . '/admin/templates/page-htm.php';
 
 	// Get the buffered output
 	// $output = ob_get_clean();

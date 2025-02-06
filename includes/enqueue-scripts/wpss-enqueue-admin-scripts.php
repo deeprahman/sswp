@@ -7,23 +7,23 @@ if ('tools_page_wpss-files-permission' !== $admin_page ) {
 }
 
 
-$asset_file = WPSS_ROOT . 'build/index.asset.php';
+$asset_file = SSWP_ROOT . 'build/index.asset.php';
 
 if (! file_exists($asset_file) ) {
     new WP_Error('Asset File does not exists');
 }
-$index_js  = WPSS_URL . 'build/index.js';
-$index_css = WPSS_URL . 'build/index.css';
+$index_js  = SSWP_URL . 'build/index.js';
+$index_css = SSWP_URL . 'build/index.css';
 
-if (! file_exists(WPSS_ROOT . 'build/index.js') ) {
+if (! file_exists(SSWP_ROOT . 'build/index.js') ) {
     new WP_Error('JS File does not exists');
-    wpss_logger('Info', 'JS File does not exists', __FILE__);
+    sswp_logger('Info', 'JS File does not exists', __FILE__);
 }
 
-if (! file_exists(WPSS_ROOT . 'build/index.css') ) {
+if (! file_exists(SSWP_ROOT . 'build/index.css') ) {
     new WP_Error('CSS File does not exists');
 
-    wpss_logger('Info', 'CSS File does not exists', __FILE__);
+    sswp_logger('Info', 'CSS File does not exists', __FILE__);
 }
 
 $asset = include $asset_file;

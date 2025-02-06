@@ -200,7 +200,7 @@ Make sure you use a proper sanitization function (WordPress has plenty of them!)
 Please, check out the register_setting() documentation for more information and code examples.
 
 Example(s) from your plugin:
-includes/settings/wpss-default-settings.php:14 register_setting('wpss_options_group', WPSS_SETTINGS);
+includes/settings/wpss-default-settings.php:14 register_setting('wpss_options_group', SSWP_SETTINGS);
 
 
 ## Internationalization: Don't use variables or defines as text, context or text domain parameters.
@@ -295,9 +295,9 @@ includes/wpss-htaccess-form.php:32 function handle_htaccess_post_req
 includes/wpss-htaccess-form.php:77 function handle_htaccess_get_req
 includes/wpss-xml-rpc.php:5 function handle_xml_rpc_method
 # Cannot use "wp" as a prefix.
-wpss-logger.php:30 function wpss_logger
-wpss-misc.php:3 function wpss_convert_to_octal_pers_from_string
-includes/settings/wpss-default-settings.php:14 register_setting('wpss_options_group', WPSS_SETTINGS);
+wpss-logger.php:30 function sswp_logger
+wpss-misc.php:3 function sswp_convert_to_octal_pers_from_string
+includes/settings/wpss-default-settings.php:14 register_setting('wpss_options_group', SSWP_SETTINGS);
 includes/class-wpss-server-directives-factory.php:4 class WPSS_Server_Directives_Factory
 includes/class-wpss-file-regex-pattern-creator.php:3 class WPSS_File_Regex_Pattern_Creator
 includes/wpss-htaccess-form.php:80 function wpss_save_htaccess_option

@@ -4,7 +4,7 @@ add_filter( 'xmlrpc_methods', 'handle_xml_rpc_method' );
 
 function handle_xml_rpc_method( $methods ) {
 	global $wpss;
-	$ht_form_settings = ( get_options( array( $wpss->settings ) ) )['_wpss_settings']['htaccess']['ht_form'];
+	$ht_form_settings = ( get_options( array( $wpss->settings ) ) )['_sswp_settings']['htaccess']['ht_form'];
 	array_walk(
 		$ht_form_settings,
 		function ( $v ) use ( $methods ) {

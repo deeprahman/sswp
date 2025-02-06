@@ -82,8 +82,8 @@ function wpss_save_htaccess_option( $new = array() )
     global $wpss;
     $cur = get_options(array( $wpss->settings ));
 
-    $cur['_wpss_settings']['htaccess']['ht_form'] = $new;
-    update_option($wpss->settings, $cur['_wpss_settings']);
+    $cur['_sswp_settings']['htaccess']['ht_form'] = $new;
+    update_option($wpss->settings, $cur['_sswp_settings']);
     $new = get_options(array( $wpss->settings ));
     return $new[ $wpss->settings ]['htaccess'];
 }

@@ -3,11 +3,11 @@
 class WP_Securing_Setup
 {
 
-    public const ROOT = WPSS_ROOT;
+    public const ROOT = SSWP_ROOT;
 
     public const DOMAIN = 'wp-securing-setup';
 
-    public const URL = WPSS_URL;
+    public const URL = SSWP_URL;
 
     public const VERSION = '0.1.0';
 
@@ -52,11 +52,11 @@ class WP_Securing_Setup
         $this->name         = __('WP Securing Setup', self::DOMAIN);
         $this->root         = self::ROOT;
         $this->domain       = self::DOMAIN;
-        $this->root_url     = WPSS_URL;
+        $this->root_url     = SSWP_URL;
         $this->js_handle    = 'wpss-primary-js';
         $this->css_handle   = 'wpss-primary-css';
         $this->nonce_action = 'wpss-rest';
-        $this->settings     = WPSS_SETTINGS;
+        $this->settings     = SSWP_SETTINGS;
                 $this->init();
     }
 

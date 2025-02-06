@@ -21,7 +21,7 @@ function wpss_limit_rest_api_rate($result, $server, $request)
     }
 
     // Get the client IP address
-    $client_ip = wpss_get_client_ip(); // Assume wpss_get_client_ip() is defined elsewhere
+    $client_ip = sswp_get_client_ip(); // Assume sswp_get_client_ip() is defined elsewhere
     $cache_key = 'rest_api_rate_limit_' . md5($client_ip . $request->get_route());
 
     // Get the current call count
@@ -35,7 +35,7 @@ function wpss_limit_rest_api_rate($result, $server, $request)
     
         // Check if the client exceeded the limit
         if ($call_data['count'] >= $max_calls) {
-            wpss_logger('INFO', "API call limit exceeded for IP : ". $client_ip, __FUNCTION__);
+            sswp_logger('INFO', "API call limit exceeded for IP : ". $client_ip, __FUNCTION__);
             return true;
         } else {
             // Increment the call count
@@ -55,7 +55,7 @@ function wpss_limit_rest_api_rate($result, $server, $request)
 function wpss_handle_rate_limiting( $result, $server, $request )
 {
     global $wpss;
-    $ht_form_settings = ( get_options(array( $wpss->settings )) )['_wpss_settings']['htaccess']['ht_form'];
+    $ht_form_settings = ( get_options(array( $wpss->settings )) )['_sswp_settings']['htaccess']['ht_form'];
     $output = false;
         array_walk(
             $ht_form_settings,

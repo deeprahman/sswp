@@ -60,13 +60,13 @@ class HTAccessFormTest extends TestCase
         $this->getFunctionMock(__NAMESPACE__, 'get_options')
              ->expects($this->exactly(2))
              ->willReturnOnConsecutiveCalls(
-                 ['_wpss_settings' => ['htaccess' => []]],
-                 ['_wpss_settings' => ['htaccess' => ['ht_form' => $testData]]]
+                 ['_sswp_settings' => ['htaccess' => []]],
+                 ['_sswp_settings' => ['htaccess' => ['ht_form' => $testData]]]
              );
 
         $this->getFunctionMock(__NAMESPACE__, 'update_option')
              ->expects($this->once())
-             ->with('_wpss_settings', ['htaccess' => ['ht_form' => $testData]]);
+             ->with('_sswp_settings', ['htaccess' => ['ht_form' => $testData]]);
 
         $result = wpss_save_htaccess_option($testData);
 

@@ -19,21 +19,21 @@ if (! defined('ABSPATH')) {
 
 
 // Set Plugin Root
-define('WPSS_ROOT', plugin_dir_path(__FILE__));
+define('SSWP_ROOT', plugin_dir_path(__FILE__));
 
 
 // Set Plugin URL
-define('WPSS_URL', plugin_dir_url(__FILE__));
+define('SSWP_URL', plugin_dir_url(__FILE__));
 
 // Set Domain
-define('WPSS_DOMAIN', 'secure-setup');
+define('SSWP_DOMAIN', 'secure-setup');
 
-define('WPSS_VERSION', '0.1.0');
+define('SSWP_VERSION', '0.1.0');
 
-define('WPSS_SETTINGS', '_wpss_settings');
+define('SSWP_SETTINGS', '_sswp_settings');
 
-require_once WPSS_ROOT . '/wpss-logger.php';
-require_once WPSS_ROOT . '/wpss-misc.php';
+require_once SSWP_ROOT . '/sswp-logger.php';
+require_once SSWP_ROOT . '/sswp-misc.php';
 
 $is_litespeed = strpos($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false;
 
@@ -47,7 +47,7 @@ function wpss_activate()
     global $is_apache, $is_litespeed, $is_nginx, $is_IIS;
     // Add your activation logic here
     // For example, create options, update database tables, etc.
-    include_once WPSS_ROOT . '/includes/settings/wpss-default-settings.php';
+    include_once SSWP_ROOT . '/includes/settings/wpss-default-settings.php';
 
     $server_requirement = $is_litespeed || $is_apache;
 
@@ -62,7 +62,7 @@ function wpss_deactivate()
 {
     // Add your deactivation logic here
     // For example, delete options, remove database tables, etc.
-    delete_option(WPSS_SETTINGS);
+    delete_option(SSWP_SETTINGS);
 }
 
 // Include the plugin class
@@ -70,9 +70,9 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-wp-securing-setup.php';
 
 
 try {
-    $GLOBAL['wpss'] = $wpss = new WP_Securing_Setup();
+    $GLOBAL['sswp'] = $wpss = new WP_Securing_Setup();
 } catch (\Exception $ex) {
-    error_log('WPSS-ERROR: ' . $ex->getMessage());
+    error_log('SSWP-ERROR: ' . $ex->getMessage());
     return new WP_Error(
         'wpss_error',
         __('An avoidable incident han ocurred..', 'wp-securing-setup')

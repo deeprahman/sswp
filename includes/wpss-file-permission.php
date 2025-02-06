@@ -37,7 +37,7 @@ function revert_to_original()
 
             $abspath = ABSPATH . $path;
 
-            if (null === ( $sanitized_perms = wpss_convert_to_octal_pers_from_string($status['permission']) ) ) {
+            if (null === ( $sanitized_perms = sswp_convert_to_octal_pers_from_string($status['permission']) ) ) {
                 return true;
             }
 
