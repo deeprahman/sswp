@@ -63,7 +63,7 @@ function wpss_file_permissions_callback( $request )
         if ('revert' == ( $request->get_params() )['action'] ) {
             $message .= is_wp_error($res = revert_to_original()) ? $res->get_error_message() : $res;
         } else {
-            $message = __('Action not found', WP_Securing_Setup::DOMAIN);
+            $message = __('Action not found', 'secure-setup');
             error_log('Function: ' . __FUNCTION__ . ' Message: ' . $message);
         }
         $fs_permission = get_file_permissions();  

@@ -426,7 +426,7 @@ class WPSS_File_Permission_Manager
             wpss_logger('Info ', 'Path is not within WordPress installation, ' . $path, __METHOD__);
             return new WP_Error(
                 'invalid_path',
-                __('Path is not within WordPress installation', WP_Securing_Setup::DOMAIN),
+                __('Path is not within WordPress installation', 'secure-setup'),
                 $path
             );
         }
@@ -436,7 +436,7 @@ class WPSS_File_Permission_Manager
             if($enforec_ownership_check) {
                 return new WP_Error(
                     'ownership_failed',
-                    __('Path is not ownerd by WordPress', WP_Securing_Setup::DOMAIN),
+                    __('Path is not ownerd by WordPress', 'secure-setup'),
                     $path
                 );
             }  

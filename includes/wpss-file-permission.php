@@ -16,7 +16,7 @@ function do_recommended_permission(): string
 
     if (! empty($errors) ) {
         $e_files = implode(',', $errors);
-        $message = __('Could not change permissoin for the given files: ', WP_Securing_Setup::DOMAIN) . $e_files;
+        $message = __('Could not change permissoin for the given files: ', 'secure-setup') . $e_files;
 
     }
 
@@ -53,5 +53,5 @@ function revert_to_original()
             $errors
         );
     }
-    return __('Successfully reverted permission', WP_Securing_Setup::DOMAIN);
+    return __('Successfully reverted permission', 'secure-setup');
 }

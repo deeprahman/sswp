@@ -46,7 +46,7 @@ function handle_htaccess_post_req( $data )
                 $function_name($value, $sd, $htaccess_from_settings['ht_form']);
             } else {
                 error_log('Function: ' . __FUNCTION__ . " Message: Function {$function_name} does not exists");
-                return new WP_Error(__('client_error', WP_Securing_Setup::DOMAIN), __('Your custom error message here', WP_Securing_Setup::DOMAIN), array( 'status' => 400 ));
+                return new WP_Error(__('client_error', 'secure-setup'), __('Your custom error message here', 'secure-setup'), array( 'status' => 400 ));
             }
         }
     }
@@ -58,7 +58,7 @@ function handle_htaccess_post_req( $data )
  *
  * @param  string $message the message
  * @return array        data-structure: [
-        'message' => __($message, WP_Securing_Setup::DOMAIN),
+        'message' => __($message, 'secure-setup'),
         'data' => json_encode($ht_form)
     ]
  */
