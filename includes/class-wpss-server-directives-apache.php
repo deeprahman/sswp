@@ -234,7 +234,7 @@ class WPSS_Server_Directives_Apache extends WPSS_Server_Directives implements IW
     protected function file_ext_regex_creator(array $file_ext): mixed
     {
         global $wpss;
-        $file_path = $wpss->root . 'includes/class-wpss-file-regex-pattern-creator.php';
+        $file_path = $wpss->root . 'includes/class-sswp-file-regex-pattern-creator.php';
         if (!file_exists($file_path)) {
             return new WP_Error('File Not Exists: ' . $file_path);
         }
