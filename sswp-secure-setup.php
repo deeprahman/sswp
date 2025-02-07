@@ -66,7 +66,7 @@ function wpss_deactivate()
 }
 
 // Include the plugin class
-require_once plugin_dir_path(__FILE__) . 'includes/class-wp-securing-setup.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-sswp-securing-setup.php';
 
 
 try {

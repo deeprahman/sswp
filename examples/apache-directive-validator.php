@@ -7,9 +7,9 @@ require_once ABSPATH . "wp-content/plugins/wp-securing-setup/wpss-logger.php";
 
 require_once ABSPATH. "wp-admin/includes/misc.php";
 
-require_once WP_PLUGIN_DIR  . "/wp-securing-setup/includes/class-wpss-apache-directives-validator.php";
+require_once WP_PLUGIN_DIR  . "/wp-securing-setup/includes/class-sswp-apache-directives-validator.php";
 
-$validator = new WPSS_Apache_Directives_Validator();
+$validator = new Sswp_Apache_Directives_Validator();
 
 
 

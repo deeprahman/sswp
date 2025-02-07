@@ -250,12 +250,12 @@ class WPSS_Server_Directives_Apache extends WPSS_Server_Directives implements IW
     protected function validate_htaccess_syntax(string $rules): mixed
     {
         global $wpss;
-        $file_path = $wpss->root . 'includes/class-wpss-apache-directives-validator.php';
+        $file_path = $wpss->root . 'includes/class-sswp-apache-directives-validator.php';
         if (!file_exists($file_path)) {
             return new WP_Error('File Not Exists: ' . $file_path);
         }
         include_once $file_path;
-        $validator = new WPSS_Apache_Directives_Validator();
+        $validator = new Sswp_Apache_Directives_Validator();
         return $validator->is_valid($rules);
     }
 }

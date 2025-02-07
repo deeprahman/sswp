@@ -1,6 +1,6 @@
 <?php
 
-class WPSS_Apache_Directives_Validator
+class Sswp_Apache_Directives_Validator
 {
 
     // Define a list of known directives for basic validation
