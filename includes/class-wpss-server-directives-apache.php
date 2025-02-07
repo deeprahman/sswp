@@ -242,7 +242,7 @@ class WPSS_Server_Directives_Apache extends WPSS_Server_Directives implements IW
         // BUG: Null
         $extension_map = $wpss->get_extension_map();
 
-        $regex_pat = new WPSS_File_Regex_Pattern_Creator($file_ext, $extension_map);
+        $regex_pat = new Sswp_File_Regex_Pattern_Creator($file_ext, $extension_map);
         // call generateApacheExtensionRegex method
         $regex = $regex_pat->generateApacheExtensionRegex();
         return $regex;
