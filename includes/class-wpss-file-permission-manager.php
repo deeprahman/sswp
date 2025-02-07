@@ -1,6 +1,6 @@
 <?php
 
-require_once WP_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/traits/class-wpss-ownership-permission-trait.php';
+require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/traits/class-wpss-ownership-permission-trait.php';
 
 /**
  * Class WP_File_Permission_Checker

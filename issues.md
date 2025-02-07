@@ -234,14 +234,14 @@ printf(
 You can read https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#text-domains for more information.
 
 Example(s) from your plugin:
-includes/wpss-htaccess-form.php:51 __('Your custom error message here', WP_Securing_Setup::DOMAIN);
-admin/templates/protection-form.htm.php:49 esc_html__('Save Settings', WP_Securing_Setup::DOMAIN);
-includes/class-wpss-file-permission-manager.php:424 __('Path is not ownerd by WordPress', WP_Securing_Setup::DOMAIN);
-admin/templates/protection-form.htm.php:43 esc_attr__('Redirect requests to the users REST endpoint to 404 HTTP error', WP_Securing_Setup::DOMAIN);
-admin/templates/protection-form.htm.php:17 esc_attr__('Protect the WordPress log at default location', WP_Securing_Setup::DOMAIN);
-includes/wpss-file-permission.php:53 __('Successfully reverted permission', WP_Securing_Setup::DOMAIN);
-admin/templates/protection-form.htm.php:23 esc_attr__('Select which file-types should have access to uploads directory', WP_Securing_Setup::DOMAIN);
-admin/wpss-files-permissions-tools-page.php:12 __('Files Permission', WP_Securing_Setup::DOMAIN);
+includes/wpss-htaccess-form.php:51 __('Your custom error message here', Sswp_Securing_Setup::DOMAIN);
+admin/templates/protection-form.htm.php:49 esc_html__('Save Settings', Sswp_Securing_Setup::DOMAIN);
+includes/class-wpss-file-permission-manager.php:424 __('Path is not ownerd by WordPress', Sswp_Securing_Setup::DOMAIN);
+admin/templates/protection-form.htm.php:43 esc_attr__('Redirect requests to the users REST endpoint to 404 HTTP error', Sswp_Securing_Setup::DOMAIN);
+admin/templates/protection-form.htm.php:17 esc_attr__('Protect the WordPress log at default location', Sswp_Securing_Setup::DOMAIN);
+includes/wpss-file-permission.php:53 __('Successfully reverted permission', Sswp_Securing_Setup::DOMAIN);
+admin/templates/protection-form.htm.php:23 esc_attr__('Select which file-types should have access to uploads directory', Sswp_Securing_Setup::DOMAIN);
+admin/wpss-files-permissions-tools-page.php:12 __('Files Permission', Sswp_Securing_Setup::DOMAIN);
 
 ... out of a total of 24 incidences.
 
@@ -304,7 +304,7 @@ includes/wpss-htaccess-form.php:80 function wpss_save_htaccess_option
 includes/traits/class-wpss-ownership-permission-trait.php:2 trait WPSS_Ownership_Permission_Trait
 includes/class-wpss-file-permission-manager.php:13 class WPSS_File_Permission_Manager
 includes/class-wpss-server-directives.php:7 class WPSS_Server_Directives
-includes/class-wp-securing-setup.php:3 class WP_Securing_Setup
+includes/class-wp-securing-setup.php:3 class Sswp_Securing_Setup
 includes/class-wpss-apache-directives-validator.php:3 class WPSS_Apache_Directives_Validator
 includes/class-wpss-server-directives-apache.php:7 class WPSS_Server_Directives_Apache
 includes/REST/file-permission.php:25 function wpss_file_permissions_permission_check

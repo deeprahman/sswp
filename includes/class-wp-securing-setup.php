@@ -1,6 +1,6 @@
 <?php
 
-class WP_Securing_Setup
+class Sswp_Securing_Setup
 {
 
     public const ROOT = SSWP_ROOT;

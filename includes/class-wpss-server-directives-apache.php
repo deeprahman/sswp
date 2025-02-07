@@ -1,7 +1,7 @@
 <?php
 
-require_once WP_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/class-wpss-server-directives.php';
-require_once WP_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/interface-wpss-server-directives.php';
+require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/class-wpss-server-directives.php';
+require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/interface-wpss-server-directives.php';
 
 
 class WPSS_Server_Directives_Apache extends WPSS_Server_Directives implements IWPSS_Server_Directives

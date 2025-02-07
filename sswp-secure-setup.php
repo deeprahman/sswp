@@ -70,7 +70,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-wp-securing-setup.php';
 
 
 try {
-    $GLOBAL['sswp'] = $wpss = new WP_Securing_Setup();
+    $GLOBAL['sswp'] = $wpss = new Sswp_Securing_Setup();
 } catch (\Exception $ex) {
     error_log('SSWP-ERROR: ' . $ex->getMessage());
     return new WP_Error(

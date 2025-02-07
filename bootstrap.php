@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file.
  *
- * @package Wp_Securing_Setup
+ * @package Sswp_Securing_Setup
  */
 
 //function load_files_in_a_directory($directory)
