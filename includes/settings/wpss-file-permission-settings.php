@@ -46,7 +46,7 @@
 // ),
 // );
 
-require_once SSWP_ROOT . 'includes/class-wpss-file-permission-manager.php';
+require_once SSWP_ROOT . 'includes/class-sswp-file-permission-manager.php';
 // TODO: Get file permissions
 try {
 	$ret['rcmnd_perms'] = array(

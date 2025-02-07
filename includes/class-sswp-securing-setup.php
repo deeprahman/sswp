@@ -119,7 +119,7 @@ class Sswp_Securing_Setup
      */
     public function set_fpm()
     {
-            include_once $this->root . 'includes/class-wpss-file-permission-manager.php';
+            include_once $this->root . 'includes/class-sswp-file-permission-manager.php';
             $this->fpm = new Sswp_File_Permission_Manager($this->file_paths, $this->rcmnd_perms);
             return $this;
     }
