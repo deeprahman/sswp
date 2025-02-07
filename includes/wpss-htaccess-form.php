@@ -3,7 +3,7 @@
  * Do .htaccess form related stuff
  */
 global $wpss;
-require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-wpss-server-directives-apache.php';
+require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-apache.php';
 require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-wpss-server-directives-factory.php';
 
 try {

@@ -1,6 +1,6 @@
 <?php
 
-class WPSS_Server_Directives_Apache_Test extends PHPUnit\Framework\TestCase
+class Sswp_Server_Directives_Apache_Test extends PHPUnit\Framework\TestCase
 {
     private $testDir;
     private $directives;
@@ -27,7 +27,7 @@ class WPSS_Server_Directives_Apache_Test extends PHPUnit\Framework\TestCase
 
 
         // Initialize the class
-        $this->directives = new WPSS_Server_Directives_Apache([
+        $this->directives = new Sswp_Server_Directives_Apache([
             'apache' => true
         ]);
 

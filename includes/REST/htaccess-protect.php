@@ -34,8 +34,8 @@ function wpss_htaccess_protect_callback( $request ) {
 		// return new WP_Error('wpss_error', "Method Disallowed", array('status' => 400));
 		// }
 		require_once $wpss->root . '/includes/wpss-htaccess-form.php';
-		require_once $wpss->root . '/includes/class-wpss-server-directives-apache.php';
-		$sd = new WPSS_Server_Directives_Apache();
+		require_once $wpss->root . '/includes/class-sswp-server-directives-apache.php';
+		$sd = new Sswp_Server_Directives_Apache();
 
 		$message = '';
 		switch ( $request->get_method() ) {

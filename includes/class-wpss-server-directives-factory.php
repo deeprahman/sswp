@@ -1,6 +1,6 @@
 <?php
 
-require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-wpss-server-directives-apache.php';
+require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-apache.php';
 final class WPSS_Server_Directives_Factory
 {
 
@@ -23,7 +23,7 @@ final class WPSS_Server_Directives_Factory
     {
         global $is_apache, $is_nginx, $is_IIS, $is_iis7;
         $name = array(
-        'WPSS_Server_Directives_Apache' => $is_apache,
+        'Sswp_Server_Directives_Apache' => $is_apache,
         'WPSS_Server_Directives_Nginx'  => $is_nginx,
         'WPSS_Server_Directives_IIS'    => $is_IIS,
         );
@@ -51,7 +51,7 @@ final class WPSS_Server_Directives_Factory
     private static function instantiate( $class_name ): WPSS_Server_Directives
     {
         switch ( $class_name ) {
-        case 'WPSS_Server_Directives_Apache':
+        case 'Sswp_Server_Directives_Apache':
             return self::instantiate_apache();
         case 'WPSS_Server_Directives_Nginx':
             return self::instantiate_nginx();
@@ -63,10 +63,10 @@ final class WPSS_Server_Directives_Factory
         }
     }
 
-    private static function instantiate_apache(): WPSS_Server_Directives_Apache
+    private static function instantiate_apache(): Sswp_Server_Directives_Apache
     {
         if (self::$apache_instance === null ) {
-            self::$apache_instance = new WPSS_Server_Directives_Apache();
+            self::$apache_instance = new Sswp_Server_Directives_Apache();
         }
         return self::$apache_instance;
     }
