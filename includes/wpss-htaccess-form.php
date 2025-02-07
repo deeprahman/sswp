@@ -4,7 +4,7 @@
  */
 global $wpss;
 require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-apache.php';
-require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-wpss-server-directives-factory.php';
+require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-factory.php';
 
 try {
     $GLOBALS['wpss_sd'] = $sd = Sswp_Server_Directives_Factory::create_server_directives();
