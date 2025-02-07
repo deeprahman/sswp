@@ -9,7 +9,7 @@ class HTAccessFormTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->sd = WPSS_Server_Directives_Factory::create_server_directives();
+        $this->sd = Sswp_Server_Directives_Factory::create_server_directives();
 
     }
 

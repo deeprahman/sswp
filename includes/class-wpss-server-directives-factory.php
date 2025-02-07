@@ -1,7 +1,7 @@
 <?php
 
 require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-apache.php';
-final class WPSS_Server_Directives_Factory
+final class Sswp_Server_Directives_Factory
 {
 
     private static $apache_instance = null;

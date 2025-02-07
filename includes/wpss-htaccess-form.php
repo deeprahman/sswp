@@ -7,7 +7,7 @@ require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-dir
 require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-wpss-server-directives-factory.php';
 
 try {
-    $GLOBALS['wpss_sd'] = $sd = WPSS_Server_Directives_Factory::create_server_directives();
+    $GLOBALS['wpss_sd'] = $sd = Sswp_Server_Directives_Factory::create_server_directives();
 } catch ( Exception $ex ) {
 }
 
