@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class WPSS_File_Permission_Manager
+ * Class Sswp_File_Permission_Manager
  *
  * A comprehensive WordPress file permission management class that handles checking,
  * displaying, and modifying file permissions for critical WordPress files and directories.
@@ -16,7 +16,7 @@
  * @property array $files_to_check Array of file/directory paths to check relative to ABSPATH
  * @property array $recommended_permissions Array of recommended permissions for files and directories
  */
-interface IWPSS_File_Permission_manager {
+interface ISswp_File_Permission_Manager {
 
 	/**
 	 * Checks permissions for all configured files and directories.

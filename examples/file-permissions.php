@@ -20,7 +20,7 @@ var_dump($paths);
 
 try{
 
-    $pm = new WPSS_File_Permission_Manager($paths);
+    $pm = new Sswp_File_Permission_Manager($paths);
     $pm->display_results();
     $errors = array_filter($data, function($perms,$path) use($pm){
         $abspath = realpath(ABSPATH . $path);

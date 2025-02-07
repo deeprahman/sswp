@@ -10,7 +10,7 @@ require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/traits/
  * @property array $files_to_check List of files and directories to check permissions for.
  * @property array $recommended_permissions Recommended permissions for files and directories.
  */
-class WPSS_File_Permission_Manager
+class Sswp_File_Permission_Manager
 {
 
     use WPSS_Ownership_Permission_Trait;

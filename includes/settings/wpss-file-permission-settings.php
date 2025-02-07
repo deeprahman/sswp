@@ -56,7 +56,7 @@ try {
 	);
 
 	$ret['paths']       = array( './', 'wp-config.php', 'wp-content', 'wp-content/uploads', 'wp-content/plugins', 'wp-content/themes' );
-	$ret['chk_results'] = ( new WPSS_File_Permission_Manager( $ret['paths'] ) )->check_permissions();
+	$ret['chk_results'] = ( new Sswp_File_Permission_Manager( $ret['paths'] ) )->check_permissions();
 	return $ret;
 } catch ( \Exception $ex ) {
 	error_log( $ex->getMessage() );
