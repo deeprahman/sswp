@@ -4,7 +4,7 @@
  * TODO: To be other classes for nginx, apache, lightspeed and iis server
  */
 
-abstract class WPSS_Server_Directives {
+abstract class Sswp_Server_Directives {
 	protected $is_apache;
 	protected $is_nginx;
 	protected $is_litespeed;

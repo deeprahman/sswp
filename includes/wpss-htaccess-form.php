@@ -88,7 +88,7 @@ function wpss_save_htaccess_option( $new = array() )
     return $new[ $wpss->settings ]['htaccess'];
 }
 
-function protect_debug_log( $d, IWPSS_Server_Directives $sd )
+function protect_debug_log( $d, ISswp_Server_Directives $sd )
 {
     if ($d === 'on' ) {
         $sd->unprotect_debug_log();
@@ -98,7 +98,7 @@ function protect_debug_log( $d, IWPSS_Server_Directives $sd )
     }
 }
 
-function protect_update_directory( $d, IWPSS_Server_Directives $sd, &$ht_form = array() )
+function protect_update_directory( $d, ISswp_Server_Directives $sd, &$ht_form = array() )
 {
     $is_uploads_checked = array_filter(
         $ht_form,
@@ -117,7 +117,7 @@ function protect_update_directory( $d, IWPSS_Server_Directives $sd, &$ht_form = 
 }
 
 
-function protect_rest_endpoint( $d, IWPSS_Server_Directives $sd )
+function protect_rest_endpoint( $d, ISswp_Server_Directives $sd )
 {
     // NOTE: function Not in use, remove in future
     if ($d !== 'on' ) {
