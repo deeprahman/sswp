@@ -50,7 +50,7 @@ function sswp_handle_htaccess_post_req( $data )
             }
         }
     }
-    return from_data_with_message('Form Saved');
+    return sswp_from_data_with_message('Form Saved');
 }
 
 /**
@@ -62,7 +62,7 @@ function sswp_handle_htaccess_post_req( $data )
         'data' => json_encode($ht_form)
     ]
  */
-function from_data_with_message( $message ): array
+function sswp_from_data_with_message( $message ): array
 {
     global $wpss;
     $ht_form = $wpss->get_ht_form();
@@ -75,7 +75,7 @@ function from_data_with_message( $message ): array
 
 function sswp_handle_htaccess_get_req()
 {
-    return from_data_with_message('Form Data return');
+    return sswp_from_data_with_message('Form Data return');
 }
 function wpss_save_htaccess_option( $new = array() )
 {
