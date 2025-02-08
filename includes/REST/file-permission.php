@@ -1,6 +1,6 @@
 <?php
 
-require_once Sswp_Securing_Setup::ROOT . 'includes/sswp-file-permission.php';
+require_once Sswp_Securing_Setup::ROOT . 'includes/wpss-file-permission.php';
 
 add_action(
     'rest_api_init',
