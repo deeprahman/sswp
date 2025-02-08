@@ -40,7 +40,7 @@ function wpss_htaccess_protect_callback( $request ) {
 		$message = '';
 		switch ( $request->get_method() ) {
 			case 'GET':
-				$message = handle_htaccess_get_req();
+				$message = sswp_handle_htaccess_get_req();
 				break;
 			case 'POST':
 				$data    = $request->get_params();

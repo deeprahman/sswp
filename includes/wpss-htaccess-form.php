@@ -73,7 +73,7 @@ function from_data_with_message( $message ): array
     return $message;
 }
 
-function handle_htaccess_get_req()
+function sswp_handle_htaccess_get_req()
 {
     return from_data_with_message('Form Data return');
 }
