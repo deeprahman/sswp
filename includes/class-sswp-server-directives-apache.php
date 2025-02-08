@@ -1,6 +1,6 @@
 <?php
 
-require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/class-wpss-server-directives.php';
+require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives.php';
 require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/interface-wpss-server-directives.php';
 
 
