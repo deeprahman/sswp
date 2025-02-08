@@ -53,11 +53,11 @@ function wpss_file_permissions_callback( $request )
 
     switch ( $request->get_method() ) {
     case 'GET':
-        $fs_permission = get_file_permissions();
+        $fs_permission = sswp_get_file_permissions();
         break;
     case 'POST':
         $message      .= do_recommended_permission();
-        $fs_permission = get_file_permissions();
+        $fs_permission = sswp_get_file_permissions();
         break;
     case 'PUT':
         if ('revert' == ( $request->get_params() )['action'] ) {
@@ -66,7 +66,7 @@ function wpss_file_permissions_callback( $request )
             $message = __('Action not found', 'secure-setup');
             error_log('Function: ' . __FUNCTION__ . ' Message: ' . $message);
         }
-        $fs_permission = get_file_permissions();  
+        $fs_permission = sswp_get_file_permissions();  
         break;
     case 'PATCH':
         break;

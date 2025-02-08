@@ -287,7 +287,7 @@ Analysis result:
 # This plugin is using the prefix "wpss" for 26 element(s).
 
 # Cannot use "get" as a prefix.
-includes/wpss-file-permission.php:2 function get_file_permissions
+includes/wpss-file-permission.php:2 function sswp_get_file_permissions
 # Cannot use "do" as a prefix.
 includes/wpss-file-permission.php:8 function do_recommended_permission
 # Cannot use "handle" as a prefix.

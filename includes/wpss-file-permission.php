@@ -1,5 +1,5 @@
 <?php
-function get_file_permissions()
+function sswp_get_file_permissions()
 {
     global $wpss;
 
