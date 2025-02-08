@@ -3,7 +3,7 @@
 
 require_once __DIR__ . "/../bootstrap.php";
 require_once ROOT . "/wp-securing-setup.php";
-require_once ROOT . "/includes/wpss-file-permission.php";
+require_once ROOT . "/includes/sswp-file-permission.php";
 
 $sswp_get_file_permissions = sswp_get_file_permissions();
 
