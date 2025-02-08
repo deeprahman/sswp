@@ -6,7 +6,7 @@ require_once ABSPATH . "wp-content/plugins/wp-securing-setup/wpss-logger.php";
 
 require_once ABSPATH. "wp-admin/includes/misc.php";
 //
-require_once( ABSPATH .  "wp-content/plugins/wp-securing-setup/includes/interface-wpss-file-permission-manager.php");
+require_once( ABSPATH .  "wp-content/plugins/wp-securing-setup/includes/interface-sswp-file-permission-manager.php");
 require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/includes/class-sswp-file-permission-manager.php");
 require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/includes/traits/class-wpss-ownership-permission-trait.php");
 
