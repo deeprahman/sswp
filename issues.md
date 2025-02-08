@@ -289,7 +289,7 @@ Analysis result:
 # Cannot use "get" as a prefix.
 includes/wpss-file-permission.php:2 function sswp_get_file_permissions
 # Cannot use "do" as a prefix.
-includes/wpss-file-permission.php:8 function sswp_do_recommended_permission
+includes/wpss-file-permission.php:8 function do_recommended_permission
 # Cannot use "handle" as a prefix.
 includes/wpss-htaccess-form.php:32 function handle_htaccess_post_req
 includes/wpss-htaccess-form.php:77 function handle_htaccess_get_req
@@ -319,7 +319,7 @@ includes/enqueue-scripts/wpss-enqueue-admin-scripts.php:52 function enqueue_jque
 
 # Looks like there are elements not using common prefixes.
 wpss-logger.php:8 function write_log
-includes/wpss-file-permission.php:24 function sswp_revert_to_original
+includes/wpss-file-permission.php:24 function revert_to_original
 includes/class-wpss-server-directives-factory.php:22 $is_nginx;
 includes/wpss-htaccess-form.php:133 $htaccess_from_settings;
 includes/wpss-htaccess-form.php:14 $GLOBALS['allowed_functions'];
