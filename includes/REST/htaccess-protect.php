@@ -45,7 +45,7 @@ function wpss_htaccess_protect_callback( $request ) {
 			case 'POST':
 				$data    = $request->get_params();
 				$form    = $data['from'];
-				$message = handle_htaccess_post_req( $form );
+				$message = sswp_handle_htaccess_post_req( $form );
 				sswp_logger( 'Info', 'Message for htaccess post: ' . $message, __FILE__ );
 				break;
 			case 'DELETE':
@@ -53,7 +53,7 @@ function wpss_htaccess_protect_callback( $request ) {
 			case 'PUT':
 				$data    = $request->get_params();
 				$form    = $data['from'];
-				$message = handle_htaccess_post_req( $form );
+				$message = sswp_handle_htaccess_post_req( $form );
 				sswp_logger( 'Info', 'Message for htaccess post: ' . $message, __FILE__ );
 				break;
 		}

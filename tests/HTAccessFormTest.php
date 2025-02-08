@@ -44,7 +44,7 @@ class HTAccessFormTest extends TestCase
 
 
         // Run the function
-        handle_htaccess_post_req($testData);
+        sswp_handle_htaccess_post_req($testData);
     }
 
     public function testWpssSaveHtaccessOption()

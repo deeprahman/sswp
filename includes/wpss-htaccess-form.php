@@ -28,7 +28,7 @@ $GLOBALS['allowed_functions'] = $allowed_functions = array(
  *                     array( "jpeg", "gif" ) ) );                                                                    
  * @return array|mixed
  */
-function handle_htaccess_post_req( $data )
+function sswp_handle_htaccess_post_req( $data )
 {
     $sd = $GLOBALS['wpss_sd'];
     $GLOBALS['htaccess_settings'] = $htaccess_from_settings = wpss_save_htaccess_option($data);
