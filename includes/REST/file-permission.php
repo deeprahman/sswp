@@ -56,12 +56,12 @@ function wpss_file_permissions_callback( $request )
         $fs_permission = sswp_get_file_permissions();
         break;
     case 'POST':
-        $message      .= do_recommended_permission();
+        $message      .= sswp_do_recommended_permission();
         $fs_permission = sswp_get_file_permissions();
         break;
     case 'PUT':
         if ('revert' == ( $request->get_params() )['action'] ) {
-            $message .= is_wp_error($res = revert_to_original()) ? $res->get_error_message() : $res;
+            $message .= is_wp_error($res = sswp_revert_to_original()) ? $res->get_error_message() : $res;
         } else {
             $message = __('Action not found', 'secure-setup');
             error_log('Function: ' . __FUNCTION__ . ' Message: ' . $message);

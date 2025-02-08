@@ -6,7 +6,7 @@ function sswp_get_file_permissions()
     return $wpss->get_fpm()->check_permissions();
 }
 
-function do_recommended_permission(): string
+function sswp_do_recommended_permission(): string
 {
 
     global $wpss;
@@ -23,7 +23,7 @@ function do_recommended_permission(): string
     return $message;
 }
 
-function revert_to_original()
+function sswp_revert_to_original()
 {
     global $wpss;
 
