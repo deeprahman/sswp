@@ -109,7 +109,7 @@ class Sswp_Securing_Setup
 
     public function rest_endpoints_config()
     {
-            include_once $this->root . DIRECTORY_SEPARATOR . 'includes/wpss-rate-limit-rest.php';
+            include_once $this->root . DIRECTORY_SEPARATOR . 'includes/sswp-rate-limit-rest.php';
     }
 
     /**
