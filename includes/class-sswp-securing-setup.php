@@ -83,7 +83,7 @@ class Sswp_Securing_Setup
     {
             global $wpss;
             wp_enqueue_script('wp-api-request');
-            include_once $this->root . '/includes/enqueue-scripts/wpss-enqueue-admin-scripts.php';
+            include_once $this->root . '/includes/enqueue-scripts/sswp-enqueue-admin-scripts.php';
     }
 
     public function enqueue_admin_css()
