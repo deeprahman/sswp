@@ -104,7 +104,7 @@ class Sswp_Securing_Setup
 
     public function xml_rpc_config()
     {
-            include_once $this->root . DIRECTORY_SEPARATOR . 'includes/wpss-xml-rpc.php';
+            include_once $this->root . DIRECTORY_SEPARATOR . 'includes/sswp-xml-rpc.php';
     }
 
     public function rest_endpoints_config()
