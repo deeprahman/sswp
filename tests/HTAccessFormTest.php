@@ -39,7 +39,7 @@ class HTAccessFormTest extends TestCase
         $allowed_functions = [
             "protect-debug-log" => "sswp_protect_debug_log",
             "allowed_files" => "sswp_protect_update_directory", // NOTE: make the file name consistent
-            "protect-rest-endpoint" => "protect_rest_endpoint",
+            "protect-rest-endpoint" => "sswp_protect_rest_endpoint",
         ];
 
 
@@ -106,10 +106,10 @@ class HTAccessFormTest extends TestCase
     public function testProtectRestEndpoint()
     {
         $this->sd->expects($this->once())->method('protect_user_rest_apt');
-        protect_rest_endpoint("off", $this->sd);
+        sswp_protect_rest_endpoint("off", $this->sd);
 
         $this->sd->expects($this->once())->method('unprotect_user_rest_apt');
-        protect_rest_endpoint("on", $this->sd);
+        sswp_protect_rest_endpoint("on", $this->sd);
     }
 
     public function testAllowedFiles()

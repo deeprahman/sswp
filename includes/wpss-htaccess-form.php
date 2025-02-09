@@ -117,7 +117,7 @@ function sswp_protect_update_directory( $d, ISswp_Server_Directives $sd, &$ht_fo
 }
 
 
-function protect_rest_endpoint( $d, ISswp_Server_Directives $sd )
+function sswp_protect_rest_endpoint( $d, ISswp_Server_Directives $sd )
 {
     // NOTE: function Not in use, remove in future
     if ($d !== 'on' ) {
