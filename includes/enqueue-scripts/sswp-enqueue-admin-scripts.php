@@ -49,7 +49,7 @@ wp_enqueue_style('wp-components');
 // == For jQuery and related
 
 
-function enqueue_jquery_scripts()
+function sswp_enqueue_jquery_scripts()
 {
     // Enqueue jQuery (already included with WordPress)
     wp_enqueue_script('jquery');
@@ -64,7 +64,7 @@ function enqueue_jquery_scripts()
 
 
 
-enqueue_jquery_scripts();
+sswp_enqueue_jquery_scripts();
 
 
 wp_localize_script(
