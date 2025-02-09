@@ -7,7 +7,7 @@
  * @param  WP_REST_Request $request Current REST request.
  * @return bool true if limit exceeded.
  */
-function wpss_limit_rest_api_rate($result, $server, $request)
+function sswp_limit_rest_api_rate($result, $server, $request)
 {
 
     // Get the endpoints to apply rate limiting
@@ -52,7 +52,7 @@ function wpss_limit_rest_api_rate($result, $server, $request)
 }
 
 
-function wpss_handle_rate_limiting( $result, $server, $request )
+function sswp_handle_rate_limiting( $result, $server, $request )
 {
     global $wpss;
     $ht_form_settings = ( get_options(array( $wpss->settings )) )['_sswp_settings']['htaccess']['ht_form'];
@@ -64,7 +64,7 @@ function wpss_handle_rate_limiting( $result, $server, $request )
                     return;
                 }
                 if ($v['value'] == 'on' ) {
-                    $output =  wpss_limit_rest_api_rate($result, $server, $request);    
+                    $output =  sswp_limit_rest_api_rate($result, $server, $request);    
                 }
                
             }
@@ -83,4 +83,4 @@ function wpss_handle_rate_limiting( $result, $server, $request )
 }
 
 // Hook into the REST API pre-dispatch filter
-add_filter('rest_pre_dispatch', 'wpss_handle_rate_limiting', 10, 3);
+add_filter('rest_pre_dispatch', 'sswp_handle_rate_limiting', 10, 3);
