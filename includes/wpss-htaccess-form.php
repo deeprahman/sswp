@@ -107,7 +107,7 @@ function sswp_protect_update_directory( $d, ISswp_Server_Directives $sd, &$ht_fo
             return $is_checked;
         }
     );
-    $files              = allowed_files($d);
+    $files              = sswp_allowed_files($d);
     if (empty($is_uploads_checked) || empty($files) ) {
         $sd->disallow_file_access();
     } else {
@@ -134,7 +134,7 @@ function sswp_protect_rest_endpoint( $d, ISswp_Server_Directives $sd )
  * @param  array $d files extensions
  * @return array allowed files
  */
-function allowed_files( $d ): array
+function sswp_allowed_files( $d ): array
 {
     global $htaccess_from_settings;
     if (empty($d) ) {
