@@ -33,7 +33,7 @@ function wpss_htaccess_protect_callback( $request ) {
 		// if( !array_search($request->method, $allowed_methods,  $strict = false) === true ){
 		// return new WP_Error('wpss_error', "Method Disallowed", array('status' => 400));
 		// }
-		require_once $wpss->root . '/includes/wpss-htaccess-form.php';
+		require_once $wpss->root . '/includes/sswp-htaccess-form.php';
 		require_once $wpss->root . '/includes/class-sswp-server-directives-apache.php';
 		$sd = new Sswp_Server_Directives_Apache();
 
