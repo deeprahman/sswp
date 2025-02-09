@@ -38,7 +38,7 @@ class HTAccessFormTest extends TestCase
         global $allowed_functions;
         $allowed_functions = [
             "protect-debug-log" => "sswp_protect_debug_log",
-            "allowed_files" => "protect_update_directory", // NOTE: make the file name consistent
+            "allowed_files" => "sswp_protect_update_directory", // NOTE: make the file name consistent
             "protect-rest-endpoint" => "protect_rest_endpoint",
         ];
 
@@ -92,7 +92,7 @@ class HTAccessFormTest extends TestCase
              ->willReturn($testFiles);
 
         $this->sd->expects($this->once())->method('allow_file_access')->with($testFiles);
-        protect_update_directory($testFiles, $this->sd);
+        sswp_protect_update_directory($testFiles, $this->sd);
 
         // Test with empty files
         $this->getFunctionMock(__NAMESPACE__, 'allowed_files')
@@ -100,7 +100,7 @@ class HTAccessFormTest extends TestCase
              ->willReturn([]);
 
         $this->sd->expects($this->once())->method('disallow_file_access');
-        protect_update_directory([], $this->sd);
+        sswp_protect_update_directory([], $this->sd);
     }
 
     public function testProtectRestEndpoint()

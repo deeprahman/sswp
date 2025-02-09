@@ -13,7 +13,7 @@ try {
 
 $GLOBALS['allowed_functions'] = $allowed_functions = array(
     'protect-debug-log'     => 'sswp_protect_debug_log',
-    'allowed_files'         => 'protect_update_directory', // NOTE: make the file name consistent
+    'allowed_files'         => 'sswp_protect_update_directory', // NOTE: make the file name consistent
 );
 
 /**
@@ -98,7 +98,7 @@ function sswp_protect_debug_log( $d, ISswp_Server_Directives $sd )
     }
 }
 
-function protect_update_directory( $d, ISswp_Server_Directives $sd, &$ht_form = array() )
+function sswp_protect_update_directory( $d, ISswp_Server_Directives $sd, &$ht_form = array() )
 {
     $is_uploads_checked = array_filter(
         $ht_form,
