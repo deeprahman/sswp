@@ -12,7 +12,7 @@ try {
 }
 
 $GLOBALS['allowed_functions'] = $allowed_functions = array(
-    'protect-debug-log'     => 'protect_debug_log',
+    'protect-debug-log'     => 'sswp_protect_debug_log',
     'allowed_files'         => 'protect_update_directory', // NOTE: make the file name consistent
 );
 
@@ -88,11 +88,11 @@ function wpss_save_htaccess_option( $new = array() )
     return $new[ $wpss->settings ]['htaccess'];
 }
 
-function protect_debug_log( $d, ISswp_Server_Directives $sd )
+function sswp_protect_debug_log( $d, ISswp_Server_Directives $sd )
 {
     if ($d === 'on' ) {
         $sd->unprotect_debug_log();
-        $sd->protect_debug_log();
+        $sd->sswp_protect_debug_log();
     } else {
         $sd->unprotect_debug_log();
     }

@@ -2,7 +2,7 @@
 
 interface ISswp_Server_Directives {
 
-	public function protect_debug_log();
+	public function sswp_protect_debug_log();
 
 	public function unprotect_debug_log();
 

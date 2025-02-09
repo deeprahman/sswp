@@ -98,7 +98,7 @@ class Sswp_Server_Directives_Apache_Test extends PHPUnit\Framework\TestCase
 
         public function testProtectDebugLog()
         {
-            $result = $this->directives->protect_debug_log();
+            $result = $this->directives->sswp_protect_debug_log();
             
             $this->assertTrue($result);
             $htaccessPath = WP_CONTENT_DIR . '/.htaccess';
@@ -115,7 +115,7 @@ class Sswp_Server_Directives_Apache_Test extends PHPUnit\Framework\TestCase
         public function testUnprotectDebugLog()
         {
             // First protect the debug log
-            $this->directives->protect_debug_log();
+            $this->directives->sswp_protect_debug_log();
             
             // Then unprotect it
             $result = $this->directives->unprotect_debug_log();

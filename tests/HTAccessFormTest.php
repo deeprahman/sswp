@@ -37,7 +37,7 @@ class HTAccessFormTest extends TestCase
         // Mock global functions
         global $allowed_functions;
         $allowed_functions = [
-            "protect-debug-log" => "protect_debug_log",
+            "protect-debug-log" => "sswp_protect_debug_log",
             "allowed_files" => "protect_update_directory", // NOTE: make the file name consistent
             "protect-rest-endpoint" => "protect_rest_endpoint",
         ];
@@ -75,11 +75,11 @@ class HTAccessFormTest extends TestCase
 
     public function testProtectDebugLog()
     {
-        $this->sd->expects($this->once())->method('protect_debug_log');
-        protect_debug_log("off", $this->sd);
+        $this->sd->expects($this->once())->method('sswp_protect_debug_log');
+        sswp_protect_debug_log("off", $this->sd);
 
         $this->sd->expects($this->once())->method('unprotect_debug_log');
-        protect_debug_log("on", $this->sd);
+        sswp_protect_debug_log("on", $this->sd);
     }
 
     public function testProtectUpdateDirectory()

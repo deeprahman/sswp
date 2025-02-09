@@ -141,7 +141,7 @@ class Sswp_Server_Directives_Apache extends Sswp_Server_Directives implements IS
         return true;
     }
 
-    public function protect_debug_log()
+    public function sswp_protect_debug_log()
 {
     $htaccess_path = WP_CONTENT_DIR . DIRECTORY_SEPARATOR . '.htaccess';
     
