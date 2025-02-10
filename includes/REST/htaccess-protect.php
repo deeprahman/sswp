@@ -10,7 +10,7 @@ add_action(
 			array(
 				'methods'             => array( 'GET', 'DELETE', 'POST', 'PATCH', 'PUT' ),
 				'callback'            => 'wpss_htaccess_protect_callback',
-				'permission_callback' => 'wpss_htaccess_protect_permission_check',
+				'permission_callback' => 'sswp_htaccess_protect_permission_check',
 				'args'                => array(
 					'nonce' => array(
 						'required' => true,
@@ -22,7 +22,7 @@ add_action(
 	}
 );
 
-function wpss_htaccess_protect_permission_check( $request ) {
+function sswp_htaccess_protect_permission_check( $request ) {
 	return current_user_can( 'manage_options' );
 }
 
