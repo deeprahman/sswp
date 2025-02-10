@@ -5,7 +5,7 @@
  */
 
 
-$htaccess_from_settings['ht_form'] = array(
+$sswp_htaccess_from_settings['ht_form'] = array(
 	array(
 		'name'  => 'protect-debug-log',
 		'value' => 'off',
@@ -29,7 +29,7 @@ $htaccess_from_settings['ht_form'] = array(
 	),
 );
 
-$htaccess_from_settings['file_types'] = array(
+$sswp_htaccess_from_settings['file_types'] = array(
 	'jpeg',
 	'gif',
 	'pdf',
@@ -42,11 +42,11 @@ $htaccess_from_settings['file_types'] = array(
 	'webp',
 );
 
-$htaccess_from_settings['extension_map'] = array(
+$sswp_htaccess_from_settings['extension_map'] = array(
 	'jpg'  => 'jpe?g',
 	'jpeg' => 'jpe?g',
 	'tif'  => 'tiff?',
 	'tiff' => 'tiff?',
 );
 
-return $htaccess_from_settings;
+return $sswp_htaccess_from_settings;

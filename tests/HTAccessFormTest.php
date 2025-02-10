@@ -114,8 +114,8 @@ class HTAccessFormTest extends TestCase
 
     public function testAllowedFiles()
     {
-        global $htaccess_from_settings;
-        $htaccess_from_settings = [
+        global $sswp_htaccess_from_settings;
+        $sswp_htaccess_from_settings = [
             "file_types" => [
                 "file_types" => ["jpeg", "gif", "png"]
             ]

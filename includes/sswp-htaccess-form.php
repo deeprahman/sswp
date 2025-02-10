@@ -31,9 +31,9 @@ $GLOBALS['allowed_functions'] = $allowed_functions = array(
 function sswp_handle_htaccess_post_req( $data )
 {
     $sd = $GLOBALS['wpss_sd'];
-    $GLOBALS['htaccess_settings'] = $htaccess_from_settings = wpss_save_htaccess_option($data);
+    $GLOBALS['htaccess_settings'] = $sswp_htaccess_from_settings = wpss_save_htaccess_option($data);
     // Walk through the $data array
-    foreach ( $htaccess_from_settings['ht_form'] as $item ) {
+    foreach ( $sswp_htaccess_from_settings['ht_form'] as $item ) {
         $name  = $item['name'];
         $value = $item['value'];
 
@@ -43,7 +43,7 @@ function sswp_handle_htaccess_post_req( $data )
 
             // Call the appropriate function if it exists
             if (! empty($function_name) && function_exists($function_name) ) {
-                $function_name($value, $sd, $htaccess_from_settings['ht_form']);
+                $function_name($value, $sd, $sswp_htaccess_from_settings['ht_form']);
             } else {
                 error_log('Function: ' . __FUNCTION__ . " Message: Function {$function_name} does not exists");
                 return new WP_Error(__('client_error', 'secure-setup'), __('Your custom error message here', 'secure-setup'), array( 'status' => 400 ));
@@ -136,12 +136,12 @@ function sswp_protect_rest_endpoint( $d, ISswp_Server_Directives $sd )
  */
 function sswp_allowed_files( $d ): array
 {
-    global $htaccess_from_settings;
+    global $sswp_htaccess_from_settings;
     if (empty($d) ) {
         return array();
     }
 
-    // $allowed = $htaccess_from_settings["file_types"];   //todo: to be removed
+    // $allowed = $sswp_htaccess_from_settings["file_types"];   //todo: to be removed
     $allowed = $GLOBALS['htaccess_settings']['file_types'];
     // The filtered files
     $files = array_filter(

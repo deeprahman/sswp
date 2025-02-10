@@ -49,15 +49,15 @@
 require_once SSWP_ROOT . 'includes/class-sswp-file-permission-manager.php';
 // TODO: Get file permissions
 try {
-	$ret['rcmnd_perms'] = array(
+	$sswp_check_res['rcmnd_perms'] = array(
 		'directory'     => '0755',
 		'file'          => '0644',
 		'wp-config.php' => '0400',
 	);
 
-	$ret['paths']       = array( './', 'wp-config.php', 'wp-content', 'wp-content/uploads', 'wp-content/plugins', 'wp-content/themes' );
-	$ret['chk_results'] = ( new Sswp_File_Permission_Manager( $ret['paths'] ) )->check_permissions();
-	return $ret;
+	$sswp_check_res['paths']       = array( './', 'wp-config.php', 'wp-content', 'wp-content/uploads', 'wp-content/plugins', 'wp-content/themes' );
+	$sswp_check_res['chk_results'] = ( new Sswp_File_Permission_Manager( $sswp_check_res['paths'] ) )->check_permissions();
+	return $sswp_check_res;
 } catch ( \Exception $ex ) {
 	error_log( $ex->getMessage() );
 }
