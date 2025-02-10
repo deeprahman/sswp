@@ -47,7 +47,7 @@ function wpss_activate()
     global $is_apache, $is_litespeed, $is_nginx, $is_IIS;
     // Add your activation logic here
     // For example, create options, update database tables, etc.
-    include_once SSWP_ROOT . '/includes/settings/wpss-default-settings.php';
+    include_once SSWP_ROOT . '/includes/settings/sswp-default-settings.php';
 
     $server_requirement = $is_litespeed || $is_apache;
 

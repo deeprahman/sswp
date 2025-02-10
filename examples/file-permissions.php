@@ -8,7 +8,7 @@ require_once ABSPATH. "wp-admin/includes/misc.php";
 //
 require_once( ABSPATH .  "wp-content/plugins/wp-securing-setup/includes/interface-sswp-file-permission-manager.php");
 require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/includes/class-sswp-file-permission-manager.php");
-require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/includes/traits/class-wpss-ownership-permission-trait.php");
+require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/includes/traits/class-sswp-ownership-permission-trait.php");
 
 require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/wpss-misc.php");
 

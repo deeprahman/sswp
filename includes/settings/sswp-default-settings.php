@@ -1,8 +1,8 @@
 <?php
 
-$sswp_file_permission = include SSWP_ROOT . '/includes/settings/wpss-file-permission-settings.php';
-$sswp_htaccess_form = include SSWP_ROOT . '/includes/settings/wpss-htaccess-settings.php';
-$sswp_rest_api = include SSWP_ROOT . "/includes/settings/wpss-rest-api-settings.php";
+$sswp_file_permission = include SSWP_ROOT . '/includes/settings/sswp-file-permission-settings.php';
+$sswp_htaccess_form = include SSWP_ROOT . '/includes/settings/sswp-htaccess-settings.php';
+$sswp_rest_api = include SSWP_ROOT . "/includes/settings/sswp-rest-api-settings.php";
 $sswp_defaults = array();
 
 $sswp_defaults['file_permission'] = $sswp_file_permission;

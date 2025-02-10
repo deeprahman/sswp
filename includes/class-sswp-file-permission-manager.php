@@ -1,6 +1,6 @@
 <?php
 
-require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/traits/class-wpss-ownership-permission-trait.php';
+require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/traits/class-sswp-ownership-permission-trait.php';
 
 /**
  * Class WP_File_Permission_Checker
@@ -13,7 +13,7 @@ require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/traits/
 class Sswp_File_Permission_Manager
 {
 
-    use WPSS_Ownership_Permission_Trait;
+    use Sswp_Ownership_Permission_Trait;
 
     /**
      * @var array $files_to_check List of files and directories to check permissions for.
