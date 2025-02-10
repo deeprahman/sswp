@@ -11,7 +11,7 @@ add_action(
             array(
             'methods'             => array( 'GET', 'PATCH', 'PUT', 'POST', 'DELETE' ),
             'callback'            => 'wpss_file_permissions_callback',
-            'permission_callback' => 'wpss_file_permissions_permission_check',
+            'permission_callback' => 'sswp_file_permissions_permission_check',
             'args'                => array(
             'nonce' => array(
             'required' => true,
@@ -22,7 +22,7 @@ add_action(
     }
 );
 
-function wpss_file_permissions_permission_check( $request )
+function sswp_file_permissions_permission_check( $request )
 {
     global $wpss;
 
