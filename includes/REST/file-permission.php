@@ -10,7 +10,7 @@ add_action(
             '/file-permissions',
             array(
             'methods'             => array( 'GET', 'PATCH', 'PUT', 'POST', 'DELETE' ),
-            'callback'            => 'wpss_file_permissions_callback',
+            'callback'            => 'sswp_file_permissions_callback',
             'permission_callback' => 'sswp_file_permissions_permission_check',
             'args'                => array(
             'nonce' => array(
@@ -33,7 +33,7 @@ function sswp_file_permissions_permission_check( $request )
     return true;
 }
 
-function wpss_file_permissions_callback( $request )
+function sswp_file_permissions_callback( $request )
 {
     global $wpss;
     $message = '';
