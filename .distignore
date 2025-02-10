@@ -1,0 +1,35 @@
+# Development files
+.git/
+node_modules/
+tests/
+vendor/
+.grunt/
+.tmp/
+.dependencies/
+.vim/
+.vscode/
+# Build and CI files
+.travis.yml
+phpcs.xml
+webpack.config.js
+package*.json
+composer.lock
+
+# Hidden files
+.*
+!.distignore
+!.gitkeep
+
+# Local development files
+.env
+*.log
+*.sql
+phpunit.xml
+tasks.md
+create-plugin-zip.js
+node-insturctins.md
+phpstan.neon
+
+# Vim swap files
+*.swp
+*.swo
