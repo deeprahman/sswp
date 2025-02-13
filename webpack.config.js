@@ -1,8 +1,8 @@
-const defaultConfig = require('@wordpress/scripts/config/webpack.config');
+const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 
 module.exports = {
-    ...defaultConfig,
-    externals: {
-        jquery: 'jQuery'
-    }
+	...defaultConfig,
+	externals: {
+		jquery: 'jQuery',
+	},
 };
