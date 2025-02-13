@@ -1,6 +1,8 @@
 <?php
 
 require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/traits/class-sswp-ownership-permission-trait.php';
+require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/traits/class-sswp-print-permissions.php';
+
 
 /**
  * Class WP_File_Permission_Checker
@@ -14,6 +16,7 @@ class Sswp_File_Permission_Manager
 {
 
     use Sswp_Ownership_Permission_Trait;
+    use Sswp_Print_Permissions;
 
     /**
      * @var array $files_to_check List of files and directories to check permissions for.
