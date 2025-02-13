@@ -3,3 +3,11 @@
 @import "../node_modules/select2/dist/css/select2.css";
 @import './scss/table.scss';
 @import "./scss/htaccess-from.scss";
+
+
+.ui-tabs .ui-tabs-panel {
+    display: block;
+    border-width: 0;
+    padding: 1em .4em;
+    background: none;
+}
