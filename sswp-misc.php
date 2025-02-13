@@ -197,3 +197,18 @@ function sswp_sanitize_secure_setup_settings($value) {
 
     return $value;
 }
+
+function sswp_check_os_compatibility()
+    {
+        // Check the OS
+        if (PHP_OS_FAMILY !== 'Linux' && PHP_OS_FAMILY !== 'BSD' && PHP_OS_FAMILY !== 'Darwin') {
+            // If not Unix-based system, show error message
+            $mesg = __('The file-permission system works best with Unix based system', 'secure-setup');
+            add_settings_error(
+                'file_permission_messages', // Setting slug
+                'file_permission_warning', // Error code
+                $mesg, // Message text
+                'warning' // Type of message ('error' or 'updated')
+            );
+        }
+    }
