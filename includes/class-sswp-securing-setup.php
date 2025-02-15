@@ -93,7 +93,7 @@ class Sswp_Securing_Setup
     public function admin_pages()
     {
             global $wpss;
-            include_once $this->root . '/admin/wpss-files-permissions-tools-page.php';
+            include_once $this->root . '/admin/sswp-files-permissions-tools-page.php';
     }
 
     public function admin_rest()
