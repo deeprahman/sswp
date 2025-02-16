@@ -49,7 +49,7 @@ class Sswp_Securing_Setup
 
     public function __construct()
     {
-        $this->name         = __('WP Securing Setup', self::DOMAIN);
+        $this->name         = __('Secure Setup', 'secure-setup');
         $this->root         = self::ROOT;
         $this->domain       = self::DOMAIN;
         $this->root_url     = SSWP_URL;
