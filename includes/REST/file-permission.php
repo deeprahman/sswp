@@ -39,7 +39,7 @@ function sswp_file_permissions_callback( $request )
     $message = '';
 
     if ( ! function_exists( 'WP_Filesystem' ) ) {
-        $message = __( 'WP_Filesystem() function is not defined', 'your-text-domain' );
+        $message = __( 'WP_Filesystem() function is not defined', 'secure-setup' );
         
         // Log the error
         sswp_logger( 'DEBUG', 'Filesystem Function Not Found', __FUNCTION__ );

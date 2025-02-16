@@ -75,6 +75,6 @@ try {
     error_log('SSWP-ERROR: ' . $ex->getMessage());
     return new WP_Error(
         'wpss_error',
-        __('An avoidable incident han ocurred..', 'wp-securing-setup')
+        __('An avoidable incident han ocurred..', 'secure-setup')
     );
 }
