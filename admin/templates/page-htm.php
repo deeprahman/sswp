@@ -4,9 +4,15 @@
  */
 ?>
 
-<h1 id="wpss-page-heading"> <?php esc_html_e( 'WP Securing Setup', 'secure-setup' ); ?> </h1>
+<h1 id="wpss-page-heading"> <?php esc_html_e( 'Secure WordPress Installation', 'secure-setup' ); ?> </h1>
 <hr>
-<h2 id="wpss-tab-heading"> <?php esc_html_e( 'File Permission Page', 'secure-setup' ); ?> </h2>
+
+
+<?php
+
+// Display settings errors and messages for 'secure_setup_messages'
+settings_errors('file_permission_messages');
+?>
 
 <div id="my-tabs">
 	<ul>
@@ -15,6 +21,7 @@
 		<li><a href="#tab-3"><?php esc_html_e( 'Site Migration', 'secure-setup' ); ?></a></li>
 	</ul>
 	<div id="tab-1">
+		
 		<wp-permissions-table></wp-permissions-table>
 	</div>
 	<div id="tab-2">

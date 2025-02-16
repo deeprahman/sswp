@@ -73,6 +73,7 @@ class Sswp_Securing_Setup
                 );
                 add_action('admin_enqueue_scripts', array( $this, 'enqueue_admin_js' ));
                 add_action('admin_enqueue_scripts', array( $this, 'enqueue_admin_css' ));
+                add_action('admin_notices', 'sswp_check_os_compatibility');
                 $this->admin_pages();
                 $this->xml_rpc_config();
                 $this->admin_rest();
@@ -95,6 +96,8 @@ class Sswp_Securing_Setup
             global $wpss;
             include_once $this->root . '/admin/sswp-files-permissions-tools-page.php';
     }
+
+    
 
     public function admin_rest()
     {
