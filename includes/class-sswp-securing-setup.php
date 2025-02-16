@@ -53,9 +53,9 @@ class Sswp_Securing_Setup
         $this->root         = self::ROOT;
         $this->domain       = self::DOMAIN;
         $this->root_url     = SSWP_URL;
-        $this->js_handle    = 'wpss-primary-js';
-        $this->css_handle   = 'wpss-primary-css';
-        $this->nonce_action = 'wpss-rest';
+        $this->js_handle    = 'sswp-primary-js';
+        $this->css_handle   = 'sswp-primary-css';
+        $this->nonce_action = 'sswp-rest';
         $this->settings     = SSWP_SETTINGS;
                 $this->init();
     }
