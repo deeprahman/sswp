@@ -2,7 +2,7 @@
 
 global $wpss;
 // $admin_page passed from included page
-if ('tools_page_wpss-files-permission' !== $admin_page ) {
+if ('tools_page_sswp-files-permission' !== $admin_page ) {
     return;
 }
 

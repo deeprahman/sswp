@@ -10,7 +10,7 @@ function sswp_files_permission_page() {
 		__( 'Files Permission', 'secure-setup' ), // Page title
 		__( 'Files Permission', 'secure-setup' ), // Menu title
 		'manage_options', // Required capability
-		'wpss-files-permission', // Page slug
+		'sswp-files-permission', // Page slug
 		'sswp_file_permission_page_html' // Callback function
 	);
 }
@@ -26,16 +26,9 @@ add_action( 'admin_menu', 'sswp_files_permission_page' );
 function sswp_file_permission_page_html() {
 
 	global $wpss;
-	// Start output buffering
-	// ob_start();
 
-	// Print the HTML content for the page
 
 	include_once SSWP_ROOT . '/admin/templates/page-htm.php';
 
-	// Get the buffered output
-	// $output = ob_get_clean();
 
-	// Return the output
-	// echo $output;
 }
