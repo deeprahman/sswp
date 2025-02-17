@@ -71,8 +71,8 @@ trait Sswp_Ownership_Permission_Trait {
 	 * @return array Ownership information
 	 */
 	protected function get_ownership_Info( string $path ): array {
-		$owner_id = fileowner( $path );
-		$group_id = filegroup( $path );
+		$owner_id = $this->wp_filesystem->owner( $path );
+		$group_id = $this->wp_filesystem->group( $path );
 
 		$owner_info = function_exists( 'posix_getpwuid' ) ?
 			posix_getpwuid( $owner_id ) :
@@ -105,13 +105,13 @@ trait Sswp_Ownership_Permission_Trait {
 	 * @return array Permissions information
 	 */
 	protected function get_permissions_info( string $path ): array {
-		$perms = fileperms( $path );
+		$perms = $this->wp_filesystem->getchmod( $path );
 		$mode  = substr( sprintf( '%o', $perms ), -4 );
 
 		return array(
 			'mode_octal'   => $mode,
 			'mode_human'   => $this->getHumanReadablePermissions( $perms ),
-			'is_directory' => is_dir( $path ),
+			'is_directory' => $this->wp_filesystem->is_dir( $path ),
 			'special_bits' => array(
 				'setuid' => (bool) ( $perms & 0x800 ),
 				'setgid' => (bool) ( $perms & 0x400 ),
@@ -147,7 +147,7 @@ trait Sswp_Ownership_Permission_Trait {
 	 * @return array Security assessment
 	 */
 	protected function get_security_assessment( string $path ): array {
-		$perms          = fileperms( $path );
+		$perms          = $this->wp_filesystem->getchmod( $path );
 		$is_public      = $perms & 0x0004;
 		$world_writable = $perms & 0x0002;
 
@@ -173,7 +173,7 @@ trait Sswp_Ownership_Permission_Trait {
 		}
 
 		if (
-			( $perms & 0x0004 ) && ! is_dir( $path ) &&
+			( $perms & 0x0004 ) && ! $this->wp_filesystem->is_dir( $path ) &&
 			preg_match( '/\.(php|inc|config)$/i', $path )
 		) {
 			$warnings[] = 'Potentially sensitive file is world-readable';
@@ -199,7 +199,7 @@ trait Sswp_Ownership_Permission_Trait {
 	 */
 	protected function getSecurityRecommendations( string $path, int $perms ): array {
 		$recommendations = array();
-		$is_dir          = is_dir( $path );
+		$is_dir          = $this->wp_filesystem->is_dir( $path );
 
 		if ( $perms & 0x0002 ) {
 			$recommendations[] = sprintf(
