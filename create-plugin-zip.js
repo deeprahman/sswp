@@ -46,9 +46,9 @@ const filesToInclude = [
 	'includes',
 	'build',
 	'public',
-	'wpss-logger.php',
+	'sswp-logger.php',
 	'wp-securing-setup.php',
-	'wpss-misc.php',
+	'sswp-misc.php',
 	'readme.txt',
 	'languages',
 ];

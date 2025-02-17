@@ -31,7 +31,7 @@ require_once ROOT . "/vendor/autoload.php";
 require_once(WP_ROOT . "/wp-load.php");
 require_once(WP_ROOT . "/wp-admin/includes/misc.php");
 
-require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/wpss-misc.php");
+require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/sswp-misc.php");
 require_once ROOT . "/wpss-logger.php";
 
 require_once ROOT . "/wp-securing-setup.php";

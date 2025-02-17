@@ -27,7 +27,7 @@ function sswp_revert_to_original()
 {
     global $wpss;
 
-    include_once $wpss->root . 'wpss-misc.php';
+    include_once $wpss->root . 'sswp-misc.php';
     // Get the initial permission
     $initial_perms = $wpss->get_original_permission();
 
