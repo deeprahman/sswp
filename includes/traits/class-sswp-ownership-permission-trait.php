@@ -71,27 +71,27 @@ trait Sswp_Ownership_Permission_Trait {
 	 * @return array Ownership information
 	 */
 	protected function get_ownership_Info( string $path ): array {
-		$owner_id = $this->wp_filesystem->owner( $path );
-		$group_id = $this->wp_filesystem->group( $path );
+		$owner_name = $this->wp_filesystem->owner( $path );
+		$group_name = $this->wp_filesystem->group( $path );
 
-		$owner_info = function_exists( 'posix_getpwuid' ) ?
-			posix_getpwuid( $owner_id ) :
-			array( 'name' => $owner_id );
+		// $owner_info = function_exists( 'posix_getpwuid' ) ?
+		// 	posix_getpwuid( $owner_id ) :
+		// 	array( 'name' => $owner_id );
 
-		$group_info = function_exists( 'posix_getgrgid' ) ?
-			posix_getgrgid( $group_id ) :
-			array( 'name' => $group_id );
+		// $group_info = function_exists( 'posix_getgrgid' ) ?
+		// 	posix_getgrgid( $group_id ) :
+		// 	array( 'name' => $group_id );
 
 		$wp_user = $this->get_word_press_process_owner();
 
 		return array(
 			'owner'          => array(
-				'id'   => $owner_id,
-				'name' => $owner_info['name'] ?? 'unknown',
+				'name'   => $owner_name,
+				
 			),
 			'group'          => array(
-				'id'   => $group_id,
-				'name' => $group_info['name'] ?? 'unknown',
+				'name'   => $group_name,
+				
 			),
 			'wordpress_user' => $wp_user,
 			'is_wp_owner'    => ( $owner_info['name'] ?? '' ) === $wp_user,
