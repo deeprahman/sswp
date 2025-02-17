@@ -94,7 +94,7 @@ trait Sswp_Ownership_Permission_Trait {
 				
 			),
 			'wordpress_user' => $wp_user,
-			'is_wp_owner'    => ( $owner_info['name'] ?? '' ) === $wp_user,
+			'is_wp_owner'    => ( $owner_name ?? '' ) === $wp_user,
 		);
 	}
 
