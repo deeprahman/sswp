@@ -38,16 +38,23 @@ require_once SSWP_ROOT . '/sswp-misc.php';
 $is_litespeed = strpos($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false;
 
 // Register activation and deactivation hooks
-register_activation_hook(__FILE__, 'wpss_activate');
-register_deactivation_hook(__FILE__, 'wpss_deactivate');
+register_activation_hook(__FILE__, 'sswp_activate');
+register_deactivation_hook(__FILE__, 'sswp_deactivate');
 
 // Function to handle plugin activation
-function wpss_activate()
+function sswp_activate()
 {
     global $is_apache, $is_litespeed, $is_nginx, $is_IIS;
     // Add your activation logic here
     // For example, create options, update database tables, etc.
+
+
+    include_once SSWP_ROOT . '/sswp-db-tables.php';
+    sswp_create_tables();
+
     include_once SSWP_ROOT . '/includes/settings/sswp-default-settings.php';
+
+
 
     $server_requirement = $is_litespeed || $is_apache;
 
@@ -58,11 +65,12 @@ function wpss_activate()
 }
 
 // Function to handle plugin deactivation
-function wpss_deactivate()
+function sswp_deactivate()
 {
     // Add your deactivation logic here
     // For example, delete options, remove database tables, etc.
     delete_option(SSWP_SETTINGS);
+    add_action('shutdown', 'sswp_deactivation_prompt');
 }
 
 // Include the plugin class
