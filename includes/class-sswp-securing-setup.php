@@ -65,7 +65,7 @@ class Sswp_Securing_Setup
             // $this->file_paths = ["wp-config.php", "wp-login.php", "wp-content", "wp-content/uploads", "wp-content/plugins", "wp-content/themes"];
                 add_action(
                     'plugin_loaded', function () {
-
+                        $this->crons();
                         $this->file_paths  = $this->get_file_paths();
                         $this->rcmnd_perms = $this->get_rcmnd_perms();
                         $this->set_fpm();
@@ -105,6 +105,9 @@ class Sswp_Securing_Setup
             include_once $this->root . '/includes/REST/htaccess-protect.php';
     }
 
+    public function crons(){
+        // TODO: call the main cron file
+    }
     public function xml_rpc_config()
     {
             include_once $this->root . DIRECTORY_SEPARATOR . 'includes/sswp-xml-rpc.php';
