@@ -127,38 +127,11 @@ trait Sswp_Ownership_Permission_Trait {
 	 * @return array Access information
 	 */
 	protected function get_access_info( string $path ): array {
-		// Check OS compatibility and function availability
-		$os_type = strtoupper( substr( PHP_OS, 0, 3 ) );
-		$unsupported_functions = array();
-
-		if ( ! function_exists( 'is_readable' ) ) {
-			$unsupported_functions[] = 'is_readable';
-		}
-		if ( ! function_exists( 'is_writable' ) ) {
-			$unsupported_functions[] = 'is_writable';
-		}
-		if ( $os_type === 'WIN' && ! function_exists( 'is_executable' ) ) {
-			$unsupported_functions[] = 'is_executable';
-		}
-
-		if ( ! empty( $unsupported_functions ) ) {
-			add_action( 'admin_notices', function() use ( $unsupported_functions ) {
-				$message = sprintf(
-					'The following functions are not supported on your system (%s): %s. Some features may not work as expected.',
-					PHP_OS,
-					implode( ', ', $unsupported_functions )
-				);
-				echo '<div class="notice notice-warning is-dismissible"><p>' . esc_html( $message ) . '</p></div>';
-			});
-		}
-
 		return array(
 			'readable'   => array(
-				'php'       => is_readable( $path ),
 				'wordpress' => $this->wp_filesystem->is_readable( $path ),
 			),
 			'writable'   => array(
-				'php'       => is_writable( $path ),
 				'wordpress' => $this->wp_filesystem->is_writable( $path ),
 			),
 			'executable' => is_executable( $path ),
