@@ -33,7 +33,7 @@ trait Sswp_Ownership_Permission_Trait {
 	 * @return array|WP_Error Permission and ownership information
 	 */
 	protected function check_ownership_permissions( string $path ) {
-		if ( ! $this->wp_filesystem && ! $this->initializeFilesystem() ) {
+		if ( ! $this->wp_filesystem && ! $this->initializeFilesystem() ) { // TODO: make the function name wordpress compatible
 			return new WP_Error(
 				'filesystem_error',
 				'Unable to initialize WordPress filesystem'
@@ -82,7 +82,7 @@ trait Sswp_Ownership_Permission_Trait {
 		// 	posix_getgrgid( $group_id ) :
 		// 	array( 'name' => $group_id );
 
-		$wp_user = $this->get_word_press_process_owner();
+		$wp_user = $this->get_word_press_process_owner(); // TODO: change $wp_user to $p_owner_wp
 
 		return array(
 			'owner'          => array(
@@ -110,7 +110,7 @@ trait Sswp_Ownership_Permission_Trait {
 
 		return array(
 			'mode_octal'   => $mode,
-			'mode_human'   => $this->getHumanReadablePermissions( $perms ),
+			'mode_human'   => $this->getHumanReadablePermissions( $perms ), // TODO: Make it WordPress compatible
 			'is_directory' => $this->wp_filesystem->is_dir( $path ),
 			'special_bits' => array(
 				'setuid' => (bool) ( $perms & 0x800 ),
@@ -208,7 +208,7 @@ trait Sswp_Ownership_Permission_Trait {
 		}
 
 		if ( ! $this->get_ownership_Info( $path )['is_wp_owner'] ) {
-			$wp_user           = $this->get_word_press_process_owner();
+			$wp_user           = $this->get_word_press_process_owner(); // TODO: change $wp_user to $p_owner_wp
 			$recommendations[] = sprintf(
 				'Change ownership to WordPress user: chown %s:%s %s',
 				$wp_user,
@@ -221,13 +221,14 @@ trait Sswp_Ownership_Permission_Trait {
 	}
 
 	/**
-	 * Get WordPress process owner
-	 *
-	 * @return string WordPress process owner
-	 */
-	protected function get_word_press_process_owner(): string {
-		return get_current_user();
-	}
+ * Get WordPress process owner
+ *
+ * @return string WordPress process owner
+ */
+protected function get_word_press_process_owner(): string {
+    $user_info = posix_getpwuid(posix_geteuid());
+    return $user_info['name'] ?? 'unknown';
+}
 
 	/**
 	 * Convert permissions to human-readable format
