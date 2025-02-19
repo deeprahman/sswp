@@ -35,7 +35,8 @@ class Sswp_File_Permission_Manager
      */
     public function __construct( $files_to_check = array(), $recommended_permissions = array() )
     {
-
+        $this->broadcast_not_unix_warning();
+        
         if (! $this->initializeFilesystem() ) {
                         sswp_logger("Info", "File System initialization failed.", __METHOD__);
             return;
@@ -51,6 +52,14 @@ class Sswp_File_Permission_Manager
         'file'          => '0644',
         'wp-config.php' => '0444',
         );
+    }
+
+    private function broadcast_not_unix_warning(){
+        global $admin_page;
+        if ('tools_page_sswp-files-permission' !== $admin_page ) {
+            return;
+        }
+        sswp_check_os_compatibility();
     }
 
     /**
