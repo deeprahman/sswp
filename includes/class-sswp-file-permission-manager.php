@@ -38,7 +38,7 @@ class Sswp_File_Permission_Manager
         $this->broadcast_not_unix_warning();
         
         if (! $this->initializeFilesystem() ) {
-                        sswp_logger("Info", "File System initialization failed.", __METHOD__);
+                        sswp_logger("Info", __("File System initialization failed.",'secure-setup'), __METHOD__);
             return;
         }
 
@@ -231,7 +231,8 @@ class Sswp_File_Permission_Manager
 
         WP_Filesystem();
         if (! $this->is_within_wordpress($path) ) {
-            sswp_logger('Info ', 'The path is not within WordPress installation. '. $path, __METHOD__);
+            $message = sprintf(__('The path is not within WordPress installation: %s.', 'secure-setup'), $path);
+            sswp_logger('Info', $message, __METHOD__);
             return false;
         }
 
@@ -289,7 +290,8 @@ class Sswp_File_Permission_Manager
                 $recommended_permission = $this->get_recommended_permission($abs_path);
 
                 if (is_wp_error($recommended_permission) ) {
-                    error_log('Code: ' . $recommended_permission->get_error_code() . 'Message: ' . $recommended_permission->get_error_message() . 'Error Data: ' . $recommended_permission->get_error_data());
+                    
+                    sswp_logger('Error',['message' => $recommended_permission->get_error_message(), 'Error_Data' => $recommended_permission->get_error_data()],__METHOD__);
                     return true;
                 }
 

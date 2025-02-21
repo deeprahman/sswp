@@ -59,5 +59,6 @@ try {
 	$sswp_check_res['chk_results'] = ( new Sswp_File_Permission_Manager( $sswp_check_res['paths'] ) )->check_permissions();
 	return $sswp_check_res;
 } catch ( \Exception $ex ) {
-	error_log( $ex->getMessage() );
+
+	sswp_logger('Error',$ex->getMessage(),__FILE__);
 }

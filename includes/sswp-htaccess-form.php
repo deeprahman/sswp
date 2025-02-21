@@ -45,7 +45,8 @@ function sswp_handle_htaccess_post_req( $data )
             if (! empty($function_name) && function_exists($function_name) ) {
                 $function_name($value, $sd, $sswp_htaccess_from_settings['ht_form']);
             } else {
-                error_log('Function: ' . __FUNCTION__ . " Message: Function {$function_name} does not exists");
+               
+                sswp_logger('Error', "Function " .$function_name." does not exists",__METHOD__);
                 return new WP_Error(__('client_error', 'secure-setup'), __('Your custom error message here', 'secure-setup'), array( 'status' => 400 ));
             }
         }

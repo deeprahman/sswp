@@ -64,7 +64,8 @@ function sswp_file_permissions_callback( $request )
             $message .= is_wp_error($res = sswp_revert_to_original()) ? $res->get_error_message() : $res;
         } else {
             $message = __('Action not found', 'secure-setup');
-            error_log('Function: ' . __FUNCTION__ . ' Message: ' . $message);
+          
+            sswp_logger('Error', $message, __METHOD__ );
         }
         $fs_permission = sswp_get_file_permissions();  
         break;

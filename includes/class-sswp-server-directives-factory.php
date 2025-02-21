@@ -44,7 +44,8 @@ final class Sswp_Server_Directives_Factory
 
     private static function class_not_available( $class_name )
     {
-        error_log('Attempted to instantiate unavailable class: ' . $class_name);
+
+        sswp_logger("Error", 'Attempted to instantiate unavailable class: ' . $class_name, __METHOD__);
         return new WP_Error('class_not_available', 'The feature is coming soon');
     }
 
