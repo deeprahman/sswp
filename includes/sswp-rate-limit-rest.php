@@ -11,8 +11,8 @@ function sswp_limit_rest_api_rate($result, $server, $request)
 {
 
     // Get the endpoints to apply rate limiting
-    $endpoints = isset($GLOBALS['wpss']) && method_exists($GLOBALS['wpss'], 'get_rest_endpoints_for_limiting') 
-        ? $GLOBALS['wpss']->get_rest_endpoints_for_limiting() 
+    $endpoints = isset($GLOBALS['sswp']) && method_exists($GLOBALS['sswp'], 'get_rest_endpoints_for_limiting') 
+        ? $GLOBALS['sswp']->get_rest_endpoints_for_limiting() 
         : ['/wp/v2/users'];
     $route = $request->get_route();
     // Target only the desired endpoints
@@ -28,8 +28,8 @@ function sswp_limit_rest_api_rate($result, $server, $request)
     $call_data = get_transient($cache_key);
 
     // Set rate limit parameters
-    $max_calls = $GLOBALS['wpss']->get_max_call_for_limiting(); // Maximum API calls allowed
-    $time_window = $GLOBALS['wpss']->get_time_window_for_limiting(); // Time window in seconds
+    $max_calls = $GLOBALS['sswp']->get_max_call_for_limiting(); // Maximum API calls allowed
+    $time_window = $GLOBALS['sswp']->get_time_window_for_limiting(); // Time window in seconds
 
     if ($call_data) {
     
@@ -54,8 +54,8 @@ function sswp_limit_rest_api_rate($result, $server, $request)
 
 function sswp_handle_rate_limiting( $result, $server, $request )
 {
-    global $wpss;
-    $ht_form_settings = ( get_options(array( $wpss->settings )) )['_sswp_settings']['htaccess']['ht_form'];
+    global $sswp;
+    $ht_form_settings = ( get_options(array( $sswp->settings )) )['_sswp_settings']['htaccess']['ht_form'];
     $output = false;
         array_walk(
             $ht_form_settings,

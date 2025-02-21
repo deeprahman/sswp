@@ -1,4 +1,4 @@
-import { checkHtaccessProtection } from './wpss-htaccess-protect.js';
+import { checkHtaccessProtection } from './sswp-htaccess-protect.js';
 
 jQuery( document ).ready( function ( $ ) {
 	$( '.htaccess-form' ).on( 'submit', function ( e ) {

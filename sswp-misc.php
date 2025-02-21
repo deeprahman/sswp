@@ -208,7 +208,6 @@ function sswp_sanitize_secure_setup_settings($value)
 
 function sswp_check_os_compatibility()
 {
-
     // Check the OS
     if (PHP_OS_FAMILY !== 'Linux' && PHP_OS_FAMILY !== 'BSD' && PHP_OS_FAMILY !== 'Darwin') {
         // If not Unix-based system, show error message

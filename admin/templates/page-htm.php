@@ -4,7 +4,7 @@
  */
 ?>
 
-<h1 id="wpss-page-heading"> <?php esc_html_e( 'Secure WordPress Installation', 'secure-setup' ); ?> </h1>
+<h1 id="sswp-page-heading"> <?php esc_html_e( 'Secure WordPress Installation', 'secure-setup' ); ?> </h1>
 <hr>
 
 

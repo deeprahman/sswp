@@ -16,7 +16,7 @@ class Sswp_Server_Directives_Apache extends Sswp_Server_Directives implements IS
         }
     }
 
-    public function add_rule($rules, $htaccess_path = '', $marker = 'wpss'): bool
+    public function add_rule($rules, $htaccess_path = '', $marker = 'sswp'): bool
     {
 
         if ($this->is_apache || $this->is_litespeed) {
@@ -25,7 +25,7 @@ class Sswp_Server_Directives_Apache extends Sswp_Server_Directives implements IS
         return false;
     }
 
-    public function remove_rule($htaccess_path = '', string $marker = 'wpss')
+    public function remove_rule($htaccess_path = '', string $marker = 'sswp')
     {
 
         if ($this->is_apache || $this->is_litespeed) {
@@ -34,7 +34,7 @@ class Sswp_Server_Directives_Apache extends Sswp_Server_Directives implements IS
         return false;
     }
 
-    private function add_apache_rule($rules, $htaccess_path = '', string $marker = 'wpss')
+    private function add_apache_rule($rules, $htaccess_path = '', string $marker = 'sswp')
     {
 
         if (!$this->validate_htaccess_syntax($rules)) {
@@ -94,7 +94,7 @@ class Sswp_Server_Directives_Apache extends Sswp_Server_Directives implements IS
      * @param  string $marker
      * @return bool
      */
-    private function remove_apache_rule($htaccess_path = '', string $marker = 'wpss')
+    private function remove_apache_rule($htaccess_path = '', string $marker = 'sswp')
     {
         $htaccess_file = $htaccess_path ?: $this->home_path . '.htaccess';
 
@@ -232,14 +232,14 @@ class Sswp_Server_Directives_Apache extends Sswp_Server_Directives implements IS
      */
     protected function file_ext_regex_creator(array $file_ext): mixed
     {
-        global $wpss;
-        $file_path = $wpss->root . 'includes/class-sswp-file-regex-pattern-creator.php';
+        global $sswp;
+        $file_path = $sswp->root . 'includes/class-sswp-file-regex-pattern-creator.php';
         if (!file_exists($file_path)) {
             return new WP_Error('File Not Exists: ' . $file_path);
         }
         include_once $file_path;
         // BUG: Null
-        $extension_map = $wpss->get_extension_map();
+        $extension_map = $sswp->get_extension_map();
 
         $regex_pat = new Sswp_File_Regex_Pattern_Creator($file_ext, $extension_map);
         // call generateApacheExtensionRegex method
@@ -248,8 +248,8 @@ class Sswp_Server_Directives_Apache extends Sswp_Server_Directives implements IS
     }
     protected function validate_htaccess_syntax(string $rules): mixed
     {
-        global $wpss;
-        $file_path = $wpss->root . 'includes/class-sswp-apache-directives-validator.php';
+        global $sswp;
+        $file_path = $sswp->root . 'includes/class-sswp-apache-directives-validator.php';
         if (!file_exists($file_path)) {
             return new WP_Error('File Not Exists: ' . $file_path);
         }

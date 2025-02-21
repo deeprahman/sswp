@@ -7,5 +7,5 @@ Only includes the following files and directories while creating zip
 - includes/
 - build/
 - public/
-- wpss-logger.php
-- wp-securing-setup.php
+- sswp-logger.php
+- secure-setup.php

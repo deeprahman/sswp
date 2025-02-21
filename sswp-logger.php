@@ -1,20 +1,24 @@
 <?php
 
 
-if (! function_exists('sswp_logger') ) {
-
-    function sswp_logger( $type, $log, $function )
+if (!function_exists('sswp_logger')) {
+    function sswp_logger($type, $log, $function)
     {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'sswp_logs';
 
-        $formatted_log = $type . ': [' . date('Y-m-d H:i:s') . '] ' . ' Function: ' . $function . ' ';
-        if (is_array($log) || is_object($log) ) {
-            $formatted_log .= print_r($log, true);
-        } else {
-            $formatted_log .= $log;
-        }
+        $formatted_log = array(
+            'type' => $type,
+            'function' => $function,
+            'log' => (is_array($log) || is_object($log)) ? serialize($log) : $log
+        );
 
-        $formatted_log .= PHP_EOL;
-
-        error_log($formatted_log);
+        $wpdb->insert(
+            $table_name,
+            array(
+                'log_time' => current_time('mysql'),
+                'log_text' => serialize($formatted_log),
+            )
+        );
     }
 }

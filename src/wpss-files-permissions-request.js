@@ -1,9 +1,9 @@
-import { WPSSPermissionsTable } from './components/index';
+import { sswpPermissionsTable } from './components/index';
 
 function getFilePermissionsWP() {
 	return wp
 		.apiRequest( {
-			path: '/wpss/v1/file-permissions',
+			path: '/sswp/v1/file-permissions',
 			method: 'GET',
 			data: {
 				nonce: wpApiSettings.nonce,
@@ -23,7 +23,7 @@ function getFilePermissionsWP() {
 }
 
 // Register the web component
-customElements.define( 'wp-permissions-table', WPSSPermissionsTable );
+customElements.define( 'wp-permissions-table', sswpPermissionsTable );
 
 // Example usage
 const permissionsTable = document.querySelector( 'wp-permissions-table' );

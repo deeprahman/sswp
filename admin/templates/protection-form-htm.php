@@ -3,9 +3,9 @@
  * Protection form
  */
 // Get the allowed_files option
-global $wpss;
+global $sswp;
 
-$file_types = $wpss->get_file_types();
+$file_types = $sswp->get_file_types();
 
 ?>
 

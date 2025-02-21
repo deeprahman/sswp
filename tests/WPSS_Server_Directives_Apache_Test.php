@@ -18,7 +18,7 @@ class Sswp_Server_Directives_Apache_Test extends PHPUnit\Framework\TestCase
 
 
         // Create a temporary test directory
-        $this->testDir = sys_get_temp_dir() . '/wpss_test_' . uniqid();
+        $this->testDir = sys_get_temp_dir() . '/sswp_test_' . uniqid();
         mkdir($this->testDir);
 
         // Create test .htaccess file
@@ -75,9 +75,9 @@ class Sswp_Server_Directives_Apache_Test extends PHPUnit\Framework\TestCase
         $this->assertFileExists($this->htaccessPath);
 
         $content = file_get_contents($this->htaccessPath);
-        $this->assertStringContainsString('# BEGIN wpss', $content);
+        $this->assertStringContainsString('# BEGIN sswp', $content);
         $this->assertStringContainsString($rules, $content);
-        $this->assertStringContainsString('# END wpss', $content);
+        $this->assertStringContainsString('# END sswp', $content);
     }
 
     public function testRemoveRule()
@@ -91,9 +91,9 @@ class Sswp_Server_Directives_Apache_Test extends PHPUnit\Framework\TestCase
 
         $this->assertTrue($result);
         $content = file_get_contents($this->htaccessPath);
-        $this->assertStringNotContainsString('# BEGIN wpss', $content);
+        $this->assertStringNotContainsString('# BEGIN sswp', $content);
         $this->assertStringNotContainsString($rules, $content);
-        $this->assertStringNotContainsString('# END wpss', $content);
+        $this->assertStringNotContainsString('# END sswp', $content);
     }
 
         public function testProtectDebugLog()

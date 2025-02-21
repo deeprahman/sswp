@@ -78,11 +78,11 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-sswp-securing-setup.php
 
 
 try {
-    $GLOBAL['sswp'] = $wpss = new Sswp_Securing_Setup();
+    $GLOBALS['sswp'] = $sswp = new Sswp_Securing_Setup();
 } catch (\Exception $ex) {
     error_log('SSWP-ERROR: ' . $ex->getMessage());
     return new WP_Error(
-        'wpss_error',
+        'sswp_error',
         __('An avoidable incident han ocurred..', 'secure-setup')
     );
 }

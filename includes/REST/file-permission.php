@@ -6,7 +6,7 @@ add_action(
     'rest_api_init',
     function () {
         register_rest_route(
-            'wpss/v1',
+            'sswp/v1',
             '/file-permissions',
             array(
             'methods'             => array( 'GET', 'PATCH', 'PUT', 'POST', 'DELETE' ),
@@ -24,7 +24,7 @@ add_action(
 
 function sswp_file_permissions_permission_check( $request )
 {
-    global $wpss;
+    global $sswp;
 
     if (! current_user_can('manage_options') ) {
         return false;
@@ -35,7 +35,7 @@ function sswp_file_permissions_permission_check( $request )
 
 function sswp_file_permissions_callback( $request )
 {
-    global $wpss;
+    global $sswp;
     $message = '';
 
     if ( ! function_exists( 'WP_Filesystem' ) ) {

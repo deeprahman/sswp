@@ -38,5 +38,5 @@ abstract class Sswp_Server_Directives {
 	 * @param string $marker
 	 * @return void
 	 */
-	abstract protected function add_rule( string $rules, string $htaccess_path = '', string $marker = 'wpss' ): bool;
+	abstract protected function add_rule( string $rules, string $htaccess_path = '', string $marker = 'sswp' ): bool;
 }

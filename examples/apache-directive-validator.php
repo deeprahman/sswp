@@ -2,7 +2,7 @@
 
 require_once "/home/deep/wsl.deeprahman.lo/wp-load.php";
 wp(); // For query
-require_once ABSPATH . "wp-content/plugins/wp-securing-setup/wpss-logger.php";
+require_once ABSPATH . "wp-content/plugins/wp-securing-setup/sswp-logger.php";
 //========================================================================================
 
 require_once ABSPATH. "wp-admin/includes/misc.php";

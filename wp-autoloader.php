@@ -6,7 +6,7 @@
  * @param string $class_name The name of the class to be loaded.
  * @return void
  */
-function wpss_autoloader($class_name)
+function sswp_autoloader($class_name)
 {
     $class_file = 'class-' . strtolower(str_replace('_', '-', $class_name)) . '.php';
     $directories = [
@@ -23,4 +23,4 @@ function wpss_autoloader($class_name)
     }
 }
 
-spl_autoload_register('wpss_autoloader');
+spl_autoload_register('sswp_autoloader');

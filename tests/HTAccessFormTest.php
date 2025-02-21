@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 class HTAccessFormTest extends TestCase
 {
-    private $wpss;
+    private $sswp;
     private $sd;
 
     protected function setUp(): void
@@ -47,15 +47,15 @@ class HTAccessFormTest extends TestCase
         sswp_handle_htaccess_post_req($testData);
     }
 
-    public function testWpssSaveHtaccessOption()
+    public function testsswpSaveHtaccessOption()
     {
         $testData = [
             ["name" => "test-option", "value" => "test-value"]
         ];
 
         // Mock get_options and update_option functions
-        global $wpss;
-        $wpss = $this->wpss;
+        global $sswp;
+        $sswp = $this->sswp;
 
         $this->getFunctionMock(__NAMESPACE__, 'get_options')
              ->expects($this->exactly(2))
@@ -68,7 +68,7 @@ class HTAccessFormTest extends TestCase
              ->expects($this->once())
              ->with('_sswp_settings', ['htaccess' => ['ht_form' => $testData]]);
 
-        $result = wpss_save_htaccess_option($testData);
+        $result = sswp_save_htaccess_option($testData);
 
         $this->assertEquals(['ht_form' => $testData], $result);
     }

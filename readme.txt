@@ -23,7 +23,7 @@ Enhance WordPress security by setting recommended file permissions, securing .ht
 The plugin is user-friendly and includes an easy-to-access settings page.
 
 You can view or contribute to the plugin's source code on GitHub:  
-[GitHub Repository]https://github.com/deeprahman/wpss)
+[GitHub Repository]https://github.com/deeprahman/sswp)
 
 == Features ==
 - Set directory and subdirectory permissions for enhanced security.

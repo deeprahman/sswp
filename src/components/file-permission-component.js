@@ -1,4 +1,4 @@
-export class WPSSPermissionsTable extends HTMLElement {
+export class sswpPermissionsTable extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow( { mode: 'open' } );
@@ -83,7 +83,7 @@ export class WPSSPermissionsTable extends HTMLElement {
                 background: #135e96;
                 border-color: #135e96;
             }
-            .wpss-fps-legend {
+            .sswp-fps-legend {
                 background-color: #f9f9f9;
                 border: 1px solid #e1e1e1;
                 border-radius: 4px;
@@ -92,11 +92,11 @@ export class WPSSPermissionsTable extends HTMLElement {
                 font-size: 0.9em;
                 line-height: 1.6;
             }
-            .wpss-fps-legend p {
+            .sswp-fps-legend p {
                 margin: 0;
                 color: #333;
             }
-            .wpss-fps-legend strong {
+            .sswp-fps-legend strong {
                 color: #2271b1;
             }
             </style>
@@ -105,7 +105,7 @@ export class WPSSPermissionsTable extends HTMLElement {
 
 	getLegend() {
 		return `
-            <div class="wpss-fps-legend">
+            <div class="sswp-fps-legend">
                 <p>
                     File permission is expressed using three <strong>Octal digits</strong> abide by Linux convension: 
                     the leftmost digit represents the <strong>file-owner permissions</strong>, 
@@ -134,7 +134,7 @@ export class WPSSPermissionsTable extends HTMLElement {
 
 	async applyRecommendedPermissions() {
 		let fsData = this.getUpdatedData();
-		const path = '/wpss/v1/file-permissions';
+		const path = '/sswp/v1/file-permissions';
 		const httpMethod = 'POST';
 		const action = null;
 		this.makeApiCall( path, httpMethod, action, fsData );
@@ -142,7 +142,7 @@ export class WPSSPermissionsTable extends HTMLElement {
 
 	async revertToOrignal() {
 		let fsData = this.getUpdatedData();
-		const path = '/wpss/v1/file-permissions';
+		const path = '/sswp/v1/file-permissions';
 		const httpMethod = 'PUT';
 		const action = 'revert';
 		this.makeApiCall( path, httpMethod, action, fsData );

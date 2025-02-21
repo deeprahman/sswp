@@ -8,7 +8,7 @@ import { handleFormData } from './form-data-handler.js';
 function setHtaccessProtected( data ) {
 	return wp
 		.apiRequest( {
-			path: '/wpss/v1/htaccess-protect',
+			path: '/sswp/v1/htaccess-protect',
 			method: 'POST',
 			data: {
 				nonce: wpApiSettings.nonce,
@@ -56,7 +56,7 @@ export function checkHtaccessProtection( data ) {
 function getHtaccessProtected() {
 	return wp
 		.apiRequest( {
-			path: '/wpss/v1/htaccess-protect',
+			path: '/sswp/v1/htaccess-protect',
 			method: 'GET',
 			data: {
 				nonce: wpApiSettings.nonce,

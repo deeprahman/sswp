@@ -14,7 +14,7 @@ add_option(SSWP_SETTINGS, $sswp_defaults);
 
 // Register the setting
 register_setting(
-    'wpss_options_group',
+    'sswp_options_group',
     SSWP_SETTINGS,
     array(
         'type' => 'array',

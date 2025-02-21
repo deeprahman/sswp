@@ -1,11 +1,11 @@
 <?php
 
-class Class_Sswp_Cron_Jobs_Old_Logs
+class Sswp_Cron_Jobs_Old_Logs
 {
     private static $instance = null;
     public static function instance(){
         if ( is_null( self::$instance ) ){
-            self::$instance = new Class_Sswp_Cron_Jobs_Old_Logs();
+            self::$instance = new Sswp_Cron_Jobs_Old_Logs();
         }
         return self::$instance;
     }

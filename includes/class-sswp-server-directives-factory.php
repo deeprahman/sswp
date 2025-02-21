@@ -1,6 +1,6 @@
 <?php
 
-require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-apache.php';
+require_once $sswp->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-apache.php';
 final class Sswp_Server_Directives_Factory
 {
 

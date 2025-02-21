@@ -46,6 +46,11 @@ class Sswp_Securing_Setup
      * @var Sswp_File_Permission_Manager
      */
     public $fpm;
+    /**
+     * Summary of crons
+     * @var Sswp_Cron_Job 
+     */
+    public $crons;
 
     public function __construct()
     {
@@ -82,7 +87,7 @@ class Sswp_Securing_Setup
 
     public function enqueue_admin_js( $admin_page )
     {
-            global $wpss;
+            global $sswp;
             wp_enqueue_script('wp-api-request');
             include_once $this->root . '/includes/enqueue-scripts/sswp-enqueue-admin-scripts.php';
     }
@@ -93,20 +98,18 @@ class Sswp_Securing_Setup
 
     public function admin_pages()
     {
-            global $wpss;
+            global $sswp;
             include_once $this->root . '/admin/sswp-files-permissions-tools-page.php';
     }
-
-    
-
     public function admin_rest()
     {
             include_once $this->root . '/includes/REST/file-permission.php';
             include_once $this->root . '/includes/REST/htaccess-protect.php';
     }
-
     public function crons(){
-        // TODO: call the main cron file
+  
+        require_once SELF::ROOT . DIRECTORY_SEPARATOR . "includes/job-schedule/class-sswp-cron-jobs.php";
+        $this->crons = new Sswp_Cron_Job();
     }
     public function xml_rpc_config()
     {

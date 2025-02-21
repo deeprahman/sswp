@@ -33,7 +33,7 @@ We have detected files that are not among of the files normally found in a plugi
 Optionally, you can use the wp dist-archive command from WP-CLI in conjunction with a .distignore file. This prevents unwanted files from being included in the distribution archive.
 
 Example(s) from your plugin:
-01_15-18-49_wp-securing-setup/admin/.wpss-files-permissions-tools-page.php.swp
+01_15-18-49_wp-securing-setup/admin/.sswp-files-permissions-tools-page.php.swp
 
 
 ## No publicly documented resource for your compressed content
@@ -65,14 +65,14 @@ The primary issue is that most (if not all) codesniffers won't detect lack of es
 We feel the risk here is much higher than the benefits, which is why we don't permit their use.
 
 Example(s) from your plugin:
-includes/class-wpss-apache-directives-validator.php:438 // $invalidFilesMatchBlock = <<<EOD
-includes/class-wpss-server-directives-apache.php:135 $rules         = <<<EOD
-includes/class-wpss-server-directives-apache.php:173 $rules              = <<<EOD
-includes/class-wpss-apache-directives-validator.php:455 // $validFilesMatchBlock = <<<EOD
-includes/class-wpss-server-directives-apache.php:151 $rules         = <<<EOD
-includes/class-wpss-apache-directives-validator.php:422 // $filesBlock = <<<EOD
-includes/class-wpss-apache-directives-validator.php:472 // $singleDirectives= <<<EOD
-includes/class-wpss-server-directives-apache.php:180 $rules = <<<EOD
+includes/class-sswp-apache-directives-validator.php:438 // $invalidFilesMatchBlock = <<<EOD
+includes/class-sswp-server-directives-apache.php:135 $rules         = <<<EOD
+includes/class-sswp-server-directives-apache.php:173 $rules              = <<<EOD
+includes/class-sswp-apache-directives-validator.php:455 // $validFilesMatchBlock = <<<EOD
+includes/class-sswp-server-directives-apache.php:151 $rules         = <<<EOD
+includes/class-sswp-apache-directives-validator.php:422 // $filesBlock = <<<EOD
+includes/class-sswp-apache-directives-validator.php:472 // $singleDirectives= <<<EOD
+includes/class-sswp-server-directives-apache.php:180 $rules = <<<EOD
 
 ... out of a total of 9 incidences.
 
@@ -93,7 +93,7 @@ https://meta.trac.wordpress.org/browser/sites/trunk/api.wordpress.org/public_htm
 It’s fine to locally include add-ons not in core, but please ONLY add those additional files. For example, you do not need the entire jquery UI library for one file. If your code doesn't work with the built-in versions of jQuery, it's most likely a noConflict issue.
 
 Example(s) from your plugin:
-includes/enqueue-scripts/wpss-enqueue-admin-scripts.php:63 wp_enqueue_style( 'jquery-ui-theme', 'https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css', array(), '1.13.3' );
+includes/enqueue-scripts/sswp-enqueue-admin-scripts.php:63 wp_enqueue_style( 'jquery-ui-theme', 'https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css', array(), '1.13.3' );
 
 ## Calling core loading files directly
 
@@ -113,7 +113,7 @@ You can create an AJAX endpoint.
 You can create a REST API endpoint.
 
 Example(s) from your plugin:
-includes/class-wpss-server-directives-apache.php:5 require_once ABSPATH . 'wp-admin/includes/misc.php';
+includes/class-sswp-server-directives-apache.php:5 require_once ABSPATH . 'wp-admin/includes/misc.php';
 
 
 ## Determine files and directories locations correctly
@@ -133,8 +133,8 @@ For where your plugin is located: plugin_dir_path() , plugin_dir_url() , plugins
 For the uploads directory: wp_upload_dir() (Note: If you need to write files, please do so in a folder in the uploads directory, not in your plugin directories).
 
 Example(s) from your plugin:
-includes/class-wpss-server-directives-apache.php:194 $htaccess_path = WP_CONTENT_DIR . '/uploads/.htaccess';
-includes/class-wpss-server-directives-apache.php:172 $htaccess_path      = WP_CONTENT_DIR . '/uploads/.htaccess';
+includes/class-sswp-server-directives-apache.php:194 $htaccess_path = WP_CONTENT_DIR . '/uploads/.htaccess';
+includes/class-sswp-server-directives-apache.php:172 $htaccess_path      = WP_CONTENT_DIR . '/uploads/.htaccess';
 
 ... out of a total of 10 incidences.
 
@@ -149,8 +149,8 @@ $path = wp_upload_dir()['basedir'] . '/secure-setup';
 
 
 Example(s) from your plugin:
-includes/class-wpss-server-directives-apache.php:172 $htaccess_path      = WP_CONTENT_DIR . '/uploads/.htaccess';
-includes/class-wpss-server-directives-apache.php:194 $htaccess_path = WP_CONTENT_DIR . '/uploads/.htaccess';
+includes/class-sswp-server-directives-apache.php:172 $htaccess_path      = WP_CONTENT_DIR . '/uploads/.htaccess';
+includes/class-sswp-server-directives-apache.php:194 $htaccess_path = WP_CONTENT_DIR . '/uploads/.htaccess';
 
 
 ## Saving data in the plugin folder and/or asking users to edit/write to plugin.
@@ -173,7 +173,7 @@ https://developer.wordpress.org/reference/functions/wp_handle_upload/
 https://developer.wordpress.org/reference/functions/wp_upload_dir/
 
 Example(s) from your plugin:
-wpss-logger.php:23 file_put_contents($log_file, $formatted_log, FILE_APPEND);
+sswp-logger.php:23 file_put_contents($log_file, $formatted_log, FILE_APPEND);
 # ↳ Detected: plugin_dir_path
 
 
@@ -200,7 +200,7 @@ Make sure you use a proper sanitization function (WordPress has plenty of them!)
 Please, check out the register_setting() documentation for more information and code examples.
 
 Example(s) from your plugin:
-includes/settings/wpss-default-settings.php:14 register_setting('wpss_options_group', SSWP_SETTINGS);
+includes/settings/sswp-default-settings.php:14 register_setting('sswp_options_group', SSWP_SETTINGS);
 
 
 ## Internationalization: Don't use variables or defines as text, context or text domain parameters.
@@ -234,14 +234,14 @@ printf(
 You can read https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#text-domains for more information.
 
 Example(s) from your plugin:
-includes/wpss-htaccess-form.php:51 __('Your custom error message here', Sswp_Securing_Setup::DOMAIN);
+includes/sswp-htaccess-form.php:51 __('Your custom error message here', Sswp_Securing_Setup::DOMAIN);
 admin/templates/protection-form.htm.php:49 esc_html__('Save Settings', Sswp_Securing_Setup::DOMAIN);
 includes/class-sswp-file-permission-manager.php:424 __('Path is not ownerd by WordPress', Sswp_Securing_Setup::DOMAIN);
 admin/templates/protection-form.htm.php:43 esc_attr__('Redirect requests to the users REST endpoint to 404 HTTP error', Sswp_Securing_Setup::DOMAIN);
 admin/templates/protection-form.htm.php:17 esc_attr__('Protect the WordPress log at default location', Sswp_Securing_Setup::DOMAIN);
-includes/wpss-file-permission.php:53 __('Successfully reverted permission', Sswp_Securing_Setup::DOMAIN);
+includes/sswp-file-permission.php:53 __('Successfully reverted permission', Sswp_Securing_Setup::DOMAIN);
 admin/templates/protection-form.htm.php:23 esc_attr__('Select which file-types should have access to uploads directory', Sswp_Securing_Setup::DOMAIN);
-admin/wpss-files-permissions-tools-page.php:12 __('Files Permission', Sswp_Securing_Setup::DOMAIN);
+admin/sswp-files-permissions-tools-page.php:12 __('Files Permission', Sswp_Securing_Setup::DOMAIN);
 
 ... out of a total of 24 incidences.
 
@@ -284,55 +284,55 @@ Related to this, using if (!function_exists('NAME')) { around all your functions
 Remember: Good prefix names are unique and distinct to your plugin. This will help you and the next person in debugging, as well as prevent conflicts.
 
 Analysis result:
-# This plugin is using the prefix "wpss" for 26 element(s).
+# This plugin is using the prefix "sswp" for 26 element(s).
 
 # Cannot use "get" as a prefix.
-includes/wpss-file-permission.php:2 function sswp_get_file_permissions
+includes/sswp-file-permission.php:2 function sswp_get_file_permissions
 # Cannot use "do" as a prefix.
-includes/wpss-file-permission.php:8 function do_recommended_permission
+includes/sswp-file-permission.php:8 function do_recommended_permission
 # Cannot use "handle" as a prefix.
-includes/wpss-htaccess-form.php:32 function handle_htaccess_post_req
-includes/wpss-htaccess-form.php:77 function handle_htaccess_get_req
-includes/wpss-xml-rpc.php:5 function handle_xml_rpc_method
+includes/sswp-htaccess-form.php:32 function handle_htaccess_post_req
+includes/sswp-htaccess-form.php:77 function handle_htaccess_get_req
+includes/sswp-xml-rpc.php:5 function handle_xml_rpc_method
 # Cannot use "wp" as a prefix.
-wpss-logger.php:30 function sswp_logger
-wpss-misc.php:3 function sswp_convert_to_octal_pers_from_string
-includes/settings/wpss-default-settings.php:14 register_setting('wpss_options_group', SSWP_SETTINGS);
-includes/class-wpss-server-directives-factory.php:4 class WPSS_Server_Directives_Factory
-includes/class-wpss-file-regex-pattern-creator.php:3 class WPSS_File_Regex_Pattern_Creator
-includes/wpss-htaccess-form.php:80 function wpss_save_htaccess_option
-includes/traits/class-wpss-ownership-permission-trait.php:2 trait WPSS_Ownership_Permission_Trait
-includes/class-sswp-file-permission-manager.php:13 class WPSS_File_Permission_Manager
-includes/class-wpss-server-directives.php:7 class WPSS_Server_Directives
+sswp-logger.php:30 function sswp_logger
+sswp-misc.php:3 function sswp_convert_to_octal_pers_from_string
+includes/settings/sswp-default-settings.php:14 register_setting('sswp_options_group', SSWP_SETTINGS);
+includes/class-sswp-server-directives-factory.php:4 class sswp_Server_Directives_Factory
+includes/class-sswp-file-regex-pattern-creator.php:3 class sswp_File_Regex_Pattern_Creator
+includes/sswp-htaccess-form.php:80 function sswp_save_htaccess_option
+includes/traits/class-sswp-ownership-permission-trait.php:2 trait sswp_Ownership_Permission_Trait
+includes/class-sswp-file-permission-manager.php:13 class sswp_File_Permission_Manager
+includes/class-sswp-server-directives.php:7 class sswp_Server_Directives
 includes/class-wp-securing-setup.php:3 class Sswp_Securing_Setup
-includes/class-wpss-apache-directives-validator.php:3 class WPSS_Apache_Directives_Validator
-includes/class-wpss-server-directives-apache.php:7 class WPSS_Server_Directives_Apache
-includes/REST/file-permission.php:25 function wpss_file_permissions_permission_check
-includes/REST/file-permission.php:35 function wpss_file_permissions_callback
-includes/REST/htaccess-protect.php:25 function wpss_htaccess_protect_permission_check
-includes/REST/htaccess-protect.php:29 function wpss_htaccess_protect_callback
-wp-securing-setup.php:44 function wpss_activate
-wp-securing-setup.php:60 function wpss_deactivate
-admin/wpss-files-permissions-tools-page.php:7 function wpss_files_permission_page
+includes/class-sswp-apache-directives-validator.php:3 class sswp_Apache_Directives_Validator
+includes/class-sswp-server-directives-apache.php:7 class sswp_Server_Directives_Apache
+includes/REST/file-permission.php:25 function sswp_file_permissions_permission_check
+includes/REST/file-permission.php:35 function sswp_file_permissions_callback
+includes/REST/htaccess-protect.php:25 function sswp_htaccess_protect_permission_check
+includes/REST/htaccess-protect.php:29 function sswp_htaccess_protect_callback
+wp-securing-setup.php:44 function sswp_activate
+wp-securing-setup.php:60 function sswp_deactivate
+admin/sswp-files-permissions-tools-page.php:7 function sswp_files_permission_page
 # Cannot use "enqueue" as a prefix.
-includes/enqueue-scripts/wpss-enqueue-admin-scripts.php:52 function enqueue_jquery_scripts
+includes/enqueue-scripts/sswp-enqueue-admin-scripts.php:52 function enqueue_jquery_scripts
 
 # Looks like there are elements not using common prefixes.
-wpss-logger.php:8 function write_log
-includes/wpss-file-permission.php:24 function revert_to_original
-includes/class-wpss-server-directives-factory.php:22 $is_nginx;
-includes/wpss-htaccess-form.php:133 $htaccess_from_settings;
-includes/wpss-htaccess-form.php:14 $GLOBALS['allowed_functions'];
-includes/wpss-htaccess-form.php:36 $GLOBALS['htaccess_settings'];
-includes/wpss-htaccess-form.php:67 function from_data_with_message
-includes/wpss-htaccess-form.php:90 function protect_debug_log
-includes/wpss-htaccess-form.php:99 function protect_update_directory
-includes/wpss-htaccess-form.php:117 function protect_rest_endpoint
-includes/wpss-htaccess-form.php:132 function allowed_files
-includes/class-wpss-server-directives.php:17 $is_litespeed;
+sswp-logger.php:8 function write_log
+includes/sswp-file-permission.php:24 function revert_to_original
+includes/class-sswp-server-directives-factory.php:22 $is_nginx;
+includes/sswp-htaccess-form.php:133 $htaccess_from_settings;
+includes/sswp-htaccess-form.php:14 $GLOBALS['allowed_functions'];
+includes/sswp-htaccess-form.php:36 $GLOBALS['htaccess_settings'];
+includes/sswp-htaccess-form.php:67 function from_data_with_message
+includes/sswp-htaccess-form.php:90 function protect_debug_log
+includes/sswp-htaccess-form.php:99 function protect_update_directory
+includes/sswp-htaccess-form.php:117 function protect_rest_endpoint
+includes/sswp-htaccess-form.php:132 function allowed_files
+includes/class-sswp-server-directives.php:17 $is_litespeed;
 includes/REST/htaccess-protect.php:30 $allowed_methods;
 wp-securing-setup.php:46 $is_nginx;
-admin/wpss-files-permissions-tools-page.php:27 function file_permission_page_html
+admin/sswp-files-permissions-tools-page.php:27 function file_permission_page_html
 
 
 ## Allowing Direct File Access to plugin files
@@ -344,11 +344,11 @@ You can avoid this by putting this code at the top of all PHP files that could p
 
 Example(s) from your plugin:
 includes/class-sswp-file-permission-manager.php:3 
-includes/settings/wpss-file-permission-settings.php:49 
-includes/enqueue-scripts/wpss-enqueue-admin-scripts.php:3 
-includes/settings/wpss-default-settings.php:3 
+includes/settings/sswp-file-permission-settings.php:49 
+includes/enqueue-scripts/sswp-enqueue-admin-scripts.php:3 
+includes/settings/sswp-default-settings.php:3 
 admin/templates/page.htm.php:7 
-includes/class-wpss-server-directives-factory.php:3 
+includes/class-sswp-server-directives-factory.php:3 
 includes/REST/file-permission.php:3 
 includes/REST/htaccess-protect.php:3 
 

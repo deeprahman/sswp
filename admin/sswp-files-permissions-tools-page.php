@@ -15,17 +15,17 @@ function sswp_files_permission_page() {
 	);
 }
 
-// Register the `wpss_files_permission_page` function to be executed when the `admin_menu` action is triggered
+// Register the `sswp_files_permission_page` function to be executed when the `admin_menu` action is triggered
 add_action( 'admin_menu', 'sswp_files_permission_page' );
 
 /**
  * Renders the HTML content for the Files Permission page.
  *
- * This function is called by the `wpss_files_permission_page` function to display the page's content.
+ * This function is called by the `sswp_files_permission_page` function to display the page's content.
  */
 function sswp_file_permission_page_html() {
 
-	global $wpss;
+	global $sswp;
 
 
 	include_once SSWP_ROOT . '/admin/templates/page-htm.php';

@@ -1,6 +1,6 @@
 <?php
 
-// $wpss_file_permission = array
+// $sswp_file_permission = array
 // (
 // 'wp-config.php' =>
 // array(

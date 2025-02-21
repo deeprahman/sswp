@@ -2,12 +2,12 @@
 /**
  * Do .htaccess form related stuff
  */
-global $wpss;
-require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-apache.php';
-require_once $wpss->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-factory.php';
+global $sswp;
+require_once $sswp->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-apache.php';
+require_once $sswp->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-factory.php';
 
 try {
-    $GLOBALS['wpss_sd'] = $sd = Sswp_Server_Directives_Factory::create_server_directives();
+    $GLOBALS['sswp_sd'] = $sd = Sswp_Server_Directives_Factory::create_server_directives();
 } catch ( Exception $ex ) {
 }
 
@@ -30,8 +30,8 @@ $GLOBALS['allowed_functions'] = $allowed_functions = array(
  */
 function sswp_handle_htaccess_post_req( $data )
 {
-    $sd = $GLOBALS['wpss_sd'];
-    $GLOBALS['htaccess_settings'] = $sswp_htaccess_from_settings = wpss_save_htaccess_option($data);
+    $sd = $GLOBALS['sswp_sd'];
+    $GLOBALS['htaccess_settings'] = $sswp_htaccess_from_settings = sswp_save_htaccess_option($data);
     // Walk through the $data array
     foreach ( $sswp_htaccess_from_settings['ht_form'] as $item ) {
         $name  = $item['name'];
@@ -64,8 +64,8 @@ function sswp_handle_htaccess_post_req( $data )
  */
 function sswp_from_data_with_message( $message ): array
 {
-    global $wpss;
-    $ht_form = $wpss->get_ht_form();
+    global $sswp;
+    $ht_form = $sswp->get_ht_form();
     $message = array(
     'message' => $message,
     'data'    => json_encode($ht_form),
@@ -77,15 +77,15 @@ function sswp_handle_htaccess_get_req()
 {
     return sswp_from_data_with_message('Form Data return');
 }
-function wpss_save_htaccess_option( $new = array() )
+function sswp_save_htaccess_option( $new = array() )
 {
-    global $wpss;
-    $cur = get_options(array( $wpss->settings ));
+    global $sswp;
+    $cur = get_options(array( $sswp->settings ));
 
     $cur['_sswp_settings']['htaccess']['ht_form'] = $new;
-    update_option($wpss->settings, $cur['_sswp_settings']);
-    $new = get_options(array( $wpss->settings ));
-    return $new[ $wpss->settings ]['htaccess'];
+    update_option($sswp->settings, $cur['_sswp_settings']);
+    $new = get_options(array( $sswp->settings ));
+    return $new[ $sswp->settings ]['htaccess'];
 }
 
 function sswp_protect_debug_log( $d, ISswp_Server_Directives $sd )
