@@ -66,7 +66,8 @@ function sswp_htaccess_protect_callback( $request ) {
 		);
 
 		return rest_ensure_response( $response );
-	} catch ( Exception $e ) {
-		return new WP_Error( 'sswp_error', $e->getMessage(), array( 'status' => 500 ) );
+	} catch ( \Throwable $ex ) {
+		sswp_logger('Error', $ex->getMessage(), __FUNCTION__);
+		return new WP_Error( 'sswp_htaccess_error', __('Directory/File protection setting cannot be set!', 'secure-setup'), array( 'status' => 500 ) );
 	}
 }
