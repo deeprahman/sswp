@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-class WPSS_File_Permission_Manager_Test extends TestCase {
+class Sswp_File_Permission_Manager_Test extends TestCase {
     private $test_dir;
     private $manager;
     private $test_files;
@@ -33,7 +33,7 @@ class WPSS_File_Permission_Manager_Test extends TestCase {
             chmod($this->test_dir . '/' . $file, octdec($perm));
         }
         
-        $this->manager = new WPSS_File_Permission_Manager([
+        $this->manager = new Sswp_File_Permission_Manager([
             'wp-content/test-permissions/test-file.txt',
             'wp-content/test-permissions/test-wp-config.php',
             'wp-content/test-permissions/test-directory'

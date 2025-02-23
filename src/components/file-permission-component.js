@@ -1,40 +1,40 @@
-export class WPSSPermissionsTable extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-        this._data = {};
-    }
+export class sswpPermissionsTable extends HTMLElement {
+	constructor() {
+		super();
+		this.attachShadow( { mode: 'open' } );
+		this._data = {};
+	}
 
-    static get observedAttributes() {
-        return ['data'];
-    }
+	static get observedAttributes() {
+		return [ 'data' ];
+	}
 
-    // Getter and setter for data
-    get data() {
-        return this._data;
-    }
+	// Getter and setter for data
+	get data() {
+		return this._data;
+	}
 
-    set data(newData) {
-        this._data = newData;
-        this.render();
-    }
+	set data( newData ) {
+		this._data = newData;
+		this.render();
+	}
 
-    connectedCallback() {
-        this.render();
-    }
+	connectedCallback() {
+		this.render();
+	}
 
-    attributeChangedCallback(name, oldValue, newValue) {
-        if (name === 'data' && oldValue !== newValue) {
-            try {
-                this.data = JSON.parse(newValue);
-            } catch (e) {
-                console.error('Invalid JSON data:', e);
-            }
-        }
-    }
+	attributeChangedCallback( name, oldValue, newValue ) {
+		if ( name === 'data' && oldValue !== newValue ) {
+			try {
+				this.data = JSON.parse( newValue );
+			} catch ( e ) {
+				console.error( 'Invalid JSON data:', e );
+			}
+		}
+	}
 
-    getStyles() {
-        return `
+	getStyles() {
+		return `
             <style>
             :host {
                 display: block;
@@ -83,7 +83,7 @@ export class WPSSPermissionsTable extends HTMLElement {
                 background: #135e96;
                 border-color: #135e96;
             }
-            .wpss-fps-legend {
+            .sswp-fps-legend {
                 background-color: #f9f9f9;
                 border: 1px solid #e1e1e1;
                 border-radius: 4px;
@@ -92,20 +92,20 @@ export class WPSSPermissionsTable extends HTMLElement {
                 font-size: 0.9em;
                 line-height: 1.6;
             }
-            .wpss-fps-legend p {
+            .sswp-fps-legend p {
                 margin: 0;
                 color: #333;
             }
-            .wpss-fps-legend strong {
+            .sswp-fps-legend strong {
                 color: #2271b1;
             }
             </style>
             `;
-    }
+	}
 
-    getLegend(){
-        return `
-            <div class="wpss-fps-legend">
+	getLegend() {
+		return `
+            <div class="sswp-fps-legend">
                 <p>
                     File permission is expressed using three <strong>Octal digits</strong> abide by Linux convension: 
                     the leftmost digit represents the <strong>file-owner permissions</strong>, 
@@ -114,66 +114,77 @@ export class WPSSPermissionsTable extends HTMLElement {
                 </p>
             </div>
         `;
-    }
+	}
 
-    formatStatus(value) {
-        if (value === "N/A") return "N/A";
-        if (value === null) return '<span class="status-warning">Unknown</span>';
-        return value ?
-            '<span class="status-ok">Yes</span>' :
-            '<span class="status-error">No</span>';
-    }
+	formatStatus( value ) {
+		if ( value === 'N/A' ) return 'N/A';
+		if ( value === null )
+			return '<span class="status-warning">Unknown</span>';
+		return value
+			? '<span class="status-ok">Yes</span>'
+			: '<span class="status-error">No</span>';
+	}
 
-    getPermissionClass(current, recommended) {
-        if (current === "N/A") return "";
-        if (current === recommended) return "status-ok";
-        if (current > recommended) return "status-error";
-        return "status-warning";
-    }
+	getPermissionClass( current, recommended ) {
+		if ( current === 'N/A' ) return '';
+		if ( current === recommended ) return 'status-ok';
+		if ( current > recommended ) return 'status-error';
+		return 'status-warning';
+	}
 
-    async applyRecommendedPermissions() {
-        let fsData = this.getUpdatedData(); 
-        const path = '/wpss/v1/file-permissions';
-        const httpMethod = 'POST';
-        const action = null;
-        this.makeApiCall(path, httpMethod,action,fsData);
-    }
+	async applyRecommendedPermissions() {
+		let fsData = this.getUpdatedData();
+		const path = '/sswp/v1/file-permissions';
+		const httpMethod = 'POST';
+		const action = null;
+		this.makeApiCall( path, httpMethod, action, fsData );
+	}
 
-    async revertToOrignal() {
-        let fsData = this.getUpdatedData(); 
-        const path = '/wpss/v1/file-permissions';
-        const httpMethod = 'PUT';
-        const action = 'revert';
-        this.makeApiCall(path, httpMethod,action,fsData);
+	async revertToOrignal() {
+		let fsData = this.getUpdatedData();
+		const path = '/sswp/v1/file-permissions';
+		const httpMethod = 'PUT';
+		const action = 'revert';
+		this.makeApiCall( path, httpMethod, action, fsData );
+	}
 
-    }
+	// Add a loading state to the button
+	setButtonLoading(
+		loading,
+		buttonId = 'recommendedBtn',
+		buttonTxt = 'Apply Recommended Permissions'
+	) {
+		const button = this.shadowRoot.getElementById( buttonId );
+		if ( loading ) {
+			button.textContent = 'Applying...';
+			button.disabled = true;
+		} else {
+			button.textContent = buttonTxt;
+			button.disabled = false;
+		}
+	}
 
-    // Add a loading state to the button
-    setButtonLoading(loading, buttonId = 'recommendedBtn', buttonTxt = 'Apply Recommended Permissions') {
-        const button = this.shadowRoot.getElementById(buttonId);
-        if (loading) {
-            button.textContent = 'Applying...';
-            button.disabled = true;
-        } else {
-            button.textContent = buttonTxt;
-            button.disabled = false;
-        }
-    }
-
-    render() {
-        const rows = Object.entries(this._data).map(([path, info]) => `
+	render() {
+		const rows = Object.entries( this._data )
+			.map(
+				( [ path, info ] ) => `
             <tr>
-            <td>${path}</td>
-            <td>${this.formatStatus(info.exists)}</td>
-            <td>${this.formatStatus(info.writable)}</td>
-            <td><span class="${this.getPermissionClass(info.permission, info.recommended)}">${info.permission}</span></td>
-            <td>${info.recommended}</td>
-            <td><span class="status-error">${info.error || ''}</span></td>
+            <td>${ path }</td>
+            <td>${ this.formatStatus( info.exists ) }</td>
+            <td>${ this.formatStatus( info.writable ) }</td>
+            <td><span class="${ this.getPermissionClass(
+				info.permission,
+				info.recommended
+			) }">${ info.permission }</span></td>
+            <td>${ info.recommended }</td>
+            <td><span class="status-error">${ info.error || '' }</span></td>
             </tr>
-            `).join('');
+            `
+			)
+			.join( '' );
 
-        this.shadowRoot.innerHTML = `
-            ${this.getStyles()}
+		this.shadowRoot.innerHTML = `
+            ${ this.getStyles() }
                 <table class="wp-list-table widefat fixed striped">
                 <thead>
                 <tr>
@@ -186,88 +197,101 @@ export class WPSSPermissionsTable extends HTMLElement {
                 </tr>
                 </thead>
                 <tbody>
-                ${rows}
+                ${ rows }
                 </tbody>
                 </table>
-                ${this.getLegend()}
+                ${ this.getLegend() }
                 <button class="button" id="recommendedBtn">Apply Recommended Permissions</button>
                 <button class="button" id="revertBtn">Revert to Original</button>
                 `;
 
-        // Update the Recommended button click handler
-        this.shadowRoot.getElementById('recommendedBtn')
-            .addEventListener('click', async () => {
-                this.setButtonLoading(true);
-                await this.applyRecommendedPermissions();
-                this.setButtonLoading(false);
-            });
+		// Update the Recommended button click handler
+		this.shadowRoot
+			.getElementById( 'recommendedBtn' )
+			.addEventListener( 'click', async () => {
+				this.setButtonLoading( true );
+				await this.applyRecommendedPermissions();
+				this.setButtonLoading( false );
+			} );
 
-        // Update the Recommended button click handler
-        this.shadowRoot.getElementById('revertBtn')
-            .addEventListener('click', async () => {
-                this.setButtonLoading(true, 'revertBtn'); 
-                await this.revertToOrignal();
-                this.setButtonLoading(false, 'revertBtn', "Revert To Original");
-            });
-    }
+		// Update the Recommended button click handler
+		this.shadowRoot
+			.getElementById( 'revertBtn' )
+			.addEventListener( 'click', async () => {
+				this.setButtonLoading( true, 'revertBtn' );
+				await this.revertToOrignal();
+				this.setButtonLoading(
+					false,
+					'revertBtn',
+					'Revert To Original'
+				);
+			} );
+	}
 
-    async makeApiCall(path, httpMethod,action,data) {
+	async makeApiCall( path, httpMethod, action, data ) {
+		try {
+			// Send POST request using wp.apiRequest
+			const result = await wp.apiRequest( {
+				path: path,
+				method: httpMethod,
+				headers: {
+					'X-WP-Nonce': wpApiSettings.nonce,
+				},
+				data: {
+					nonce: wpApiSettings.nonce,
+					fsData: data,
+					action: action,
+				},
+			} );
 
-        try {
-            // Send POST request using wp.apiRequest
-            const result = await wp.apiRequest({
-                path: path,
-                method: httpMethod,
-                headers: {
-                    'X-WP-Nonce': wpApiSettings.nonce,
-                },
-                data: {
-                    nonce: wpApiSettings.nonce,
-                    fsData:data, 
-                    action:action 
-                }
+			console.log(
+				'Path: ' + path,
+				'Method: ' + httpMethod,
+				'Action: ' + action,
+				result.data
+			);
 
+			this.attributeChangedCallback( 'data', data, result.data.fs_data );
 
-            });
+			this.dispatchEvent(
+				new CustomEvent( 'permissions-updated', {
+					detail: {
+						data: this.data,
+						status: 'success',
+						message:
+							result.message ||
+							'Permissions updated successfully',
+					},
+					bubbles: true,
+					composed: true,
+				} )
+			);
+		} catch ( error ) {
+			console.error( 'Error updating permissions:', error );
 
-            console.log("Path: " + path,"Method: " + httpMethod,"Action: "+action,result.data);
+			// Dispatch error event
+			this.dispatchEvent(
+				new CustomEvent( 'permissions-updated', {
+					detail: {
+						error: error.message || 'Failed to update permissions',
+						status: 'error',
+						data: updatedData,
+					},
+					bubbles: true,
+					composed: true,
+				} )
+			);
+		}
+	}
 
-            this.attributeChangedCallback('data', data, result.data.fs_data);
-
-            this.dispatchEvent(new CustomEvent('permissions-updated', {
-                detail: {
-                    data: this.data,
-                    status: 'success',
-                    message: result.message || 'Permissions updated successfully'
-                },
-                bubbles: true,
-                composed: true
-            }));
-
-        } catch (error) {
-            console.error('Error updating permissions:', error);
-
-            // Dispatch error event
-            this.dispatchEvent(new CustomEvent('permissions-updated', {
-                detail: {
-                    error: error.message || 'Failed to update permissions',
-                    status: 'error',
-                    data: updatedData
-                },
-                bubbles: true,
-                composed: true
-            }));
-        }
-    }
-
-    getUpdatedData(){
-        const updatedData = { ...this._data };
-        Object.keys(updatedData).forEach(path => {
-            if (updatedData[path].permission !== "N/A") {
-                updatedData[path].permission = updatedData[path].recommended;
-            }
-        });
-        return updatedData;
-    }
-
+	getUpdatedData() {
+		const updatedData = { ...this._data };
+		Object.keys( updatedData ).forEach( ( path ) => {
+			if ( updatedData[ path ].permission !== 'N/A' ) {
+				updatedData[ path ].permission =
+					updatedData[ path ].recommended;
+			}
+		} );
+		return updatedData;
+	}
 }

@@ -1,1 +1,1 @@
-export { WPSSPermissionsTable } from './file-permission-component';
+export { sswpPermissionsTable } from './file-permission-component';

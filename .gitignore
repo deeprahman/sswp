@@ -8,7 +8,7 @@ README.md
 [._]*.sw[a-p]
 [._]s[a-v][a-z]
 [._]sw[a-p]
-wpss.log
+sswp.log
 **/*.log
 # Other patterns you might want to use
 node_modules/
@@ -18,5 +18,7 @@ node_modules
 **/[0-9]*
 build/
 .idea/
+dist/
 src/dummy-data.js
 *.code-workspace
+tasks.md

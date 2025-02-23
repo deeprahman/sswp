@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file.
  *
- * @package Wp_Securing_Setup
+ * @package Sswp_Securing_Setup
  */
 
 //function load_files_in_a_directory($directory)
@@ -31,8 +31,8 @@ require_once ROOT . "/vendor/autoload.php";
 require_once(WP_ROOT . "/wp-load.php");
 require_once(WP_ROOT . "/wp-admin/includes/misc.php");
 
-require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/wpss-misc.php");
-require_once ROOT . "/wpss-logger.php";
+require_once(ABSPATH . "wp-content/plugins/wp-securing-setup/sswp-misc.php");
+require_once ROOT . "/sswp-logger.php";
 
 require_once ROOT . "/wp-securing-setup.php";
 
@@ -44,10 +44,10 @@ require_once ROOT . "/wp-securing-setup.php";
  * @param string $class_name The name of the class to be loaded.
  * @return void|null;
  */
-function wpss_autoloader($class_name)
+function sswp_autoloader($class_name)
 {
-    // Check for 'wpss' in class name case-insensitively
-    if (!preg_match('/wpss/i', $class_name)) {
+    // Check for 'sswp' in class name case-insensitively
+    if (!preg_match('/sswp/i', $class_name)) {
         return;
     }
 
@@ -66,4 +66,4 @@ function wpss_autoloader($class_name)
     }
 }
 
-spl_autoload_register('wpss_autoloader');
+spl_autoload_register('sswp_autoloader');

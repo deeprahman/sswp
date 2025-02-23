@@ -5,12 +5,12 @@ add_action(
 	function () {
 
 		register_rest_route(
-			'wpss/v1',
+			'sswp/v1',
 			'/htaccess-protect',
 			array(
 				'methods'             => array( 'GET', 'DELETE', 'POST', 'PATCH', 'PUT' ),
-				'callback'            => 'wpss_htaccess_protect_callback',
-				'permission_callback' => 'wpss_htaccess_protect_permission_check',
+				'callback'            => 'sswp_htaccess_protect_callback',
+				'permission_callback' => 'sswp_htaccess_protect_permission_check',
 				'args'                => array(
 					'nonce' => array(
 						'required' => true,
@@ -22,39 +22,39 @@ add_action(
 	}
 );
 
-function wpss_htaccess_protect_permission_check( $request ) {
+function sswp_htaccess_protect_permission_check( $request ) {
 	return current_user_can( 'manage_options' );
 }
 
-function wpss_htaccess_protect_callback( $request ) {
-	global $wpss, $allowed_methods;
+function sswp_htaccess_protect_callback( $request ) {
+	global $sswp, $allowed_methods;
 
 	try {
 		// if( !array_search($request->method, $allowed_methods,  $strict = false) === true ){
-		// return new WP_Error('wpss_error', "Method Disallowed", array('status' => 400));
+		// return new WP_Error('sswp_error', "Method Disallowed", array('status' => 400));
 		// }
-		require_once $wpss->root . '/includes/wpss-htaccess-form.php';
-		require_once $wpss->root . '/includes/class-wpss-server-directives-apache.php';
-		$sd = new WPSS_Server_Directives_Apache();
+		require_once $sswp->root . '/includes/sswp-htaccess-form.php';
+		require_once $sswp->root . '/includes/class-sswp-server-directives-apache.php';
+		$sd = new Sswp_Server_Directives_Apache();
 
 		$message = '';
 		switch ( $request->get_method() ) {
 			case 'GET':
-				$message = handle_htaccess_get_req();
+				$message = sswp_handle_htaccess_get_req();
 				break;
 			case 'POST':
 				$data    = $request->get_params();
 				$form    = $data['from'];
-				$message = handle_htaccess_post_req( $form );
-				wpss_logger( 'Info', 'Message for htaccess post: ' . $message, __FILE__ );
+				$message = sswp_handle_htaccess_post_req( $form );
+				sswp_logger( 'Info', 'Message for htaccess post: ' . $message, __FILE__ );
 				break;
 			case 'DELETE':
 				break;
 			case 'PUT':
 				$data    = $request->get_params();
 				$form    = $data['from'];
-				$message = handle_htaccess_post_req( $form );
-				wpss_logger( 'Info', 'Message for htaccess post: ' . $message, __FILE__ );
+				$message = sswp_handle_htaccess_post_req( $form );
+				sswp_logger( 'Info', 'Message for htaccess post: ' . $message, __FILE__ );
 				break;
 		}
 
@@ -66,7 +66,8 @@ function wpss_htaccess_protect_callback( $request ) {
 		);
 
 		return rest_ensure_response( $response );
-	} catch ( Exception $e ) {
-		return new WP_Error( 'wpss_error', $e->getMessage(), array( 'status' => 500 ) );
+	} catch ( \Throwable $ex ) {
+		sswp_logger('Error', $ex->getMessage(), __FUNCTION__);
+		return new WP_Error( 'sswp_htaccess_error', __('Directory/File protection setting cannot be set!', 'secure-setup'), array( 'status' => 500 ) );
 	}
 }
