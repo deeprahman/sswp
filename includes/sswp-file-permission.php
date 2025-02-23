@@ -49,7 +49,7 @@ function sswp_revert_to_original()
     if (! empty($errors) ) {
         return new WP_Error(
             'failed_permission_change',
-            'Permission could not the changed',
+            __('Permission could not the changed', 'secure-setup'),
             $errors
         );
     }
