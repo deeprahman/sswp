@@ -41,8 +41,8 @@ function sswp_get_client_ip()
 
     foreach ($ip_keys as $key) {
         if (!empty($_SERVER[$key])) {
-            // Handle cases with multiple IPs (e.g., proxies).
-            $ip_list = explode(',', $_SERVER[$key]);
+            // Unslash the server key before processing
+            $ip_list = explode(',', wp_unslash($_SERVER[$key]));
             foreach ($ip_list as $ip) {
                 $ip = trim($ip);
                 if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
