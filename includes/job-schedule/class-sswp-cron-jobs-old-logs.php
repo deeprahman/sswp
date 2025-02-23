@@ -26,7 +26,10 @@ class Sswp_Cron_Jobs_Old_Logs
     {
         global $wpdb;
         $table_name = $wpdb->prefix . 'sswp_logs';
-        $sql = "DELETE FROM $table_name WHERE log_time < NOW() - INTERVAL 30 DAY";
+        $sql = $wpdb->prepare(
+            "DELETE FROM $table_name WHERE log_time < NOW() - INTERVAL %d DAY",
+            30
+        );
         $wpdb->query($sql);
     }
 }
