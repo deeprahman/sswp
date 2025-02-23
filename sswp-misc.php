@@ -220,6 +220,7 @@ function sswp_check_os_compatibility()
         );
     }
 }
+
 function sswp_deactivation_prompt()
 {
     ob_start();
@@ -234,7 +235,7 @@ function sswp_deactivation_prompt()
     </div>
     <?php
     $content = ob_get_clean();
-    echo $content;
+    echo esc_html($content); // Escape the content before outputting
 
     if (isset($_POST['sswp_delete_table'])) {
         sswp_delete_log_table();
