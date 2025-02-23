@@ -16,7 +16,7 @@ if (!function_exists('sswp_logger')) {
         $wpdb->insert(
             $table_name,
             array(
-                'log_time' => current_time('mysql'),
+                'log_time' => current_time('mysql', true),
                 'log_text' => serialize($formatted_log),
             )
         );
