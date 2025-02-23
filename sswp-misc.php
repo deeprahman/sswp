@@ -41,8 +41,8 @@ function sswp_get_client_ip()
 
     foreach ($ip_keys as $key) {
         if (!empty($_SERVER[$key])) {
-            // Unslash the server key before processing
-            $ip_list = explode(',', wp_unslash($_SERVER[$key]));
+            // Sanitize and unslash the server key before processing
+            $ip_list = explode(',', sanitize_text_field(wp_unslash($_SERVER[$key])));
             foreach ($ip_list as $ip) {
                 $ip = trim($ip);
                 if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
@@ -228,6 +228,7 @@ function sswp_deactivation_prompt()
     <div class="wrap">
         <h2><?php esc_html_e('Deactivate Plugin', 'secure-setup'); ?></h2>
         <form method="post">
+            <?php wp_nonce_field('sswp_deactivation_nonce', 'sswp_deactivation_nonce_field'); ?>
             <p><?php esc_html_e('Do you want to delete the log table?', 'secure-setup'); ?></p>
             <input type="submit" name="sswp_delete_table" value="<?php esc_attr_e('Yes', 'secure-setup'); ?>" />
             <input type="submit" name="sswp_keep_table" value="<?php esc_attr_e('No', 'secure-setup'); ?>" />
@@ -235,9 +236,9 @@ function sswp_deactivation_prompt()
     </div>
     <?php
     $content = ob_get_clean();
-    echo esc_html($content); // Escape the content before outputting
+    echo esc_html($content);
 
-    if (isset($_POST['sswp_delete_table'])) {
+    if (isset($_POST['sswp_delete_table']) && check_admin_referer('sswp_deactivation_nonce', 'sswp_deactivation_nonce_field')) {
         sswp_delete_log_table();
     }
 }
@@ -246,7 +247,7 @@ function sswp_delete_log_table()
 {
     global $wpdb;
     $table_name = $wpdb->prefix . 'sswp_logs';
-    $sql = "DROP TABLE IF EXISTS $table_name;";
+    $sql = $wpdb->prepare("DROP TABLE IF EXISTS %s", $table_name);
     $wpdb->query($sql);
 }
 
