@@ -5,7 +5,7 @@
  * Plugin URI: https://deeprahman.com/wp-secure-setup
  * Description: This plugin helps secure your WordPress website by implementing various security measures.
  * Version: 1.0.0
- * Author: Deep
+ * Author: deepwebdev
  * Author URI: https://deeprahman.com/
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
