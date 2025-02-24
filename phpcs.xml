@@ -2,7 +2,7 @@
 <ruleset name="SecureSetupRules">
     <file>includes</file>
     <file>admin</file>
-    <file>lib</file>
+   
     <file>sswp-misc.php</file>
     <file>sswp-logger.php</file>
     <file>sswp-db-tables.php</file>
@@ -14,4 +14,5 @@
     <exclude-pattern>*_old.php</exclude-pattern>
     <exclude-pattern>examples</exclude-pattern>
     <exclude-pattern>.git/**/*</exclude-pattern>
+    <rule ref="WordPress"/>
 </ruleset>
