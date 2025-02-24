@@ -8,7 +8,9 @@
 		"phpcsstandards/phpcsutils": "^1.0"
 	},
 	"scripts": {
-		"analyze": "phpstan analyze"
+		"analyze": "phpstan analyze",
+		"lint": "./vendor/bin/phpcs --standard=WordPress .",
+		"lint:fix": "./vendor/bin/phpcbf --standard=WordPress ."
 	},
 	"config": {
 		"allow-plugins": {
