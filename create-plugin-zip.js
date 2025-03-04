@@ -10,7 +10,7 @@ if ( ! fs.existsSync( outputDir ) ) {
 
 // Create a write stream for our zip file
 const output = fs.createWriteStream(
-	path.join( outputDir, 'wp-securing-setup.zip' )
+	path.join( outputDir, 'secure-setup.zip' )
 );
 const archive = archiver( 'zip', {
 	zlib: { level: 9 }, // Sets the compression level
@@ -47,7 +47,7 @@ const filesToInclude = [
 	'build',
 	'public',
 	'sswp-logger.php',
-	'wp-securing-setup.php',
+	'sswp-secure-setup.php',
 	'sswp-misc.php',
 	'readme.txt',
 	'languages',

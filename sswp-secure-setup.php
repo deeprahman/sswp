@@ -33,7 +33,7 @@ define('SSWP_SETTINGS', '_sswp_settings');
 require_once SSWP_ROOT . '/sswp-logger.php';
 require_once SSWP_ROOT . '/sswp-misc.php';
 
-$is_litespeed = isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'LiteSpeed') !== false;
+$is_litespeed = isset( $_SERVER['SERVER_SOFTWARE'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ), 'LiteSpeed' ) !== false;
 
 // Register activation and deactivation hooks
 register_activation_hook(__FILE__, 'sswp_activate');
@@ -46,7 +46,7 @@ function sswp_activate()
     // Add your activation logic here
     // For example, create options, update database tables, etc.
 
-    include_once SSWP_ROOT . '/sswp-db-tables.php';
+    include_once SSWP_ROOT . 'sswp-db-tables.php';
     sswp_create_tables();
 
     include_once SSWP_ROOT . '/includes/settings/sswp-default-settings.php';

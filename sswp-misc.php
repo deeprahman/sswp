@@ -248,6 +248,8 @@ function sswp_delete_log_table()
     global $wpdb;
     $table_name = $wpdb->prefix . 'sswp_logs';
     $sql = $wpdb->prepare("DROP TABLE IF EXISTS %s", $table_name);
+
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared -- Custom table drop requires direct query; caching not applicable; table name is safely prepared.
     $wpdb->query($sql);
 }
 

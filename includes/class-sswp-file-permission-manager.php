@@ -170,6 +170,7 @@ class Sswp_File_Permission_Manager {
 
 		WP_Filesystem();
 		if ( ! $this->is_within_wordpress( $path ) ) {
+			// translators: %s is the file path that is not within the WordPress installation.
 			$message = sprintf( __( 'The path is not within WordPress installation: %s.', 'secure-setup' ), $path );
 			sswp_logger( 'Info', $message, __METHOD__ );
 			return false;

@@ -13,6 +13,7 @@ $sswp_defaults['rest_api']        = $sswp_rest_api;
 add_option( SSWP_SETTINGS, $sswp_defaults );
 
 // Register the setting
+// phpcs:ignore PluginCheck.CodeAnalysis.SettingSanitization.register_settingDynamic -- Sanitization handled by sswp_sanitize_secure_setup_settings.
 register_setting(
 	'sswp_options_group',
 	SSWP_SETTINGS,
