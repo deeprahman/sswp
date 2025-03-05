@@ -75,7 +75,7 @@ function sswp_file_permissions_callback( $request ) {
 			'success' => true,
 			'data'    => array(
 				'message' => $message,
-				'fs_data' => isset( $fs_permission ) ? json_encode( $fs_permission, JSON_NUMERIC_CHECK ) : null,
+				'fs_data' => isset( $fs_permission ) ? wp_json_encode( $fs_permission, JSON_NUMERIC_CHECK ) : null,
 			),
 		);
 		return rest_ensure_response( $response );

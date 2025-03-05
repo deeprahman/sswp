@@ -59,7 +59,7 @@ function sswp_handle_htaccess_post_req( $data ) {
  * @param  string $message the message
  * @return array        data-structure: [
 		'message' => __($message, 'secure-setup'),
-		'data' => json_encode($ht_form)
+		'data' => wp_json_encode($ht_form)
 	]
  */
 function sswp_from_data_with_message( $message ): array {
@@ -67,7 +67,7 @@ function sswp_from_data_with_message( $message ): array {
 	$ht_form = $sswp->get_ht_form();
 	$message = array(
 		'message' => $message,
-		'data'    => json_encode( $ht_form ),
+		'data'    => wp_json_encode( $ht_form ),
 	);
 	return $message;
 }
