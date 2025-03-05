@@ -1,4 +1,3 @@
-<?php
 
 class Sswp_Cron_Jobs_Old_Logs {
 
@@ -10,10 +9,10 @@ class Sswp_Cron_Jobs_Old_Logs {
 		return self::$instance;
 	}
 	public function __construct() {
-		$this->init();
 		if ( ! wp_next_scheduled( 'sswp_clear_old_logs' ) ) {
 			wp_schedule_event( time(), 'daily', 'sswp_clear_old_logs' );
 		}
+		$this->init();
 	}
 
 	public function init() {
