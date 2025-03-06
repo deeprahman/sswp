@@ -1,0 +1,11 @@
+{
+    "intelephense.files.associations": ["*.php"],
+    "intelephense.files.exclude": [
+        "**/node_modules/**"
+    ],
+    "intelephense.files.maxSize": 1000000,
+    "intelephense.environment.includePaths": [
+        "/home/deep/projects/wp-library"
+    ],
+    "intelephense.diagnostics.enable": true
+}

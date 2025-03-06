@@ -33,7 +33,7 @@ trait Sswp_Ownership_Permission_Trait {
 	 * @return array|WP_Error Permission and ownership information
 	 */
 	protected function check_ownership_permissions( string $path ) {
-		if ( ! $this->wp_filesystem && ! $this->initializeFilesystem() ) { // TODO: make the function name wordpress compatible
+		if ( ! $this->wp_filesystem && ! $this->initializeFilesystem() ) { // TODO: make the function name WordPress compatible
 			return new WP_Error(
 				'filesystem_error',
 				'Unable to initialize WordPress filesystem'
@@ -75,23 +75,23 @@ trait Sswp_Ownership_Permission_Trait {
 		$group_name = $this->wp_filesystem->group( $path );
 
 		// $owner_info = function_exists( 'posix_getpwuid' ) ?
-		// 	posix_getpwuid( $owner_id ) :
-		// 	array( 'name' => $owner_id );
+		// posix_getpwuid( $owner_id ) :
+		// array( 'name' => $owner_id );
 
 		// $group_info = function_exists( 'posix_getgrgid' ) ?
-		// 	posix_getgrgid( $group_id ) :
-		// 	array( 'name' => $group_id );
+		// posix_getgrgid( $group_id ) :
+		// array( 'name' => $group_id );
 
 		$wp_user = $this->get_word_press_process_owner(); // TODO: change $wp_user to $p_owner_wp
 
 		return array(
 			'owner'          => array(
-				'name'   => $owner_name,
-				
+				'name' => $owner_name,
+
 			),
 			'group'          => array(
-				'name'   => $group_name,
-				
+				'name' => $group_name,
+
 			),
 			'wordpress_user' => $wp_user,
 			'is_wp_owner'    => ( $owner_name ?? '' ) === $wp_user,
@@ -221,14 +221,14 @@ trait Sswp_Ownership_Permission_Trait {
 	}
 
 	/**
- * Get WordPress process owner
- *
- * @return string WordPress process owner
- */
-protected function get_word_press_process_owner(): string {
-    $user_info = posix_getpwuid(posix_geteuid());
-    return $user_info['name'] ?? 'unknown';
-}
+	 * Get WordPress process owner
+	 *
+	 * @return string WordPress process owner
+	 */
+	protected function get_word_press_process_owner(): string {
+		$user_info = posix_getpwuid( posix_geteuid() );
+		return $user_info['name'] ?? 'unknown';
+	}
 
 	/**
 	 * Convert permissions to human-readable format

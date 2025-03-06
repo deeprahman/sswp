@@ -55,10 +55,10 @@ try {
 		'wp-config.php' => '0400',
 	);
 
-	$sswp_check_res['paths']       = array( '.'. DIRECTORY_SEPARATOR, 'wp-config.php', 'wp-content', 'wp-content'.DIRECTORY_SEPARATOR.'uploads', 'wp-content'.DIRECTORY_SEPARATOR.'plugins', 'wp-content'.DIRECTORY_SEPARATOR.'themes' );
+	$sswp_check_res['paths']       = array( '.' . DIRECTORY_SEPARATOR, 'wp-config.php', 'wp-content', 'wp-content' . DIRECTORY_SEPARATOR . 'uploads', 'wp-content' . DIRECTORY_SEPARATOR . 'plugins', 'wp-content' . DIRECTORY_SEPARATOR . 'themes' );
 	$sswp_check_res['chk_results'] = ( new Sswp_File_Permission_Manager( $sswp_check_res['paths'] ) )->check_permissions();
 	return $sswp_check_res;
 } catch ( \Exception $ex ) {
 
-	sswp_logger('Error',$ex->getMessage(),__FILE__);
+	sswp_logger( 'Error', $ex->getMessage(), __FILE__ );
 }

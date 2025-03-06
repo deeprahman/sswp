@@ -1,13 +1,12 @@
 <?php
-require_once $GLOBALS['sswp']::ROOT . "/includes/job-schedule/class-sswp-cron-jobs-old-logs.php";
-class Sswp_Cron_Job
-{
-    public function __construct(){
-        $this->init();
-    }
+require_once $GLOBALS['sswp']::ROOT . '/includes/job-schedule/class-sswp-cron-jobs-old-logs.php';
+class Sswp_Cron_Job {
 
-    public function init(){
-        Sswp_Cron_Jobs_Old_Logs::instance();
-    }
-    
+	public function __construct() {
+		$this->init();
+	}
+
+	public function init() {
+		Sswp_Cron_Jobs_Old_Logs::instance();
+	}
 }
