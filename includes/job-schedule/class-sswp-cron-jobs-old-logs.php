@@ -1,3 +1,4 @@
+<?php
 
 class Sswp_Cron_Jobs_Old_Logs {
 
