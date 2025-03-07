@@ -23,10 +23,10 @@ function getFilePermissionsWP() {
 }
 
 // Register the web component
-customElements.define( 'wp-permissions-table', sswpPermissionsTable );
+customElements.define( 'sswp-permissions-table', sswpPermissionsTable );
 
 // Example usage
-const permissionsTable = document.querySelector( 'wp-permissions-table' );
+const permissionsTable = document.querySelector( 'sswp-permissions-table' );
 // Example of listening for permission updates
 permissionsTable.addEventListener( 'permissions-updated', ( e ) => {
 	console.log( 'Permissions updated:', e.detail.data );

@@ -22,7 +22,7 @@ settings_errors('file_permission_messages');
 	</ul>
 	<div id="tab-1">
 		
-		<wp-permissions-table></wp-permissions-table>
+		<sswp-permissions-table></sswp-permissions-table>
 	</div>
 	<div id="tab-2">
 		<?php require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'admin/templates/protection-form-htm.php'; ?>
