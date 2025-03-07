@@ -3,9 +3,7 @@
     <file>includes</file>
     <file>admin</file>
    
-    <file>sswp-misc.php</file>
-    <file>sswp-logger.php</file>
-    <file>sswp-db-tables.php</file>
+
     <file>sswp-secure-setup.php</file>
     <exclude-pattern>vendor</exclude-pattern>
     <exclude-pattern>node_modules</exclude-pattern>
