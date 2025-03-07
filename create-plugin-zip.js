@@ -46,9 +46,9 @@ const filesToInclude = [
 	'includes',
 	'build',
 	'public',
-	'sswp-logger.php',
+
 	'sswp-secure-setup.php',
-	'sswp-misc.php',
+
 	'readme.txt',
 	'languages',
 ];
