@@ -11,7 +11,7 @@
 <?php
 
 // Display settings errors and messages for 'secure_setup_messages'
-settings_errors('file_permission_messages');
+settings_errors( 'file_permission_messages' );
 ?>
 
 <div id="my-tabs">

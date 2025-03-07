@@ -27,8 +27,5 @@ function sswp_file_permission_page_html() {
 
 	global $sswp;
 
-
 	include_once SSWP_ROOT . '/admin/templates/page-htm.php';
-
-
 }

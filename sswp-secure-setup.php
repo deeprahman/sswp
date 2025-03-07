@@ -13,22 +13,22 @@
  * Domain Path: /languages
  */
 
-if (! defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 // Set Plugin Root
-define('SSWP_ROOT', plugin_dir_path(__FILE__));
+define( 'SSWP_ROOT', plugin_dir_path( __FILE__ ) );
 
 // Set Plugin URL
-define('SSWP_URL', plugin_dir_url(__FILE__));
+define( 'SSWP_URL', plugin_dir_url( __FILE__ ) );
 
 // Set Domain
-define('SSWP_DOMAIN', 'secure-setup');
+define( 'SSWP_DOMAIN', 'secure-setup' );
 
-define('SSWP_VERSION', '0.1.0');
+define( 'SSWP_VERSION', '0.1.0' );
 
-define('SSWP_SETTINGS', '_sswp_settings');
+define( 'SSWP_SETTINGS', '_sswp_settings' );
 
 require_once SSWP_ROOT . 'includes/sswp-logger.php';
 require_once SSWP_ROOT . 'includes/sswp-misc.php';
@@ -36,47 +36,45 @@ require_once SSWP_ROOT . 'includes/sswp-misc.php';
 $is_litespeed = isset( $_SERVER['SERVER_SOFTWARE'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ), 'LiteSpeed' ) !== false;
 
 // Register activation and deactivation hooks
-register_activation_hook(__FILE__, 'sswp_activate');
-register_deactivation_hook(__FILE__, 'sswp_deactivate');
+register_activation_hook( __FILE__, 'sswp_activate' );
+register_deactivation_hook( __FILE__, 'sswp_deactivate' );
 
 // Function to handle plugin activation
-function sswp_activate()
-{
-    global $is_apache, $is_litespeed, $is_nginx, $is_IIS;
-    // Add your activation logic here
-    // For example, create options, update database tables, etc.
+function sswp_activate() {
+	global $is_apache, $is_litespeed, $is_nginx, $is_IIS;
+	// Add your activation logic here
+	// For example, create options, update database tables, etc.
 
-    include_once SSWP_ROOT . 'includes/sswp-db-tables.php';
-    sswp_create_tables();
+	include_once SSWP_ROOT . 'includes/sswp-db-tables.php';
+	sswp_create_tables();
 
-    include_once SSWP_ROOT . '/includes/settings/sswp-default-settings.php';
+	include_once SSWP_ROOT . '/includes/settings/sswp-default-settings.php';
 
-    $server_requirement = $is_litespeed || $is_apache;
+	$server_requirement = $is_litespeed || $is_apache;
 
-    if (! $server_requirement) {
-        deactivate_plugins(plugin_basename(__FILE__));
-        wp_die('This plugin requires Apache 2.4 or Lightspeed server. Please contact your hosting provider.', 'Plugin Activation Error', array( 'back_link' => true ));
-    }
+	if ( ! $server_requirement ) {
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+		wp_die( 'This plugin requires Apache 2.4 or Lightspeed server. Please contact your hosting provider.', 'Plugin Activation Error', array( 'back_link' => true ) );
+	}
 }
 
 // Function to handle plugin deactivation
-function sswp_deactivate()
-{
-    // Add your deactivation logic here
-    // For example, delete options, remove database tables, etc.
-    delete_option(SSWP_SETTINGS);
-    add_action('shutdown', 'sswp_deactivation_prompt');
+function sswp_deactivate() {
+	// Add your deactivation logic here
+	// For example, delete options, remove database tables, etc.
+	delete_option( SSWP_SETTINGS );
+	add_action( 'shutdown', 'sswp_deactivation_prompt' );
 }
 
 // Include the plugin class
-require_once plugin_dir_path(__FILE__) . 'includes/class-sswp-securing-setup.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-sswp-securing-setup.php';
 
 try {
-    $GLOBALS['sswp'] = $sswp = new Sswp_Securing_Setup();
-} catch (\Exception $ex) {
-    sswp_logger('Error','SSWP-ERROR: ' . $ex->getMessage(), __FILE__);
-    return new WP_Error(
-        'sswp_error',
-        __('An avoidable incident has occurred.', 'secure-setup')
-    );
+	$GLOBALS['sswp'] = $sswp = new Sswp_Securing_Setup();
+} catch ( \Exception $ex ) {
+	sswp_logger( 'Error', 'SSWP-ERROR: ' . $ex->getMessage(), __FILE__ );
+	return new WP_Error(
+		'sswp_error',
+		__( 'An avoidable incident has occurred.', 'secure-setup' )
+	);
 }

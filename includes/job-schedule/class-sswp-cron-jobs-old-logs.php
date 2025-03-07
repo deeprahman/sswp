@@ -23,13 +23,13 @@ class Sswp_Cron_Jobs_Old_Logs {
 	public function sswp_clear_old_logs_function() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'sswp_logs';
-		
+
 		$sql = $wpdb->prepare(
-			"DELETE FROM %s WHERE log_time < NOW() - INTERVAL %d DAY",
+			'DELETE FROM %s WHERE log_time < NOW() - INTERVAL %d DAY',
 			$table_name,
 			30
 		);
-	
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared -- Custom table operation requires direct query; caching not applicable; query is safely prepared.
 		$wpdb->query( $sql );
 	}
