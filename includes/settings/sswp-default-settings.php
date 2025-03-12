@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $sswp_file_permission = include SSWP_ROOT . '/includes/settings/sswp-file-permission-settings.php';
 $sswp_htaccess_form   = include SSWP_ROOT . '/includes/settings/sswp-htaccess-settings.php';
 $sswp_rest_api        = include SSWP_ROOT . '/includes/settings/sswp-rest-api-settings.php';

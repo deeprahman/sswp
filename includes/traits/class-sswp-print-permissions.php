@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 trait Sswp_Print_Permissions {
 	public function display_results() {
 		$results = $this->check_permissions();

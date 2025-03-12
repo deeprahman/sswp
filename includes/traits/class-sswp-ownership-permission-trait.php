@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 trait Sswp_Ownership_Permission_Trait {
 
 	/**

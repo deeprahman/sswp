@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $sswp_rest_endpoints_to_rate_limit['rate_limit_endpoints'] = array(
 	'/wp/v2/users',
 );

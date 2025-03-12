@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 function sswp_create_tables() {
 	// Add single table creation functions here
 	sswp_create_log_table();

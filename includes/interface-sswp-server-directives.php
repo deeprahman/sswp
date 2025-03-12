@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 interface ISswp_Server_Directives {
 
 	public function sswp_protect_debug_log();

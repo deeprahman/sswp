@@ -2,6 +2,7 @@
 /**
  * Main Plugin Page
  */
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 ?>
 
 <h1 id="sswp-page-heading"> <?php esc_html_e( 'Secure WordPress Installation', 'secure-setup' ); ?> </h1>

@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**
  * Limit REST API rate for specified endpoints.
  *
@@ -21,7 +22,7 @@ function sswp_limit_rest_api_rate( $result, $server, $request ) {
 
 	// Get the client IP address
 	$client_ip = sswp_get_client_ip(); // Assume sswp_get_client_ip() is defined elsewhere
-	$cache_key = 'rest_api_rate_limit_' . md5( $client_ip . $request->get_route() );
+	$cache_key = 'sswp_rest_api_rate_limit_' . md5( $client_ip . $request->get_route() );
 
 	// Get the current call count
 	$call_data = get_transient( $cache_key );

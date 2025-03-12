@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 require_once $sswp->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-apache.php';
 final class Sswp_Server_Directives_Factory {
 
@@ -19,6 +19,7 @@ final class Sswp_Server_Directives_Factory {
 	}
 
 	private static function get_class_name() {
+		// These are defined in the wp-includes/vars.php
 		global $is_apache, $is_nginx, $is_IIS, $is_iis7;
 		$name = array(
 			'Sswp_Server_Directives_Apache' => $is_apache,

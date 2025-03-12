@@ -33,7 +33,7 @@ define( 'SSWP_SETTINGS', '_sswp_settings' );
 require_once SSWP_ROOT . 'includes/sswp-logger.php';
 require_once SSWP_ROOT . 'includes/sswp-misc.php';
 
-$is_litespeed = isset( $_SERVER['SERVER_SOFTWARE'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ), 'LiteSpeed' ) !== false;
+$sswp_is_litespeed = isset( $_SERVER['SERVER_SOFTWARE'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ), 'LiteSpeed' ) !== false;
 
 // Register activation and deactivation hooks
 register_activation_hook( __FILE__, 'sswp_activate' );
@@ -41,7 +41,8 @@ register_deactivation_hook( __FILE__, 'sswp_deactivate' );
 
 // Function to handle plugin activation
 function sswp_activate() {
-	global $is_apache, $is_litespeed, $is_nginx, $is_IIS;
+	// These are defined in wp-includes/var.php file
+	global $is_apache, $sswp_is_litespeed, $is_nginx, $is_IIS;
 	// Add your activation logic here
 	// For example, create options, update database tables, etc.
 
@@ -50,7 +51,7 @@ function sswp_activate() {
 
 	include_once SSWP_ROOT . '/includes/settings/sswp-default-settings.php';
 
-	$server_requirement = $is_litespeed || $is_apache;
+	$server_requirement = $sswp_is_litespeed || $is_apache;
 
 	if ( ! $server_requirement ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );

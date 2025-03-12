@@ -3,8 +3,9 @@
  * Protection form
  */
 // Get the allowed_files option
-global $sswp;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+global $sswp;
 $file_types = $sswp->get_file_types();
 
 ?>

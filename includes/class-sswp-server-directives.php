@@ -3,7 +3,7 @@
  * TODO: Make it abstract class
  * TODO: To be other classes for nginx, apache, lightspeed and iis server
  */
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 abstract class Sswp_Server_Directives {
 	protected $is_apache;
 	protected $is_nginx;
@@ -21,7 +21,7 @@ abstract class Sswp_Server_Directives {
 		}
 		$this->is_apache    = $is_apache;
 		$this->is_nginx     = $is_nginx;
-		$this->is_litespeed = $is_litespeed;
+		$this->is_litespeed = $sswp_is_litespeed;
 		$this->is_iis       = $is_IIS || $is_iis7;
 		$this->home_path    = get_home_path();
 		$this->wp_rewrite   = $wp_rewrite;

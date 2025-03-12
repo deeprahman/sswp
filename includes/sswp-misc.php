@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 function sswp_convert_to_octal_pers_from_string( string $perms ): string|null {
 
 	// Use regex to check if it conforms to '0xxx' format

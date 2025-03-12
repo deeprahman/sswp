@@ -2,6 +2,7 @@
 /**
  * Do .htaccess form related stuff
  */
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 global $sswp;
 require_once $sswp->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-apache.php';
 require_once $sswp->root . DIRECTORY_SEPARATOR . 'includes/class-sswp-server-directives-factory.php';
@@ -11,7 +12,7 @@ try {
 } catch ( Exception $ex ) {
 }
 
-$GLOBALS['allowed_functions'] = $allowed_functions = array(
+$GLOBALS['sswp_allowed_functions'] = $allowed_functions = array(
 	'protect-debug-log' => 'sswp_protect_debug_log',
 	'allowed_files'     => 'sswp_protect_update_directory', // NOTE: make the file name consistent
 );
@@ -30,15 +31,15 @@ $GLOBALS['allowed_functions'] = $allowed_functions = array(
  */
 function sswp_handle_htaccess_post_req( $data ) {
 	$sd                           = $GLOBALS['sswp_sd'];
-	$GLOBALS['htaccess_settings'] = $sswp_htaccess_from_settings = sswp_save_htaccess_option( $data );
+	$GLOBALS['sswp_htaccess_settings'] = $sswp_htaccess_from_settings = sswp_save_htaccess_option( $data );
 	// Walk through the $data array
 	foreach ( $sswp_htaccess_from_settings['ht_form'] as $item ) {
 		$name  = $item['name'];
 		$value = $item['value'];
 
 		// Check if the name exists in the allowed_functions array
-		if ( array_key_exists( $name, $GLOBALS['allowed_functions'] ) ) {
-			$function_name = $GLOBALS['allowed_functions'][ $name ];
+		if ( array_key_exists( $name, $GLOBALS['sswp_allowed_functions'] ) ) {
+			$function_name = $GLOBALS['sswp_allowed_functions'][ $name ];
 
 			// Call the appropriate function if it exists
 			if ( ! empty( $function_name ) && function_exists( $function_name ) ) {
@@ -135,7 +136,7 @@ function sswp_allowed_files( $d ): array {
 	}
 
 	// $allowed = $sswp_htaccess_from_settings["file_types"];   //todo: to be removed
-	$allowed = $GLOBALS['htaccess_settings']['file_types'];
+	$allowed = $GLOBALS['sswp_htaccess_settings']['file_types'];
 	// The filtered files
 	$files = array_filter(
 		$d,

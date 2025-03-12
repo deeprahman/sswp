@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/traits/class-sswp-ownership-permission-trait.php';
 require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/traits/class-sswp-print-permissions.php';
 
@@ -54,10 +54,14 @@ class Sswp_File_Permission_Manager {
 	}
 
 	private function broadcast_not_unix_warning() {
-		global $admin_page;
-		if ( 'tools_page_sswp-files-permission' !== $admin_page ) {
+		if ( ! is_admin() || empty($_GET['page']) ) {
 			return;
 		}
+	
+		if ( 'sswp-files-permission' !== $_GET['page'] ) {
+			return;
+		}
+	
 		sswp_check_os_compatibility();
 	}
 
