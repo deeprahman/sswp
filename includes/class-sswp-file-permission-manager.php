@@ -119,12 +119,15 @@ class Sswp_File_Permission_Manager {
 
 		WP_Filesystem();
 
+		// TODO: check if posix_getpwuid() is available
+		$recommended = $this->get_recommended_permission( $path ); // NOTE: requires posix_getpwuid()
+
 		if ( ! $wp_filesystem->exists( $path ) ) {
 			return array(
 				'exists'      => false,
 				'permission'  => null,
 				'writable'    => false,
-				'recommended' => $this->get_recommended_permission( $path ),
+				'recommended' => $recommended??null,
 			);
 		}
 
@@ -135,7 +138,7 @@ class Sswp_File_Permission_Manager {
 			'exists'      => true,
 			'permission'  => $perms,
 			'writable'    => $writable,
-			'recommended' => $this->get_recommended_permission( $path ),
+			'recommended' => $recommended??null,
 		);
 	}
 
@@ -184,8 +187,9 @@ class Sswp_File_Permission_Manager {
 			sswp_logger( 'Info ', 'File/Dir does not exists. ' . $path, __METHOD__ );
 			return false;
 		}
-
-		if ( ( $this->get_ownership_Info( $path )['is_wp_owner'] !== true ) ) {
+		
+		// TODO: Run this line only if posix_getpwuid() is available
+		if ( ( $this->get_ownership_Info( $path )['is_wp_owner'] !== true ) ) { // Note: This require posix_getwpwuid()
 
 			sswp_logger( 'Info ', 'Path is not Owned by WordPress Process ' . $path, __METHOD__ );
 			if ( $enforec_ownership_check ) {
@@ -386,7 +390,8 @@ class Sswp_File_Permission_Manager {
 				$path
 			);
 		}
-		$is_owned = $this->is_wp_owner( $path );
+		// TODO: only use if posix_getpwuid() is available
+		$is_owned = $this->is_wp_owner( $path ); // Note: Requires posix_getpwuid()
 		if ( is_wp_error( $is_owned ) ) {
 			sswp_logger( 'Info: ', 'Path is not ownerd by WordPress' . $path, __METHOD__ );
 			if ( $enforec_ownership_check ) {
