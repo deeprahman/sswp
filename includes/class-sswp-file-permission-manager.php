@@ -34,7 +34,7 @@ class Sswp_File_Permission_Manager {
 	 * @param array $files_to_check List of files and directories to check permissions for.
 	 */
 	public function __construct( $files_to_check = array(), $recommended_permissions = array() ) {
-		$this->broadcast_not_unix_warning();
+
 
 		if ( ! $this->initializeFilesystem() ) {
 						sswp_logger( 'Info', __( 'File System initialization failed.', 'secure-setup' ), __METHOD__ );
@@ -53,17 +53,7 @@ class Sswp_File_Permission_Manager {
 		);
 	}
 
-	private function broadcast_not_unix_warning() {
-		if ( ! is_admin() || empty($_GET['page']) ) {
-			return;
-		}
 	
-		if ( 'sswp-files-permission' !== $_GET['page'] ) {
-			return;
-		}
-	
-		sswp_check_os_compatibility();
-	}
 
 	/**
 	 * Check if a given path is within the WordPress installation directory.

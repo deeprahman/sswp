@@ -4,7 +4,7 @@
  * Plugin Name: Secure Setup
  * Plugin URI: https://deeprahman.com/wp-secure-setup
  * Description: This plugin helps secure your WordPress website by implementing various security measures.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Deep
  * Author URI: https://deeprahman.com/
  * License: GPLv2 or later
@@ -61,10 +61,12 @@ function sswp_activate() {
 
 // Function to handle plugin deactivation
 function sswp_deactivate() {
+	// Set a transient to trigger the prompt on the next admin page load
+    set_transient('sswp_deactivation_prompt', true, 60); // Expires in 60 seconds
 	// Add your deactivation logic here
 	// For example, delete options, remove database tables, etc.
 	delete_option( SSWP_SETTINGS );
-	add_action( 'shutdown', 'sswp_deactivation_prompt' );
+
 }
 
 // Include the plugin class
