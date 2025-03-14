@@ -14,7 +14,7 @@ abstract class Sswp_Server_Directives {
 	protected $wp_filesystem;
 
 	public function __construct() {
-		global $is_apache, $is_nginx, $is_litespeed, $is_IIS, $is_iis7, $wp_rewrite;
+		global $is_apache, $is_nginx, $sswp_is_litespeed, $is_IIS, $is_iis7, $wp_rewrite;
 		// Initialize WP_Filesystem
 		if ( ! function_exists( 'WP_Filesystem' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
