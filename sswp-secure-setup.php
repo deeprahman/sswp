@@ -61,9 +61,7 @@ function sswp_activate() {
 
 // Function to handle plugin deactivation
 function sswp_deactivate() {
-	// Set a transient to trigger the prompt on the next admin page load
-    set_transient('sswp_deactivation_prompt', true, 60); // Expires in 60 seconds
-	// Add your deactivation logic here
+
 	// For example, delete options, remove database tables, etc.
 	delete_option( SSWP_SETTINGS );
 

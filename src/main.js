@@ -1,7 +1,6 @@
 import './sswp-files-permissions-request.js';
 import './sswp-htaccess-form-multiselect.js';
 import './sswp-htaccess-protect.js';
-
 import './sswp-htaccess-protect-from.js';
 
 import './index.scss';
