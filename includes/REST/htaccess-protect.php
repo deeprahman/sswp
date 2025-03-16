@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 add_action(
 	'rest_api_init',
 	function () {
@@ -27,12 +27,10 @@ function sswp_htaccess_protect_permission_check( $request ) {
 }
 
 function sswp_htaccess_protect_callback( $request ) {
-	global $sswp, $allowed_methods;
+	global $sswp;
 
 	try {
-		// if( !array_search($request->method, $allowed_methods,  $strict = false) === true ){
-		// return new WP_Error('sswp_error', "Method Disallowed", array('status' => 400));
-		// }
+		
 		require_once $sswp->root . '/includes/sswp-htaccess-form.php';
 		require_once $sswp->root . '/includes/class-sswp-server-directives-apache.php';
 		$sd = new Sswp_Server_Directives_Apache();

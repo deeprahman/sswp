@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 trait Sswp_Ownership_Permission_Trait {
 
 	/**
@@ -74,14 +75,7 @@ trait Sswp_Ownership_Permission_Trait {
 		$owner_name = $this->wp_filesystem->owner( $path );
 		$group_name = $this->wp_filesystem->group( $path );
 
-		// $owner_info = function_exists( 'posix_getpwuid' ) ?
-		// posix_getpwuid( $owner_id ) :
-		// array( 'name' => $owner_id );
-
-		// $group_info = function_exists( 'posix_getgrgid' ) ?
-		// posix_getgrgid( $group_id ) :
-		// array( 'name' => $group_id );
-
+		
 		$wp_user = $this->get_word_press_process_owner(); // TODO: change $wp_user to $p_owner_wp
 
 		return array(
@@ -226,9 +220,14 @@ trait Sswp_Ownership_Permission_Trait {
 	 * @return string WordPress process owner
 	 */
 	protected function get_word_press_process_owner(): string {
-		$user_info = posix_getpwuid( posix_geteuid() );
-		return $user_info['name'] ?? 'unknown';
+		if ( function_exists('posix_geteuid') && function_exists('posix_getpwuid') ) {
+			$user_info = posix_getpwuid( posix_geteuid() );
+			return $user_info['name'] ?? 'unknown';
+		}
+	
+		return 'unknown'; // Fallback when POSIX functions are unavailable
 	}
+		
 
 	/**
 	 * Convert permissions to human-readable format

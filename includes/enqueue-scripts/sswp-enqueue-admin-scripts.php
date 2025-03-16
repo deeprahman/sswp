@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 global $sswp;
 // $admin_page passed from included page
 if ( 'tools_page_sswp-files-permission' !== $admin_page ) {

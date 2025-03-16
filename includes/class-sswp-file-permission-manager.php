@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/traits/class-sswp-ownership-permission-trait.php';
 require_once Sswp_Securing_Setup::ROOT . DIRECTORY_SEPARATOR . 'includes/traits/class-sswp-print-permissions.php';
 
@@ -34,7 +34,7 @@ class Sswp_File_Permission_Manager {
 	 * @param array $files_to_check List of files and directories to check permissions for.
 	 */
 	public function __construct( $files_to_check = array(), $recommended_permissions = array() ) {
-		$this->broadcast_not_unix_warning();
+
 
 		if ( ! $this->initializeFilesystem() ) {
 						sswp_logger( 'Info', __( 'File System initialization failed.', 'secure-setup' ), __METHOD__ );
@@ -53,13 +53,7 @@ class Sswp_File_Permission_Manager {
 		);
 	}
 
-	private function broadcast_not_unix_warning() {
-		global $admin_page;
-		if ( 'tools_page_sswp-files-permission' !== $admin_page ) {
-			return;
-		}
-		sswp_check_os_compatibility();
-	}
+	
 
 	/**
 	 * Check if a given path is within the WordPress installation directory.
@@ -115,12 +109,15 @@ class Sswp_File_Permission_Manager {
 
 		WP_Filesystem();
 
+		// TODO: check if posix_getpwuid() is available
+		$recommended = $this->get_recommended_permission( $path ); // NOTE: requires posix_getpwuid()
+
 		if ( ! $wp_filesystem->exists( $path ) ) {
 			return array(
 				'exists'      => false,
 				'permission'  => null,
 				'writable'    => false,
-				'recommended' => $this->get_recommended_permission( $path ),
+				'recommended' => $recommended??null,
 			);
 		}
 
@@ -131,7 +128,7 @@ class Sswp_File_Permission_Manager {
 			'exists'      => true,
 			'permission'  => $perms,
 			'writable'    => $writable,
-			'recommended' => $this->get_recommended_permission( $path ),
+			'recommended' => $recommended??null,
 		);
 	}
 
@@ -180,8 +177,9 @@ class Sswp_File_Permission_Manager {
 			sswp_logger( 'Info ', 'File/Dir does not exists. ' . $path, __METHOD__ );
 			return false;
 		}
-
-		if ( ( $this->get_ownership_Info( $path )['is_wp_owner'] !== true ) ) {
+		
+		// TODO: Run this line only if posix_getpwuid() is available
+		if ( ( $this->get_ownership_Info( $path )['is_wp_owner'] !== true ) ) { // Note: This require posix_getwpwuid()
 
 			sswp_logger( 'Info ', 'Path is not Owned by WordPress Process ' . $path, __METHOD__ );
 			if ( $enforec_ownership_check ) {
@@ -382,7 +380,8 @@ class Sswp_File_Permission_Manager {
 				$path
 			);
 		}
-		$is_owned = $this->is_wp_owner( $path );
+		// TODO: only use if posix_getpwuid() is available
+		$is_owned = $this->is_wp_owner( $path ); // Note: Requires posix_getpwuid()
 		if ( is_wp_error( $is_owned ) ) {
 			sswp_logger( 'Info: ', 'Path is not ownerd by WordPress' . $path, __METHOD__ );
 			if ( $enforec_ownership_check ) {

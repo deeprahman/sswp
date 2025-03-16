@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class Sswp_File_Regex_Pattern_Creator {
 
 	private $extensions;

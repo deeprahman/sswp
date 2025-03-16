@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 // Conditionally disable the system.multicall method in XML-RPC
 add_filter( 'xmlrpc_methods', 'sswp_handle_xml_rpc_method' );
 

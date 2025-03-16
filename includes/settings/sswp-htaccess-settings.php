@@ -3,7 +3,7 @@
  * Contains default settings
  * for htaccess protect from
  */
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 $sswp_htaccess_from_settings['ht_form'] = array(
 	array(

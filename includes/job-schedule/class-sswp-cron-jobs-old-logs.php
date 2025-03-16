@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class Sswp_Cron_Jobs_Old_Logs {
 
 	private static $instance = null;

@@ -4,6 +4,7 @@
  *
  * This function creates a new page under the Tools menu and calls the `file_permission_page_html` function to render its content.
  */
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 function sswp_files_permission_page() {
 	// Add the page to the Tools menu
 	add_management_page(

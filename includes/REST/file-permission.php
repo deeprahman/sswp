@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 require_once Sswp_Securing_Setup::ROOT . 'includes/sswp-file-permission.php';
 
 add_action(

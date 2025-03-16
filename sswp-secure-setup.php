@@ -4,7 +4,7 @@
  * Plugin Name: Secure Setup
  * Plugin URI: https://deeprahman.com/wp-secure-setup
  * Description: This plugin helps secure your WordPress website by implementing various security measures.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Deep
  * Author URI: https://deeprahman.com/
  * License: GPLv2 or later
@@ -33,7 +33,7 @@ define( 'SSWP_SETTINGS', '_sswp_settings' );
 require_once SSWP_ROOT . 'includes/sswp-logger.php';
 require_once SSWP_ROOT . 'includes/sswp-misc.php';
 
-$is_litespeed = isset( $_SERVER['SERVER_SOFTWARE'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ), 'LiteSpeed' ) !== false;
+$sswp_is_litespeed = isset( $_SERVER['SERVER_SOFTWARE'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ), 'LiteSpeed' ) !== false;
 
 // Register activation and deactivation hooks
 register_activation_hook( __FILE__, 'sswp_activate' );
@@ -41,7 +41,8 @@ register_deactivation_hook( __FILE__, 'sswp_deactivate' );
 
 // Function to handle plugin activation
 function sswp_activate() {
-	global $is_apache, $is_litespeed, $is_nginx, $is_IIS;
+	// These are defined in wp-includes/var.php file
+	global $is_apache, $sswp_is_litespeed, $is_nginx, $is_IIS;
 	// Add your activation logic here
 	// For example, create options, update database tables, etc.
 
@@ -50,7 +51,7 @@ function sswp_activate() {
 
 	include_once SSWP_ROOT . '/includes/settings/sswp-default-settings.php';
 
-	$server_requirement = $is_litespeed || $is_apache;
+	$server_requirement = $sswp_is_litespeed || $is_apache;
 
 	if ( ! $server_requirement ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
@@ -60,10 +61,12 @@ function sswp_activate() {
 
 // Function to handle plugin deactivation
 function sswp_deactivate() {
+	// Set a transient to trigger the prompt on the next admin page load
+    set_transient('sswp_deactivation_prompt', true, 60); // Expires in 60 seconds
 	// Add your deactivation logic here
 	// For example, delete options, remove database tables, etc.
 	delete_option( SSWP_SETTINGS );
-	add_action( 'shutdown', 'sswp_deactivation_prompt' );
+
 }
 
 // Include the plugin class
