@@ -223,39 +223,6 @@ function sswp_check_os_compatibility()
 
 }
 
-function sswp_deactivation_prompt()
-{
-	// Only show in admin and if the transient exists
-	if (!is_admin() || !get_transient('sswp_deactivation_prompt')) {
-		return;
-	}
-
-	// Output the form as an admin notice
-	?>
-	<div class="notice notice-warning is-dismissible">
-		<h2><?php esc_html_e('Deactivate Plugin', 'secure-setup'); ?></h2>
-		<form method="post">
-			<?php wp_nonce_field('sswp_deactivation_nonce', 'sswp_deactivation_nonce_field'); ?>
-			<p><?php esc_html_e('Do you want to delete the log table?', 'secure-setup'); ?></p>
-			<input type="submit" name="sswp_delete_table" value="<?php esc_attr_e('Yes', 'secure-setup'); ?>"
-				class="button" />
-			<input type="submit" name="sswp_keep_table" value="<?php esc_attr_e('No', 'secure-setup'); ?>" class="button" />
-		</form>
-	</div>
-	<?php
-
-	// Handle form submission
-	if (isset($_POST['sswp_deactivation_nonce_field']) && check_admin_referer('sswp_deactivation_nonce', 'sswp_deactivation_nonce_field')) {
-		if (isset($_POST['sswp_delete_table'])) {
-			sswp_delete_log_table();
-			delete_transient('sswp_deactivation_prompt'); // Clear the prompt
-			echo '<div class="notice notice-success"><p>' . esc_html__('Log table deleted.', 'secure-setup') . '</p></div>';
-		} elseif (isset($_POST['sswp_keep_table'])) {
-			delete_transient('sswp_deactivation_prompt'); // Clear the prompt
-			echo '<div class="notice notice-success"><p>' . esc_html__('Log table preserved.', 'secure-setup') . '</p></div>';
-		}
-	}
-}
 
 function sswp_delete_log_table()
 {

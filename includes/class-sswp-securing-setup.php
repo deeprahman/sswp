@@ -106,7 +106,7 @@ class Sswp_Securing_Setup
 		$this->xml_rpc_config();
 		$this->admin_rest();
 		$this->rest_endpoints_config();
-		add_action('admin_notices', 'sswp_deactivation_prompt'); // TODO: Refactor to separate method
+		
 	}
 
 	public function enqueue_admin_js($admin_page)

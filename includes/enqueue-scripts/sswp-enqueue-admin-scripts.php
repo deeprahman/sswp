@@ -7,20 +7,20 @@ if ( 'tools_page_sswp-files-permission' !== $admin_page ) {
 }
 
 
-$asset_file = SSWP_ROOT . 'build/index.asset.php';
+$asset_file = SSWP_ROOT . 'build/main.asset.php';
 
 if ( ! file_exists( $asset_file ) ) {
 	new WP_Error( 'Asset File does not exists' );
 }
-$index_js  = SSWP_URL . 'build/index.js';
-$index_css = SSWP_URL . 'build/index.css';
+$index_js  = SSWP_URL . 'build/main.js';
+$index_css = SSWP_URL . 'build/main.css';
 
-if ( ! file_exists( SSWP_ROOT . 'build/index.js' ) ) {
+if ( ! file_exists( SSWP_ROOT . 'build/main.js' ) ) {
 	new WP_Error( 'JS File does not exists' );
 	sswp_logger( 'Info', 'JS File does not exists', __FILE__ );
 }
 
-if ( ! file_exists( SSWP_ROOT . 'build/index.css' ) ) {
+if ( ! file_exists( SSWP_ROOT . 'build/main.css' ) ) {
 	new WP_Error( 'CSS File does not exists' );
 
 	sswp_logger( 'Info', 'CSS File does not exists', __FILE__ );
@@ -58,6 +58,8 @@ function sswp_enqueue_jquery_scripts() {
 
 	// Enqueue jQuery UI Tabs
 	wp_enqueue_script( 'jquery-ui-tabs' );
+
+	wp_enqueue_script('jquery-ui-dialog');
 }
 
 
