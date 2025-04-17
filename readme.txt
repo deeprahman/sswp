@@ -2,7 +2,7 @@
 Contributors: deeprahman
 Tags: security, file permissions, .htaccess, WordPress security, REST API
 Requires at least: 5.2
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.2
 Stable tag: 1.0.1
 License: GPLv2 or later
@@ -22,7 +22,7 @@ Enhance WordPress security by setting recommended file permissions, securing .ht
 
 The plugin is user-friendly and includes an easy-to-access settings page.
 
-You can view or contribute to the plugin's source code on GitHub:  
+You can view or contribute to the plugin's source code on GitHub:
 [GitHub Repository]https://github.com/deeprahman/sswp)
 
 == Features ==
@@ -58,17 +58,20 @@ The plugin disables:
 
 == Changelog ==
 
+= 1.0.1 =
+* Added OS warning.
+* Implemented REST API rate limiting.
+
 = 1.0.0 =
 * Initial release.
 * File permissions management for directories and files.
 * `.htaccess` customization for secure file handling.
 * Disabled `system.multicall` and `users` REST endpoint for added protection.
-
+= 1.0.1
+*
 == Upgrade Notice ==
 = 1.0.0 =
 Initial release. Ensure your PHP version is 7.2 or higher and WordPress is updated to the latest version.
 
 == Notes ==
 After activation, the plugin adds a submenu named **File Permission** under the Tools menu, where you can configure settings.
-
-
