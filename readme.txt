@@ -4,7 +4,7 @@ Tags: security, file permissions, .htaccess, WordPress security, REST API
 Requires at least: 5.2
 Tested up to: 6.8
 Requires PHP: 7.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,6 +58,9 @@ The plugin disables:
 
 == Changelog ==
 
+= 1.0.2
+* Readme updated
+
 = 1.0.1 =
 * Added OS warning.
 * Implemented REST API rate limiting.
@@ -67,7 +70,6 @@ The plugin disables:
 * File permissions management for directories and files.
 * `.htaccess` customization for secure file handling.
 * Disabled `system.multicall` and `users` REST endpoint for added protection.
-= 1.0.1
 *
 == Upgrade Notice ==
 = 1.0.0 =
